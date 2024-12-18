@@ -2,19 +2,14 @@ package com.sparta.webapi.controller;
 
 import com.sparta.application.service.EmailService;
 import com.sparta.domain.dto.UserSignupRequestDto;
-import com.sparta.domain.entity.User;
 import com.sparta.domain.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -59,10 +54,7 @@ public class UserController {
     }
 
     private boolean isValidToken(String token) {
-        if (TOKEN.equals(token)) {
-            return true;
-        }
-        return false;
+        return TOKEN.equals(token);
     }
 
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
