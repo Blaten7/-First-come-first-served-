@@ -18,7 +18,7 @@ public class User {
     private String userEmail;
     private String userPw;
     private String userAddress;
-    private String userPnum;
+    private String userPH;
     private String profileImg;
     private String description;
 
