@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.0'
-    id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 }
 
 group = 'com.sparta'
@@ -12,7 +12,9 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
-
+springBoot {
+    mainClass = 'com.sparta.application.Application'
+}
 repositories {
     mavenCentral()
 }
@@ -37,4 +39,8 @@ tasks.named('test') {
 jar {
     archiveBaseName = 'app'    // JAR 파일 기본 이름 설정
     archiveClassifier = ''             // 분류자 제거
+    enabled = true
+}
+bootJar {
+    enabled = false
 }

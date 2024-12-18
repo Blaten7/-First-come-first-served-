@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.0'
-    id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 }
 
 group = 'com.sparta'
@@ -12,7 +12,9 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
-
+springBoot {
+    mainClass = 'com.sparta.domain.DomainApplication'
+}
 repositories {
     mavenCentral()
 }
@@ -23,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation' // 데이터 검증
     compileOnly 'org.projectlombok:lombok' // 보일러플레이트 코드 최소화
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-mail' // 메일 전송 의존성
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // 단위 테스트
@@ -36,5 +39,8 @@ tasks.named('test') {
 jar {
     archiveBaseName = 'domain'    // JAR 파일 기본 이름 설정
     archiveClassifier = ''             // 분류자 제거
+    enabled = true
 }
-
+bootJar {
+    enabled = false
+}
