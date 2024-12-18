@@ -2,17 +2,6 @@ spring:
   application:
     name: application
     main:
-      web-application-type: reactive
-mail:
-  host: smtp.gmail.com                 # SMTP ?? ??? (Gmail ??)
-  port: 587                            # SMTP ?? ??
-  username: your-email@gmail.com       # ??? ??? ??
-  password: your-email-password        # ??? ??? ???? ?? ? ????
-  properties:
-    mail:
-      smtp:
-        auth: true                     # ?? ??
-        starttls:
-          enable: true                 # TLS ???
+#      web-application-type: reactive
 server:
   port: 8082
