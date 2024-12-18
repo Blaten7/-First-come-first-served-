@@ -24,6 +24,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // 데이터 접근
     implementation 'org.springframework.cloud:spring-cloud-starter-config' // Config Client
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j' // 회로 차단기
+//    implementation project('domain') // domain 모듈을 의존성으로 추가
+//    implementation project("application") //
+//    implementation project("webapi") //
 
     runtimeOnly 'com.mysql:mysql-connector-j' // MySQL 드라이버
     runtimeOnly 'com.h2database:h2' // 테스트용 H2 Database

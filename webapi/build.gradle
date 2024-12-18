@@ -31,11 +31,15 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // Thymeleaf Security
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client' // 서비스 등록 및 발견
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2' // 스웨거 API 미완료상태
-    implementation project(':domain') // domain 모듈을 의존성으로 추가
     implementation 'org.springframework.boot:spring-boot-starter-validation' // 유효성 검증 의존성
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'com.h2database:h2'
+
+    implementation project(':domain') // domain 모듈을 의존성으로 추가
+    implementation project(':application') //
+    implementation project(':infrastructure') //
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
