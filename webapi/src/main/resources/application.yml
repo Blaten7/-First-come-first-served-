@@ -1,8 +1,15 @@
 spring:
   application:
     name: webapi
+  datasource:
+    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/corpTask
+    username: admin
+    password: dlgudrn1998
+    driver-class-name: com.mysql.cj.jdbc.Driver
   main:
     web-application-type: reactive
-
+  jpa:
+    hibernate:
+      ddl-auto: create
 server:
   port: 8084

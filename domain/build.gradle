@@ -41,6 +41,6 @@ jar {
     archiveClassifier = ''             // 분류자 제거
     enabled = true
 }
-bootJar {
+tasks.named('bootJar') {
     enabled = false
 }
