@@ -66,8 +66,11 @@ public class UserService {
             if (passwordEncoder.matches(password, user.getUserPw())) {
                 return user; // 로그인 성공, User 객체 반환
             }
+            System.out.println("현재 비밀번호 : " + user.getUserPw());
+            System.out.println("바꾸려는 비밀번호 : " + password);
+            throw new IllegalArgumentException("유효한 비밀번호가 아닙니다");
         }
-        throw new IllegalArgumentException("Invalid email or password");
+        throw new IllegalArgumentException("유효한 이메일이 아닙니다");
     }
 
 }

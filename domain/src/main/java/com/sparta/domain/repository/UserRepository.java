@@ -28,4 +28,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select userPw from User " +
             "where userEmail = :encryptMail")
     String findByUserEmailToUserPw(String encryptMail);
+
+    boolean existsByUserPw(String oldPw);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User U " +
+            "SET U.userPw = :newPassword," +
+            "U.pwUpdatedAt = CURRENT_TIMESTAMP " +
+            "WHERE U.userEmail = :email")
+    void updateUserPwAndPwUpdatedAtByUserEmail(String email, String newPassword);
 }

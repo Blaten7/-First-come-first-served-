@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class UserController {
     private final JwtUtil jwtUtil;
     private final RedisTokenRepository redisTokenRepository;
     private static final long TOKEN_EXPIRATION_TIME = 15 * 60 * 1000; // 15분
+    private final PasswordEncoder passwordEncoder;
 
     @Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
     @ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
@@ -132,8 +134,23 @@ public class UserController {
 
 
     @Operation(summary = "비밀번호 변경", description = "비밀번호를 변경하며 모든 기기에서 로그아웃")
-    @PutMapping("/password")
-    public Map<String, String> updatePassword(@RequestBody Map<String, String> passwordRequest) {
-        return Map.of("msg", "비밀번호가 변경되었습니다. 모든 장치에서 로그아웃됩니다");
+    @PutMapping("/user/password/change/request")
+    public ResponseEntity<String> updatePassword(@RequestHeader("Authorization") String token, @RequestBody Map<String, String> pwChangeRequest) throws Exception {
+        log.info("비밀번호 변경 컨트롤러 진입");
+        if (token == null || token.isEmpty()) return ResponseEntity.status(401).body("로그인해야 이용하실 수 있는 기능입니다");
+        String email = pwChangeRequest.get("email");
+        String oldPassword = pwChangeRequest.get("oldPassword");
+        String newPassword = pwChangeRequest.get("newPassword");
+        String confirmPassword = pwChangeRequest.get("confirmPassword");
+
+        User user = userService.authenticate(email, oldPassword);
+        if (user == null) return ResponseEntity.status(404).body("현재 비밀번호가 틀렸습니다");
+
+        if (!newPassword.equals(confirmPassword)) return ResponseEntity.status(400).body("변경을 원하는 비밀번호와 비밀번호 확인이 일치하지 않습니다");
+
+        userRepository.updateUserPwAndPwUpdatedAtByUserEmail(EncryptionUtil.encrypt(email), passwordEncoder.encode(newPassword));
+        int removedTokens = redisTokenRepository.removeAllTokensByEmail(EncryptionUtil.encrypt(email));
+        if (removedTokens > 0) return ResponseEntity.status(200).body("비밀번호가 성공적으로 변경되어 모든 기기에서 로그아웃 되었습니다.\n새로운 비밀번호를 사용하여 로그인 해주세요!");
+        return ResponseEntity.status(422).body("비밀번호는 변경이 잘 되었는데요.. 모든 기기에서 로그아웃은 왠지 모르게 실패했으니 알아서 하세요 ㅇㅋ?");
     }
 }
