@@ -39,12 +39,12 @@ public class JwtUtil {
         }
     }
 
-    public boolean isTokenValid(String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+//    public boolean isTokenValid(String token) {
+//        try {
+//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
 }

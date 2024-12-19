@@ -100,7 +100,7 @@ public class UserController {
 
     @Operation(summary = "현재 기기에서 로그아웃", description = "현재 사용 중인 기기에서 로그아웃")
     @PostMapping("/user/logout")
-    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) throws Exception {
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
         log.info("현재 기기 로그아웃 요청 처리 컨트롤러 진입");
         token = token.replace("Bearer ", "");
 

@@ -12,8 +12,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByUserEmailAndStatus(String email, String status);
-
     boolean existsByUserEmail(String email);
 
     Optional<User> findByUserEmail(String email);
@@ -25,11 +23,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "where userEmail = :email")
     void updateStatusFindByEmail(String email);
 
-    @Query("select userPw from User " +
-            "where userEmail = :encryptMail")
-    String findByUserEmailToUserPw(String encryptMail);
+//    @Query("select userPw from User " +
+//            "where userEmail = :encryptMail")
+//    String findByUserEmailToUserPw(String encryptMail);
 
-    boolean existsByUserPw(String oldPw);
+//    boolean existsByUserPw(String oldPw);
 
     @Transactional
     @Modifying
