@@ -87,6 +87,7 @@ public class UserController {
         }
 
         String token = jwtUtil.generateToken(user);
+        log.info("만들어진 토큰 : " + token);
         redisTokenRepository.saveToken(token, email, TOKEN_EXPIRATION_TIME);
 
         return ResponseEntity.ok(Map.of(
@@ -97,24 +98,38 @@ public class UserController {
         ));
     }
 
-    @Operation(summary = "로그아웃", description = "현재 기기에서 로그아웃")
+    @Operation(summary = "현재 기기에서 로그아웃", description = "현재 사용 중인 기기에서 로그아웃")
     @PostMapping("/user/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) throws Exception {
-        log.info("로그아웃 요청 처리 컨트롤러 진입");
+        log.info("현재 기기 로그아웃 요청 처리 컨트롤러 진입");
         token = token.replace("Bearer ", "");
+
         if (redisTokenRepository.isTokenValid(token)) {
-            redisTokenRepository.removeToken(token);
-            return ResponseEntity.ok("로그아웃 성공!");
-        } else {
-            return ResponseEntity.status(422).body("유효하지 않은 토큰입니다.");
+            if (redisTokenRepository.removeToken(token)) {
+                return ResponseEntity.ok("현재 기기에서 로그아웃되었습니다!");
+            }
         }
+        return ResponseEntity.status(422).body("유효하지 않은 토큰입니다.");
     }
 
-    @Operation(summary = "모든 기기에서 로그아웃", description = "모든 기기에서 로그아웃")
-    @PostMapping("/logout/all")
-    public Map<String, String> logoutAll() {
-        return Map.of("msg", "모든 장치에서 로그아웃 되었습니다!");
+    @Operation(summary = "모든 기기에서 로그아웃", description = "사용자의 모든 기기에서 로그아웃")
+    @PostMapping("/user/logout/all")
+    public ResponseEntity<String> logoutAll(@RequestHeader("Authorization") String token) throws Exception {
+        log.info("전체 기기 로그아웃 요청 처리 컨트롤러 진입");
+        token = token.replace("Bearer ", "");
+
+        // JWT에서 사용자 이메일 추출
+        String email = jwtUtil.extractEmail(token);
+
+        // 모든 기기에서 로그아웃
+        int removedTokens = redisTokenRepository.removeAllTokensByEmail(email);
+        if (removedTokens > 0) {
+            return ResponseEntity.ok("모든 기기에서 로그아웃되었습니다!");
+        }
+        log.warn("삭제된 토큰 : " + removedTokens);
+        return ResponseEntity.status(422).body("유효하지 않은 요청입니다.");
     }
+
 
     @Operation(summary = "비밀번호 변경", description = "비밀번호를 변경하며 모든 기기에서 로그아웃")
     @PutMapping("/password")

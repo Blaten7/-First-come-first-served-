@@ -17,7 +17,7 @@ public class JwtUtil {
 
     public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getUserEmail())
+                .claim("userEmail", user.getUserEmail())
                 .claim("userId", user.getUserId())
                 .claim("userName", user.getUserName())
                 .setIssuedAt(new Date())
@@ -25,12 +25,18 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
+
     public String extractEmail(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .get("userEmail", String.class);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다", e);
+        }
     }
 
     public boolean isTokenValid(String token) {
