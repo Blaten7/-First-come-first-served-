@@ -3,7 +3,7 @@ package com.sparta.domain.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,12 +21,13 @@ public class User {
     private String userPH;
     private String profileImg;
     private String description;
+    private String Status;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date pwUpdatedAt;
+    private LocalDateTime pwUpdatedAt;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
