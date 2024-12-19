@@ -22,7 +22,7 @@ public class RedisTokenRepository {
         return redisTemplate.hasKey(token);
     }
 
-    public void deleteToken(String token) {
+    public void removeToken(String token) {
         redisTemplate.delete(token);
     }
 
