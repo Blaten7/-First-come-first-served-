@@ -4,6 +4,7 @@ import com.sparta.application.service.EmailService;
 import com.sparta.application.service.UserService;
 import com.sparta.domain.dto.UserSignupRequestDto;
 import com.sparta.domain.entity.User;
+import com.sparta.domain.repository.RedisTokenRepository;
 import com.sparta.domain.repository.UserRepository;
 import com.sparta.domain.repository.VerificationTokenRepository;
 import com.sparta.domain.util.EncryptionUtil;
@@ -11,6 +12,7 @@ import com.sparta.domain.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+@AllArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping("/api")
@@ -28,21 +31,17 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final VerificationTokenRepository vtRepository;
-
-    public UserController(EmailService emailService, UserService userService, UserRepository userRepository, VerificationTokenRepository vtRepository) {
-        this.emailService = emailService;
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.vtRepository = vtRepository;
-    }
+    private final JwtUtil jwtUtil;
+    private final RedisTokenRepository redisTokenRepository;
+    private static final long TOKEN_EXPIRATION_TIME = 15 * 60 * 1000; // 15분
 
     @Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
     @ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
     @PostMapping("/user/signup")
-    public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) {
+    public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) throws Exception {
         log.info("회원가입 - 이메일 인증 컨트롤러 진입");
         String email = userRequest.getUserEmail();
-        if (userRepository.existsByUserEmail(email)) return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
+        if (userRepository.existsByUserEmail(EncryptionUtil.encrypt(email))) return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
         // 토큰을 토큰 저장소에 저장하고 유저정보를 임시 저장.
         String token = userService.createVerificationToken(userRequest);
         String subject = "회원가입 인증 이메일!";
@@ -75,34 +74,40 @@ public class UserController {
     }
 
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginRequest) throws Exception {
         String email = loginRequest.get("email");
         String password = loginRequest.get("password");
 
-        // 1. 사용자 인증
         User user = userService.authenticate(email, password);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "msg", "로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다."
+            ));
         }
 
-        // 2. JWT 토큰 생성
-        String token = JwtUtil.generateToken(user);
+        String token = jwtUtil.generateToken(user);
+        redisTokenRepository.saveToken(token, email, TOKEN_EXPIRATION_TIME);
 
-        // 3. 응답 반환
         return ResponseEntity.ok(Map.of(
                 "token", token,
                 "msg", "로그인 성공!",
-                "userId", user.getUserEmail(),
-                "userName", user.getUserName()
+                "userId", EncryptionUtil.decrypt(user.getUserEmail()),
+                "userName", EncryptionUtil.decrypt(user.getUserName())
         ));
     }
 
-
     @Operation(summary = "로그아웃", description = "현재 기기에서 로그아웃")
-    @PostMapping("/logout")
-    public Map<String, String> logout() {
-        return Map.of("msg", "로그아웃 성공!");
+    @PostMapping("/user/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) throws Exception {
+        log.info("로그아웃 요청 처리 컨트롤러 진입");
+        token = token.replace("Bearer ", "");
+        if (redisTokenRepository.isTokenValid(token)) {
+            redisTokenRepository.removeToken(token);
+            return ResponseEntity.ok("로그아웃 성공!");
+        } else {
+            return ResponseEntity.status(422).body("유효하지 않은 토큰입니다.");
+        }
     }
 
     @Operation(summary = "모든 기기에서 로그아웃", description = "모든 기기에서 로그아웃")
