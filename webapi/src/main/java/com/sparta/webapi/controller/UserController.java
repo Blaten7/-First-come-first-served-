@@ -130,7 +130,6 @@ public class UserController {
         return ResponseEntity.status(422).body("유효하지 않은 요청입니다.");
     }
 
-
     @Operation(summary = "비밀번호 변경", description = "비밀번호를 변경하며 모든 기기에서 로그아웃")
     @PutMapping("/user/password/change/request")
     public ResponseEntity<String> updatePassword(@RequestHeader("Authorization") String token, @RequestBody Map<String, String> pwChangeRequest) throws Exception {
