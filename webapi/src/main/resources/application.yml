@@ -4,12 +4,13 @@ spring:
   application:
     name: webapi
   datasource:
-    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/corpTask
+    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/FirstcomeFirstserve
     username: admin
     password: dlgudrn1998
     driver-class-name: com.mysql.cj.jdbc.Driver
   main:
     web-application-type: reactive
+    log-startup-info: true
   jpa:
     hibernate:
       ddl-auto: create

@@ -1,7 +1,6 @@
 spring:
   application:
     name: application
-    main:
 #      web-application-type: reactive
 server:
   port: 8082

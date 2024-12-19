@@ -23,6 +23,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // 데이터 접근
 //    implementation 'org.springframework.boot:spring-boot-starter-web' // REST API 제공
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 //    implementation 'org.springframework.boot:spring-boot-starter-security' // 보안 적용
