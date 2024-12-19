@@ -21,7 +21,7 @@ public class User {
     private String userPH;
     private String profileImg;
     private String description;
-    private String Status;
+    private String status;
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;

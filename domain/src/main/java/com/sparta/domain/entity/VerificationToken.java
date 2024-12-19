@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Data
-@Table(name = "tokens")
+@Table(name = "verificationToken")
 public class VerificationToken {
 
     @Id
@@ -22,7 +22,7 @@ public class VerificationToken {
     private String token; // 고유 토큰 값
     @Column(nullable = false)
     private String userEmail;
-    @Column(nullable = false)
+    @Column(name = "expiry_date", nullable = false)
     private LocalDateTime expiryDate; // 만료 시각
 
     public VerificationToken(String token, String userEmail, LocalDateTime expiryDate) {

@@ -3,12 +3,16 @@ package com.sparta.webapi.controller;
 import com.sparta.application.service.EmailService;
 import com.sparta.application.service.UserService;
 import com.sparta.domain.dto.UserSignupRequestDto;
+import com.sparta.domain.entity.User;
 import com.sparta.domain.repository.UserRepository;
 import com.sparta.domain.repository.VerificationTokenRepository;
+import com.sparta.domain.util.EncryptionUtil;
+import com.sparta.domain.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,25 +58,46 @@ public class UserController {
 
     @Operation(summary = "이메일 인증 확인", description = "이메일 인증을 확인하는 엔드포인트")
     @GetMapping("/auth/verify")
-    public ResponseEntity<String> verifyEmail(@RequestParam String token, @RequestParam String email) {
-        // 토큰 검증 로직
+    public ResponseEntity<String> verifyEmail(@RequestParam String token, @RequestParam String email) throws Exception {
+        log.info("이메일 검증 컨트롤러 진입");
         if (isValidToken(token)) {
-            userRepository.updateStatusFindByEmail(email);
+            userRepository.updateStatusFindByEmail(EncryptionUtil.encrypt(email));
             return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
         }
         return ResponseEntity.status(403).body("유효하지 않은 토큰입니다.");
     }
 
     private boolean isValidToken(String token) {
-        if (vtRepository.findByTokenAndExpiryDateAfter(token, LocalDateTime.now())) return true;
-        return false;
+        log.info("토큰 검증 컨트롤러 진입");
+        token = token.replace("'", "");
+        Object expiryDate = vtRepository.getExpiryDate(token);
+        return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
     }
 
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> loginRequest) {
-        return Map.of("token", "jwt-token-string", "msg", "로그인 성공!");
+    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginRequest) throws Exception {
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
+
+        // 1. 사용자 인증
+        User user = userService.authenticate(email, password);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("msg", "로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다."));
+        }
+
+        // 2. JWT 토큰 생성
+        String token = JwtUtil.generateToken(user);
+
+        // 3. 응답 반환
+        return ResponseEntity.ok(Map.of(
+                "token", token,
+                "msg", "로그인 성공!",
+                "userId", user.getUserEmail(),
+                "userName", user.getUserName()
+        ));
     }
+
 
     @Operation(summary = "로그아웃", description = "현재 기기에서 로그아웃")
     @PostMapping("/logout")

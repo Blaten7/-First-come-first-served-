@@ -1,6 +1,7 @@
 package com.sparta.domain.repository;
 
 import com.sparta.domain.entity.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,11 +16,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByUserEmail(String email);
 
-    Optional<Object> findByUserEmail(String email);
+    Optional<User> findByUserEmail(String email);
 
+    @Transactional
     @Modifying
     @Query("update User " +
-            "set Status = 'VERIFIED' " +
+            "set status = 'VERIFIED' " +
             "where userEmail = :email")
     void updateStatusFindByEmail(String email);
+
+    @Query("select userPw from User " +
+            "where userEmail = :encryptMail")
+    String findByUserEmailToUserPw(String encryptMail);
 }
