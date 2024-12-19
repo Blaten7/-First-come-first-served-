@@ -1,12 +1,9 @@
 package com.sparta.domain.repository;
 
 import com.sparta.domain.util.EncryptionUtil;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
-
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Repository

@@ -7,12 +7,9 @@ import com.sparta.domain.entity.VerificationToken;
 import com.sparta.domain.repository.UserRepository;
 import com.sparta.domain.repository.VerificationTokenRepository;
 import com.sparta.domain.service.TokenService;
-import com.sparta.domain.util.EncryptionUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
