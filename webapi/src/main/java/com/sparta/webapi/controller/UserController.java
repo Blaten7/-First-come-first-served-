@@ -1,14 +1,18 @@
 package com.sparta.webapi.controller;
 
 import com.sparta.application.service.EmailService;
+import com.sparta.application.service.UserService;
 import com.sparta.domain.dto.UserSignupRequestDto;
-import com.sparta.domain.service.TokenService;
+import com.sparta.domain.repository.UserRepository;
+import com.sparta.domain.repository.VerificationTokenRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -17,12 +21,15 @@ import java.util.Map;
 public class UserController {
 
     private final EmailService emailService;
-    private final TokenService tokenService;
-    private String TOKEN = "";
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final VerificationTokenRepository vtRepository;
 
-    public UserController(EmailService emailService, TokenService tokenService) {
+    public UserController(EmailService emailService, UserService userService, UserRepository userRepository, VerificationTokenRepository vtRepository) {
         this.emailService = emailService;
-        this.tokenService = tokenService;
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.vtRepository = vtRepository;
     }
 
     @Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
@@ -31,9 +38,11 @@ public class UserController {
     public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) {
         log.info("회원가입 - 이메일 인증 컨트롤러 진입");
         String email = userRequest.getUserEmail();
-        TOKEN = tokenService.generateToken();
+        if (userRepository.existsByUserEmail(email)) return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
+        // 토큰을 토큰 저장소에 저장하고 유저정보를 임시 저장.
+        String token = userService.createVerificationToken(userRequest);
         String subject = "회원가입 인증 이메일!";
-        String body = "http://localhost:8084/api/auth/verify?token=" + TOKEN;
+        String body = "http://localhost:8084/api/auth/verify?token='" + token + "'&email=" + email;
         emailService.sendEmail(email, subject, body);
         return ResponseEntity
                 .status(202)
@@ -45,16 +54,18 @@ public class UserController {
 
     @Operation(summary = "이메일 인증 확인", description = "이메일 인증을 확인하는 엔드포인트")
     @GetMapping("/auth/verify")
-    public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+    public ResponseEntity<String> verifyEmail(@RequestParam String token, @RequestParam String email) {
         // 토큰 검증 로직
         if (isValidToken(token)) {
+            userRepository.updateStatusFindByEmail(email);
             return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
         }
         return ResponseEntity.status(403).body("유효하지 않은 토큰입니다.");
     }
 
     private boolean isValidToken(String token) {
-        return TOKEN.equals(token);
+        if (vtRepository.findByTokenAndExpiryDateAfter(token, LocalDateTime.now())) return true;
+        return false;
     }
 
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
