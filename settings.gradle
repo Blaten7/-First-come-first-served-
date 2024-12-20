@@ -15,8 +15,8 @@ pluginManagement {
 rootProject.name = 'FcomeFserve'
 
 // 최상위 디렉토리 모듈
-include 'EurekaServer', 'Gateway', 'ConfigServer', 'UserService'
-//include 'OrderService', 'ProductService'
+include 'EurekaServer', 'Gateway', 'ConfigServer', 'UserService', 'ProductService'
+//include 'OrderService',
 
 // UserService 서브모듈
 include 'UserService:application', 'UserService:domain', 'UserService:webapi', 'UserService:infrastructure'

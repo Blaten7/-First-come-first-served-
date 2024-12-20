@@ -24,10 +24,8 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // 데이터 접근
-//    implementation 'org.springframework.boot:spring-boot-starter-web' // REST API 제공
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-//    implementation 'org.springframework.boot:spring-boot-starter-security' // 보안 적용
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // Thymeleaf 지원 (선택적)
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway' // API Gateway
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // Thymeleaf Security
