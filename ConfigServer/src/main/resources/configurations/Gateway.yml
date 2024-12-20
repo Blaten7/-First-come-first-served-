@@ -1,0 +1,33 @@
+# spring.application.name=Gateway
+eureka:
+  client:
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+spring:
+  application:
+    name: Gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: UserService
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/api/user/**
+        - id: OrderService
+          uri: lb://OrderService
+          predicates:
+            - Path=/api/order/**
+        - id: ProductService
+          uri: lb://ProductService
+          predicates:
+            - Path=/api/product/**
+
+management:
+  tracing:
+    enabled: false
+#    sampling:
+#      probability: 0.0

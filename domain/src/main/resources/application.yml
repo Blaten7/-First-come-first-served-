@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: domain
-  main:
-    web-application-type: reactive
-server:
-  port: 8082
