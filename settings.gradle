@@ -2,13 +2,27 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+        maven { url "https://repo.spring.io/release" } // Spring Cloud 릴리즈 저장소
+        maven { url "https://repo.spring.io/milestone" } // Spring Cloud 마일스톤 저장소
+        maven { url "https://repo.spring.io/snapshot" } // Spring Cloud 스냅샷 저장소 (필요시)
     }
     plugins {
-        id 'org.springframework.boot' version '3.1.2'
+        id 'org.springframework.boot' version '3.4.0'
         id 'io.spring.dependency-management' version '1.1.6'
     }
 }
 
 rootProject.name = 'FcomeFserve'
 
-include 'webapi', 'domain', 'application', 'infrastructure'
+// 최상위 디렉토리 모듈
+include 'EurekaServer', 'Gateway', 'ConfigServer', 'UserService'
+//include 'OrderService', 'ProductService'
+
+// UserService 서브모듈
+include 'UserService:application', 'UserService:domain', 'UserService:webapi', 'UserService:infrastructure'
+
+// OrderService 서브모듈
+//include 'OrderService:application', 'OrderService:domain', 'OrderService:webapi', 'OrderService:infrastructure'
+
+// ProductService 서브모듈
+include 'ProductService:application', 'ProductService:domain', 'ProductService:webapi', 'ProductService:infrastructure'
