@@ -14,8 +14,6 @@ public class GatewayFilterLogger {
 
     @PostConstruct
     public void logAvailableFilters() {
-        gatewayFilterFactories.forEach(factory -> {
-            System.out.println("Available GatewayFilterFactory: " + factory.getClass().getSimpleName());
-        });
+        gatewayFilterFactories.forEach(factory -> System.out.println("Available GatewayFilterFactory: " + factory.getClass().getSimpleName()));
     }
 }

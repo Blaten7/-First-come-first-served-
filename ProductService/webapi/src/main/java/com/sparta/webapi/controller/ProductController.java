@@ -3,8 +3,6 @@ package com.sparta.webapi.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 @RestController
