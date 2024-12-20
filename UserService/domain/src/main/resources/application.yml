@@ -1,0 +1,12 @@
+#spring:
+#  application:
+#    name: domain
+#  main:
+#    web-application-type: reactive
+#server:
+#  port: 8082
+spring:
+  application:
+    name: domain
+  config:
+    import: optional:configserver:http://localhost:8888

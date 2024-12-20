@@ -1,0 +1,39 @@
+server:
+  port: 8050
+spring:
+  application:
+    name: UserService
+  profiles:
+    active: native
+  main:
+    web-application-type: reactive
+    log-startup-info: true
+  cloud:
+    config:
+      uri: http://localhost:8888
+    compatibility-verifier:
+      enabled: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dpfmzlskwpf@gmail.com
+    password: gojz trfn nsfp gqis
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+#  config:
+#    import: "configserver:"
+#    import: "optional:configserver:"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+jwt:
+  secret: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUU=
+# t;발 산넘어 산넘어 산넘어 산넘어 산넘어 산넘으라니까?!@ㅁ산ㄴ 넘으라고 넘ㅁ어 넘어져 주세요 제발 넘어져요 제발
+logging:
+  level:
+    org.springframework.cloud: DEBUG
