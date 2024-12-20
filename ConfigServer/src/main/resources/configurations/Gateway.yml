@@ -17,6 +17,8 @@ spring:
           uri: lb://USERSERVICE
           predicates:
             - Path=/api/user/**
+          filters:
+            - name: LoggingGatewayFilter
         - id: OrderService
           uri: lb://OrderService
           predicates:
@@ -28,6 +30,10 @@ spring:
 
 management:
   tracing:
-    enabled: false
+    enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: httptrace
 #    sampling:
 #      probability: 0.0
