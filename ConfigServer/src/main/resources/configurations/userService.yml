@@ -1,4 +1,4 @@
-# spring.application.name=domain
+# spring.application.name=UserService
 spring:
   application:
     name: UserService
@@ -6,7 +6,7 @@ spring:
     active: native
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/FirstcomeFirstserve
+    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/Member
     hikari:
       username: admin
       password: dlgudrn1998
@@ -30,5 +30,4 @@ application:
     webapi-url: http://localhost:8222/~
 management:
   tracing:
-    sampling:
-      probability: 1.0
+    enabled: false
