@@ -59,9 +59,10 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
   </tr>
 </table>
 
-<h2>💡 기획</h2>
+<h2>💡 기획</h2><br>
+<h3>📄 1차 기획안 - ERD, API 명세</h3>
 <details>
-    <summary>1차 기획안 - ERD, API 명세</summary>
+    <summary>자세히보기</summary>
   <img src="https://github.com/Blaten7/image/blob/main/images/FcomeFserve/ERD_1차.png?raw=true">
 <h3>[ API 명세 ]</h3>
 
@@ -298,8 +299,9 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
 }<br>
 </details>
 <br>
+<h3>📆 프로젝트 일정 계획표</h3>
 <details>
-    <summary>프로젝트 일정 계획표</summary>
+    <summary>자세히보기</summary>
     <table>
         <tr>
             <th>/</th>
