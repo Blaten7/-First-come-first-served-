@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,18 +18,18 @@ public class Product {
 
     private String productName;
     private String productDescription;
-    private BigDecimal productPrice;
+    private long productPrice;
     private Integer stockQuantity;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "product")
-    private List<Wishlist> wishlists;
-
-    @OneToMany(mappedBy = "product")
-    private List<OrderItem> orderItems;
+//    @OneToMany(mappedBy = "product")
+//    private List<Wishlist> wishlists;
+//
+//    @OneToMany(mappedBy = "product")
+//    private List<OrderItem> orderItems;
 }
