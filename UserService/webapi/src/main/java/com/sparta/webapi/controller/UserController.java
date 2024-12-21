@@ -41,16 +41,12 @@ public class UserController {
     public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) throws Exception {
         log.info("회원가입 - 이메일 인증 컨트롤러 진입");
         String email = userRequest.getUserEmail();
-        log.info("1");
         if (userRepository.existsByUserEmail(EncryptionUtil.encrypt(email))) return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
         // 토큰을 토큰 저장소에 저장하고 유저정보를 임시 저장.
-        log.info("2");
         String token = userService.createVerificationToken(userRequest);
-        log.info("3");
         String subject = "회원가입 인증 이메일!";
         String body = "http://localhost:8084/api/user/auth/verify?token='" + token + "'&email=" + email;
         emailService.sendEmail(email, subject, body);
-        log.info("4");
         return ResponseEntity
                 .status(202)
                 .body(Map.of("msg",
