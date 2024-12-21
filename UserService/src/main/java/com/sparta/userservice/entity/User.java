@@ -29,9 +29,9 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime pwUpdatedAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
-
-    @OneToMany(mappedBy = "user")
-    private List<Wishlist> wishlists;
+//    @OneToMany(mappedBy = "user")
+//    private List<Order> orders;
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Wishlist> wishlists;
 }

@@ -67,8 +67,15 @@ public class UserController {
         return ResponseEntity.status(403).body("유효하지 않은 토큰입니다.");
     }
 
+    @PostMapping("/isValid")
+    private boolean isValidTokenFromOrderService(@RequestParam String token) {
+        log.info("로그인 토큰 검증 컨트롤러 진입 from OrderService");
+        token = token.replace("'", "");
+        return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
+    }
+
     private boolean isValidToken(String token) {
-        log.info("토큰 검증 컨트롤러 진입");
+        log.info("로그인 토큰 검증 컨트롤러 진입");
         token = token.replace("'", "");
         Object expiryDate = vtRepository.getExpiryDate(token);
         return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
@@ -150,5 +157,11 @@ public class UserController {
         int removedTokens = redisTokenRepository.removeAllTokensByEmail(EncryptionUtil.encrypt(email));
         if (removedTokens > 0) return ResponseEntity.status(200).body("비밀번호가 성공적으로 변경되어 모든 기기에서 로그아웃 되었습니다.\n새로운 비밀번호를 사용하여 로그인 해주세요!");
         return ResponseEntity.status(422).body("비밀번호는 변경이 잘 되었는데요.. 모든 기기에서 로그아웃은 왠지 모르게 실패했으니 알아서 하세요 ㅇㅋ?");
+    }
+
+    @Operation(summary = "로그인 검증", description = "다른 서비스에서 로그인 여부 확인시 사용")
+    @PostMapping("/api/user/isValid/token")
+    public boolean isValidJWTToken(String token) {
+        return redisTokenRepository.isTokenValid(token);
     }
 }

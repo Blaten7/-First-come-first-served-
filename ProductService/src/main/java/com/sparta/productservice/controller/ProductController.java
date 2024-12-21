@@ -1,15 +1,15 @@
 package com.sparta.productservice.controller;
 
-import com.sparta.domain.dto.ProductRequestDto;
-import com.sparta.domain.entity.Product;
-import com.sparta.domain.repository.ProductRepository;
+import com.sparta.productservice.dto.ProductRequestDto;
+import com.sparta.productservice.entity.Product;
+import com.sparta.productservice.repository.ProductRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -67,5 +67,18 @@ public class ProductController {
         } else {
             return ResponseEntity.status(400).body("상품아이디 또는 상품이름중 하나는 입력해주세요 양심이 있으시면요");
         }
+    }
+
+    @Operation(summary = "주문서비스에서 요청보낼 메서드", description = "주문들어온 상품이 있기는 한건지, 있다면 주문수량보다 재고수량이 같거나 많은지 검증")
+    @PostMapping("/Exist")
+    public boolean exist(@RequestParam String productName, @RequestParam int orderQuantity) {
+        return productRepository.findByProductNameAndStockQuantityGreaterThanEqual(productName, orderQuantity);
+    }
+
+    @Transactional
+    @Operation(summary = "주문!", description = "상품이름으로 검색해서 주문 수량만큼 재고를 감소")
+    @PostMapping("/order")
+    public void order(@RequestParam String productName, @RequestParam int orderQuantity) {
+        productRepository.updateProductStockQuantityMinusOrderQuantity(productName, orderQuantity);
     }
 }

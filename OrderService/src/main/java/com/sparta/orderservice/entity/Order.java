@@ -1,9 +1,10 @@
-package com.sparta.userservice.entity;
+package com.sparta.orderservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,12 +16,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNum;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "userId", referencedColumnName = "id")
+//    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
     private String orderStatus;
     private BigDecimal totalAmount;
