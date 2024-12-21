@@ -65,7 +65,7 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
     <summary>자세히보기</summary>
   <img src="https://github.com/Blaten7/image/blob/main/images/FcomeFserve/ERD_1차.png?raw=true">
 <h3>[ API 명세 ]</h3>
-<a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ"></a>
+<a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ">Postman API 명세서 보기</a>
 </details>
 <br>
 <h3>📆 프로젝트 일정 계획표</h3>
