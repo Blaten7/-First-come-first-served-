@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.1'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 }
 
 group = 'com.sparta'
@@ -19,10 +19,44 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // 데이터 접근
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // Thymeleaf 지원 (선택적)
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway' // API Gateway
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // Thymeleaf Security
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client' // 서비스 등록 및 발견
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2' // 스웨거 API 미완료상태
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // 유효성 검증 의존성
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.h2database:h2'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    implementation project(':UserService:domain') // domain 모듈을 의존성으로 추가
+    implementation project(':UserService:application') //
+
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 처리용
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+jar {
+    archiveBaseName = 'api'    // JAR 파일 기본 이름 설정
+    archiveClassifier = ''             // 분류자 제거
+    enabled = true
+}
+tasks.named('bootJar') {
+    enabled = true
 }
