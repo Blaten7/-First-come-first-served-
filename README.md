@@ -158,10 +158,12 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
                 테스트 수행 및 성능 개선<br>
             </td>
             <td>
-- [ ] 주문관리 서비스 구현<br>
-- [ ] 모든 서비스의 예외처리 추가<br>
-- [ ] 테스트 코드 및 시나리오 작성<br>
-- [ ] 테스트 수행 및 성능 개선<br>
+ <ul>
+    <li><input type="checkbox"> 주문관리 서비스 구현</li>
+    <li><input type="checkbox"> 모든 서비스의 예외처리 추가</li>
+    <li><input type="checkbox"> 테스트 코드 및 시나리오 작성</li>
+    <li><input type="checkbox"> 테스트 수행 및 성능 개선</li>
+  </ul>
               </td>
           </tr>
       </table>
