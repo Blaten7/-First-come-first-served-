@@ -1,10 +1,26 @@
 server:
   port: 8060
+# spring.application.name=ProductService
 spring:
   application:
     name: ProductService
   profiles:
     active: native
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/ProductService
+    hikari:
+      username: admin
+      password: dlgudrn1998
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
   main:
     web-application-type: reactive
     log-startup-info: true
@@ -14,11 +30,17 @@ spring:
     compatibility-verifier:
       enabled: false
 eureka:
+  instance:
+    hostname: localhost
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-#  instance:
-#    appname: PRODUCTSERVICE
+#application:
+#  config:
+#    webapi-url: http://localhost:8222/~
 logging:
   level:
     org.springframework.cloud: DEBUG
+management:
+  tracing:
+    enabled: false
