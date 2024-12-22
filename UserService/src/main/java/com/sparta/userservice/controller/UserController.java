@@ -69,9 +69,9 @@ public class UserController {
 
     @PostMapping("/isValid")
     private boolean isValidTokenFromOrderService(@RequestParam String token) {
-        log.info("로그인 토큰 검증 컨트롤러 진입 from OrderService");
+        log.info("로그인 토큰 검증 컨트롤러 진입 from OtherService");
         token = token.replace("'", "");
-        return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
+        return redisTokenRepository.isTokenValid(token);
     }
 
     private boolean isValidToken(String token) {

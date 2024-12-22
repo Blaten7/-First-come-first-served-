@@ -15,14 +15,6 @@ public class Wishlist {
     private String userEmail;
 
     private String productName;
-//    같은 스키마면 원래 이게 맞음.
-//    @ManyToOne
-//    @JoinColumn(name = "userId")
-//    private User user;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "productId")
-//    private Product product;
 
     private Integer quantity;
 

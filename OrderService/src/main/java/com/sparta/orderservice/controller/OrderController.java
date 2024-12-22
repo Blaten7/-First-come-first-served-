@@ -12,13 +12,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -76,6 +77,8 @@ public class OrderController {
             productServiceConnector.orderProduct(productName, orderQuantity);
             // 주문 내역을 주문 엔티티에 저장
             Order order = new Order();
+            order.setUserEmail(email);
+            order.setProductName(productName);
             order.setOrderDate(LocalDateTime.now());
             order.setOrderStatus("배송 준비중");
             order.setTotalAmount(BigDecimal.valueOf(orderQuantity));
@@ -100,16 +103,17 @@ public class OrderController {
     @Operation(summary = "주문 상태 조회", description = "사용자의 주문 상태를 조회합니다.")
     @GetMapping("/view/order/status")
     public ResponseEntity<?> getOrderStatus(@RequestHeader("Authorization") String token) {
-        String email = orderService.extractEmail(token);
-        List<Order> orderList = orderRepository.findAll();
+        if (!userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
 
-        if (orderList.isEmpty()) {
-            Map<String, String> response = new HashMap<>();
-            response.put("notice", "주문한 상품이 존재하지 않습니다");
-            return ResponseEntity.status(403).body(response);
-        }
+        String email = orderService.extractEmail(token);
+        List<Order> orderList = orderRepository.findByUserEmail(email);
+
+        if (orderList.isEmpty()) return ResponseEntity.status(403).body("주문한 상품이 존재하지 않습니다");
+
         return ResponseEntity.status(200).body(orderList);
     }
+
+
     /*
         사용자의 로그인 토큰과 취소할 상품의 이름과 // 수량을 받고, 수량은 제외. 그냥 전부 취소시키는걸ㄹ ㅗ핪디ㅏ
         사용자의 주문목록에 상품의 이름이 있을까 없을까
@@ -118,10 +122,18 @@ public class OrderController {
         그리고 주문목록에서도 삭제.
      */
     @Operation(summary = "주문 취소", description = "배송 전 상태인 상품의 주문을 취소합니다.")
-    @PutMapping("/{orderId}/cancel")
-    public ResponseEntity<String> cancelOrder(@RequestHeader("Authorization") String token) {
+    @Transactional
+    @PutMapping("/cancel/{productName}")
+    public ResponseEntity<String> cancelOrder(@RequestHeader("Authorization") String token,
+                                              @PathVariable String productName) {
+        if (!userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+
         String email = orderService.extractEmail(token);
-//        orderRepository.findByUserEmailAndUpdateOrderStatus();
+        String preDelivery = "배송 준비중";
+        int cancelQuantity = orderRepository.findTotalAmountByUserEmailAndOrderStatusAndProductName(email, preDelivery, productName);
+        orderRepository.deleteByUserEmailAndOrderStatus(email, preDelivery);
+
+        productServiceConnector.cancelProduct(productName, cancelQuantity);
 
         return ResponseEntity.status(200).body("주문이 취소되었습니다.");
     }
@@ -134,8 +146,34 @@ public class OrderController {
         D+1일후에 회수완료로 상태변경하고 상품서비스로가서 재고 수량만큼 추가
      */
     @Operation(summary = "반품 신청", description = "배송 완료된 상품을 반품 신청합니다.")
-    @PutMapping("/{orderId}/return")
-    public Map<String, String> returnOrder(@RequestHeader("Authorization") String token) {
-        return Map.of("msg", "반품신청이 완료되었습니다. 회수는 하루가 소요됩니다");
+    @PutMapping("/refund/{productName}")
+    public ResponseEntity<String> returnOrder(@RequestHeader("Authorization") String token,
+                                              @PathVariable String productName) {
+        if (!userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+
+        String email = orderService.extractEmail(token);
+        String orderStatus = "배송 완료";
+        Optional<Order> orderList = orderRepository.findByUserEmailAndProductNameAndOrderStatus(email, productName, orderStatus);
+        if (orderList.isEmpty()) return ResponseEntity.status(404).body("배송 완료된 상품이 아닙니다.");
+
+        orderRepository.updateOrderStatusByUserEmailAndProductName(email, productName);
+        return ResponseEntity.status(200).body("반품 신청이 완료되었습니다");
+    }
+    @Operation(summary = "위시리스트 조회", description = "위시리스트에 등록된 상품을 조회합니다.")
+    @GetMapping
+    public List<Map<String, Object>> getWishlist() {
+        return List.of(Map.of("wishlistId", 1, "productId", 1, "productName", "상품1", "quantity", 2));
+    }
+
+    @Operation(summary = "위시리스트 수정", description = "위시리스트 상품 수량을 수정합니다.")
+    @PutMapping("/{wishlistId}")
+    public Map<String, String> updateWishlist(@PathVariable Long wishlistId, @RequestBody Map<String, Integer> updateRequest) {
+        return Map.of("msg", "위시리스트 수정이 완료되었습니다");
+    }
+
+    @Operation(summary = "위시리스트 삭제", description = "위시리스트에서 상품을 삭제합니다.")
+    @DeleteMapping("/{wishlistId}")
+    public Map<String, String> deleteFromWishlist(@PathVariable Long wishlistId) {
+        return Map.of("msg", "상품이 위시리스트에서 삭제되었습니다");
     }
 }

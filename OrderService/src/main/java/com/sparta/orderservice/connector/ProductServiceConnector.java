@@ -49,8 +49,20 @@ public class ProductServiceConnector {
                 )
                 .bodyToMono(Void.class)
                 .block();
+    }
 
-
-
+    public void cancelProduct(String productName, int cancelQuantity) {
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/product/cancel")
+                        .queryParam("productName", productName)
+                        .queryParam("cancelQuantity", cancelQuantity)
+                        .build())
+                .retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), response ->
+                        Mono.error(new RuntimeException("API 호출 실패"))
+                )
+                .bodyToMono(Void.class)
+                .block();
     }
 }

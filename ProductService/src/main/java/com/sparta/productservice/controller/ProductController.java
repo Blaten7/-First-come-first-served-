@@ -81,4 +81,9 @@ public class ProductController {
     public void order(@RequestParam String productName, @RequestParam int orderQuantity) {
         productRepository.updateProductStockQuantityMinusOrderQuantity(productName, orderQuantity);
     }
+    @Operation(summary = "주문 취소", description = "상품이름으로 필터링, 취소 수량만큼 재고를 증가")
+    @PostMapping("/cancel")
+    public void cancel(@RequestParam String productName, @RequestParam int cancelQuantity) {
+        productRepository.updateProductStockQuantityPlusOrderQuantity(productName, cancelQuantity);
+    }
 }

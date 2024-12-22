@@ -14,18 +14,17 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderNum;
+    private Long orderNum; // 주문번호
 
-//    @ManyToOne
-//    @JoinColumn(name = "userId", referencedColumnName = "id")
-//    private User user;
+    private String userEmail; // 사용자 아이디 식별자
 
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime orderDate;
+    private LocalDateTime orderDate; // 주문일자
 
-    private String orderStatus;
-    private BigDecimal totalAmount;
+    private String productName; // 상품 이름
+    private String orderStatus; // 주문 상태
+    private BigDecimal totalAmount; // 주문 수량
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
+//    @OneToMany(mappedBy = "order")
+//    private List<OrderItem> orderItems;
 }
