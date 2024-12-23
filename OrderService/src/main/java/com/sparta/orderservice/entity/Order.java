@@ -2,11 +2,7 @@ package com.sparta.orderservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data

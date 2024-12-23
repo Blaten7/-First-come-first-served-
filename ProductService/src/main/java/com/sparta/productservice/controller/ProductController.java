@@ -4,13 +4,11 @@ import com.sparta.productservice.dto.ProductRequestDto;
 import com.sparta.productservice.entity.Product;
 import com.sparta.productservice.repository.ProductRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;

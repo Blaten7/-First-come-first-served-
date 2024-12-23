@@ -78,7 +78,6 @@ public class UserController {
     private boolean isValidToken(String token) {
         log.info("로그인 토큰 검증 컨트롤러 진입");
         token = token.replace("'", "");
-        Object expiryDate = vtRepository.getExpiryDate(token);
         return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
     }
 

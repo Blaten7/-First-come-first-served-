@@ -29,10 +29,10 @@ public class UserServiceConnector {
 
         } catch (WebClientResponseException e) {
             System.err.println("Error response: " + e.getStatusCode());
-            return true;
+            return false;
         } catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
-            return true;
+            return false;
         }
     }
 
