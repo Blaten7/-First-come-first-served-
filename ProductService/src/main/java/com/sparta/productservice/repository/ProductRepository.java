@@ -13,8 +13,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByProductName(String productName);
 
-    boolean findByProductNameAndStockQuantityGreaterThanEqual(String productName, int orderQuantity);
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
+            "FROM Product p WHERE p.productName = :productName AND p.stockQuantity >= :orderQuantity")
+    boolean existsByProductNameAndStockQuantityGreaterThanEqual(@Param("productName") String productName, @Param("orderQuantity") int orderQuantity);
 
+    @Transactional
     @Modifying
     @Query("UPDATE Product p SET p.stockQuantity = p.stockQuantity - :orderQuantity WHERE p.productName = :productName AND p.stockQuantity >= :orderQuantity")
     void updateProductStockQuantityMinusOrderQuantity(@Param("productName") String productName, @Param("orderQuantity") int orderQuantity);
@@ -24,4 +27,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("UPDATE Product p SET p.stockQuantity = p.stockQuantity + :cancelQuantity WHERE p.productName = :productName")
     void updateProductStockQuantityPlusOrderQuantity(@Param("productName") String productName, @Param("cancelQuantity") int cancelQuantity);
 
+    boolean existsByProductName(String productName);
 }

@@ -10,7 +10,7 @@ public class UserServiceConnector {
     private final WebClient webClient;
 
     public UserServiceConnector(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8222").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8050").build();
     }
 
     public boolean isValidToken(String token) {

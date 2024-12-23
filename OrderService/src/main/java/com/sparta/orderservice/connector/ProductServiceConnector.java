@@ -1,31 +1,56 @@
 package com.sparta.orderservice.connector;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
-import org.springframework.http.HttpStatus;
 
+import java.util.Map;
+
+@Slf4j
 @Component
 public class ProductServiceConnector {
 
     private final WebClient webClient;
 
     public ProductServiceConnector(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8222").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8060").build();
     }
 
-    public boolean isProductExistAndQuantityIsOverOrderQuantity(String productName, int orderQuantity) {
+    public boolean isProductExist(String productName) {
         try {
             Boolean isValid = webClient.post()
                     .uri(uriBuilder -> uriBuilder
                             .path("/api/product/isExist")
-                            .queryParam("token", productName)
+                            .queryParam("productName", productName)
                             .build())
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
-            return Boolean.TRUE.equals(isValid);
+            return !Boolean.TRUE.equals(isValid);
+
+        } catch (WebClientResponseException e) {
+            System.err.println("Error response: " + e.getStatusCode());
+            return false;
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean existByProductNameAndOverQuantity(String productName, int orderQuantity) {
+        try {
+            Boolean isValid = webClient.post()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/api/product/isOverQuantity")
+                            .queryParam("productName", productName)
+                            .queryParam("orderQuantity", orderQuantity)
+                            .build())
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+            return !Boolean.TRUE.equals(isValid);
 
         } catch (WebClientResponseException e) {
             System.err.println("Error response: " + e.getStatusCode());
@@ -44,9 +69,6 @@ public class ProductServiceConnector {
                         .queryParam("orderQuantity", orderQuantity)
                         .build())
                 .retrieve()
-                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), response ->
-                        Mono.error(new RuntimeException("API 호출 실패"))
-                )
                 .bodyToMono(Void.class)
                 .block();
     }
@@ -56,12 +78,9 @@ public class ProductServiceConnector {
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/product/cancel")
                         .queryParam("productName", productName)
-                        .queryParam("cancelQuantity", cancelQuantity)
+                        .queryParam("orderQuantity", cancelQuantity)
                         .build())
                 .retrieve()
-                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), response ->
-                        Mono.error(new RuntimeException("API 호출 실패"))
-                )
                 .bodyToMono(Void.class)
                 .block();
     }

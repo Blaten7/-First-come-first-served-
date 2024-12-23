@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter'                           //
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'                  // JPA
     implementation 'org.springframework.boot:spring-boot-starter-webflux'                   // WebFlux - 게이트웨이 비동기
@@ -48,7 +49,7 @@ dependencies {
 }
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2022.0.4"             // Spring Cloud BOM 설정
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2022.0.5"             // Spring Cloud BOM 설정
     }
 }
 

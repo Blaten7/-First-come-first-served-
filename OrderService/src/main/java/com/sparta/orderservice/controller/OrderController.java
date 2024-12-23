@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +54,7 @@ public class OrderController {
     @GetMapping("/test")
     public ResponseEntity<String> test(@RequestHeader("Authorization") String token) {
         if (!userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+        System.out.println("========================================================");
         return new ResponseEntity<>("아아 여기는 OrderService 요청 확인!", HttpStatus.OK);
     }
 
@@ -65,14 +65,13 @@ public class OrderController {
             @RequestHeader("Authorization") String token,
             @RequestBody OrderRequestDto orderRequest) {
         // 로그인 여부 확인
-        System.out.println(userServiceConnector.isValidToken(token));
         if (!userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
         String productName = orderRequest.getProductName();
-        Integer orderQuantity = orderRequest.getStockQuantity();
+        int orderQuantity = orderRequest.getStockQuantity();
 
         // 상품 존재하는지, 그리고 재고가 주문수량 이상 있는지 검증
-        if (!productServiceConnector.isProductExistAndQuantityIsOverOrderQuantity(productName, orderQuantity))
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
+        if (productServiceConnector.isProductExist(productName)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
+        if (productServiceConnector.existByProductNameAndOverQuantity(productName, orderQuantity)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 주문 수량보다 적습니다.");
 
         // 상품이 존재한다면 주문자의 아이디를 토큰에서 추출
         String email = orderService.extractEmail(token);
@@ -85,7 +84,7 @@ public class OrderController {
             order.setProductName(productName);
             order.setOrderDate(LocalDateTime.now());
             order.setOrderStatus("배송 준비중");
-            order.setTotalAmount(BigDecimal.valueOf(orderQuantity));
+            order.setTotalAmount(orderQuantity);
             orderRepository.save(order);
             return ResponseEntity.status(200).body("주문이 정상 처리되었습니다.");
         } else if (where.equals("찜")) {
@@ -100,11 +99,6 @@ public class OrderController {
         return ResponseEntity.status(404).body("주문 또는 찜 선택은 필수 사항입니다,");
     }
 
-    /*
-        사용자의 아이디 즉 이메일에 한한 주문상태 조회가 필요함.
-        현재 Order 엔티티의 유저이메일 연관관계 매핑문제로 비활성화 상태임.
-        로직 변경 및 구성 요망
-    */
     @Operation(summary = "주문 상태 조회", description = "사용자의 주문 상태를 조회합니다.")
     @GetMapping("/view/order/status")
     public ResponseEntity<?> getOrderStatus(@RequestHeader("Authorization") String token) {
@@ -117,7 +111,6 @@ public class OrderController {
 
         return ResponseEntity.status(200).body(orderList);
     }
-
 
     /*
         사용자의 로그인 토큰과 취소할 상품의 이름과 // 수량을 받고, 수량은 제외. 그냥 전부 취소시키는걸ㄹ ㅗ핪디ㅏ
@@ -136,10 +129,8 @@ public class OrderController {
         String email = orderService.extractEmail(token);
         String preDelivery = "배송 준비중";
         int cancelQuantity = orderRepository.findTotalAmountByUserEmailAndOrderStatusAndProductName(email, preDelivery, productName);
-        orderRepository.deleteByUserEmailAndOrderStatus(email, preDelivery);
-
+        orderRepository.updateByUserEmailAndOrderStatus(email, preDelivery);
         productServiceConnector.cancelProduct(productName, cancelQuantity);
-
         return ResponseEntity.status(200).body("주문이 취소되었습니다.");
     }
 
@@ -170,8 +161,7 @@ public class OrderController {
     @PostMapping("/wishlist/order/{wishlistId}")
     public ResponseEntity<String> orderFromWishlist(
             @RequestHeader("Authorization") String token,
-            @PathVariable Long wishlistId,
-            @RequestBody Map<String, Integer> orderRequest) {
+            @PathVariable Long wishlistId) {
         if (!userServiceConnector.isValidToken(token)) {
             return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
         }
@@ -182,12 +172,11 @@ public class OrderController {
         }
 
         Wishlist wishlist = wishlistOptional.get();
-        int orderQuantity = orderRequest.getOrDefault("quantity", wishlist.getQuantity());
         String productName = wishlist.getProductName();
+        int orderQuantity = wishlist.getQuantity();
 
-        if (!productServiceConnector.isProductExistAndQuantityIsOverOrderQuantity(productName, orderQuantity)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 부족합니다.");
-        }
+        if (productServiceConnector.isProductExist(productName)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
+        if (productServiceConnector.existByProductNameAndOverQuantity(productName, orderQuantity)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 주문 수량보다 적습니다.");
 
         // 주문 생성
         String email = orderService.extractEmail(token);
@@ -196,7 +185,7 @@ public class OrderController {
         order.setProductName(productName);
         order.setOrderDate(LocalDateTime.now());
         order.setOrderStatus("배송 준비중");
-        order.setTotalAmount(BigDecimal.valueOf(orderQuantity));
+        order.setTotalAmount(orderQuantity);
         orderRepository.save(order);
 
         // 재고 감소
@@ -228,7 +217,7 @@ public class OrderController {
 
 
     @Operation(summary = "위시리스트 조회", description = "위시리스트에 등록된 상품을 조회합니다.")
-    @GetMapping
+    @GetMapping("/wishlist")
     public ResponseEntity<List<Wishlist>> getWishlist(@RequestHeader("Authorization") String token) {
         if (!userServiceConnector.isValidToken(token)) {
             return ResponseEntity.status(403).body(null);
@@ -246,10 +235,10 @@ public class OrderController {
 
 
     @Operation(summary = "위시리스트 수정", description = "위시리스트 상품 수량을 수정합니다.")
-    @PutMapping("/{wishlistId}")
+    @PutMapping("/wishlist/quantity/update/{wishlistId}")
     public ResponseEntity<String> updateWishlist(
             @PathVariable Long wishlistId,
-            @RequestBody Map<String, Integer> updateRequest,
+            @RequestParam int quantity,
             @RequestHeader("Authorization") String token) {
         if (!userServiceConnector.isValidToken(token)) {
             return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
@@ -259,29 +248,22 @@ public class OrderController {
         if (optionalWishlist.isEmpty()) {
             return ResponseEntity.status(404).body("위시리스트 항목을 찾을 수 없습니다.");
         }
-
-        Wishlist wishlist = optionalWishlist.get();
-        int newQuantity = updateRequest.getOrDefault("quantity", wishlist.getQuantity());
-        wishlist.setQuantity(newQuantity);
-        wishlistRepository.save(wishlist);
+        wishlistRepository.findByWishlistIdAndUpdateQuantity(wishlistId, quantity);
 
         return ResponseEntity.ok("위시리스트 수정이 완료되었습니다.");
     }
 
-
     @Operation(summary = "위시리스트 삭제", description = "위시리스트에서 상품을 삭제합니다.")
-    @DeleteMapping("/{wishlistId}")
+    @DeleteMapping("/wishlist/delete/{wishlistId}")
     public ResponseEntity<String> deleteFromWishlist(
             @PathVariable Long wishlistId,
             @RequestHeader("Authorization") String token) {
         if (!userServiceConnector.isValidToken(token)) {
             return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
         }
-
         if (!wishlistRepository.existsById(wishlistId)) {
             return ResponseEntity.status(404).body("위시리스트 항목을 찾을 수 없습니다.");
         }
-
         wishlistRepository.deleteById(wishlistId);
         return ResponseEntity.ok("위시리스트 항목이 삭제되었습니다.");
     }

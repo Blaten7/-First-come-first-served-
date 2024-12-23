@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "order")
+@Table(name = "`order`")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Order {
 
     private String productName; // 상품 이름
     private String orderStatus; // 주문 상태
-    private BigDecimal totalAmount; // 주문 수량
+    private int totalAmount; // 주문 수량
 
 //    @OneToMany(mappedBy = "order")
 //    private List<OrderItem> orderItems;
