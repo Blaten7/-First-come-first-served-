@@ -25,14 +25,14 @@ public class UserServiceConnector {
                     .bodyToMono(Boolean.class)
                     .block(); // 블로킹 방식으로 결과 대기 (필요 시 비동기로 변경 가능)
 
-            return Boolean.TRUE.equals(isValid);
+            return !Boolean.TRUE.equals(isValid);
 
         } catch (WebClientResponseException e) {
             System.err.println("Error response: " + e.getStatusCode());
-            return false;
+            return true;
         } catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
-            return false;
+            return true;
         }
     }
 

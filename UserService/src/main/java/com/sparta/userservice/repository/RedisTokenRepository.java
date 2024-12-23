@@ -22,8 +22,10 @@ public class RedisTokenRepository {
 
     // 특정 토큰 유효성 확인
     public boolean isTokenValid(String token) {
-        Set<String> keys = redisTemplate.keys("token:*:" + token);
-        return keys != null && !keys.isEmpty();
+        String key = "token:*:" + token;
+        Boolean exists = redisTemplate.hasKey(key); // 정확한 키 존재 여부 확인
+        System.out.println("유효성 검사 : " + exists);
+        return Boolean.TRUE.equals(exists);
     }
 
     // JWT 토큰 삭제 (현재 기기 로그아웃)
