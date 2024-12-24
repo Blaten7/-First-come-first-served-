@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class ProductRequestDto {
 
@@ -22,4 +24,11 @@ public class ProductRequestDto {
 
     @NotNull(message = "등록할 상품 수량을 입력해주세요.")
     private int stockQuantity;
+
+    public ProductRequestDto(String testProduct, String description, long bigDecimal, int i) {
+        this.productName = testProduct;
+        this.productDescription = description;
+        this.productPrice = bigDecimal;
+        this.stockQuantity = i;
+    }
 }

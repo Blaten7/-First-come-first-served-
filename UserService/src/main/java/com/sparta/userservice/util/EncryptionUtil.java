@@ -12,6 +12,7 @@ public class EncryptionUtil {
     private static final byte[] KEY = "YourSecretKey123".getBytes(); // 16-byte key
 
     public static String encrypt(String data) throws Exception {
+        if (data == null || data.isBlank()) throw new IllegalArgumentException("암호화할 데이터가 없습니다");
         SecretKeySpec secretKey = new SecretKeySpec(KEY, ALGORITHM);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -20,6 +21,7 @@ public class EncryptionUtil {
     }
 
     public static String decrypt(String encryptedData) throws Exception {
+        if (encryptedData == null || encryptedData.isEmpty()) throw new IllegalArgumentException("복호화할 데이터가 없습니다");
         SecretKeySpec secretKey = new SecretKeySpec(KEY, ALGORITHM);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, secretKey);

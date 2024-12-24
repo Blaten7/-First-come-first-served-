@@ -37,4 +37,10 @@ public class UserSignupRequestDto {
 
     private String profileImg;
     private String description;
+
+    public UserSignupRequestDto(String mail, String password, String username) {
+        this.userName = username;
+        this.userEmail = mail;
+        this.userPw = password;
+    }
 }

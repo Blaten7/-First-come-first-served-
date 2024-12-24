@@ -110,8 +110,6 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
         log.info("현재 기기 로그아웃 요청 처리 컨트롤러 진입");
-        token = token.replace("Bearer ", "");
-
         if (redisTokenRepository.isTokenValid(token)) {
             if (redisTokenRepository.removeToken(token)) {
                 return ResponseEntity.ok("현재 기기에서 로그아웃되었습니다!");
@@ -124,8 +122,6 @@ public class UserController {
     @PostMapping("/logout/all")
     public ResponseEntity<String> logoutAll(@RequestHeader("Authorization") String token) throws Exception {
         log.info("전체 기기 로그아웃 요청 처리 컨트롤러 진입");
-        token = token.replace("Bearer ", "");
-
         // JWT에서 사용자 이메일 추출
         String email = jwtUtil.extractEmail(token);
 

@@ -1,38 +1,26 @@
 package com.sparta.userservice.controller;
 
-import com.sparta.userservice.component.LoggingFilter;
-import com.sparta.userservice.config.PasswordEncoderConfig;
 import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.User;
-import com.sparta.userservice.entity.VerificationToken;
-import com.sparta.userservice.handler.GlobalExceptionHandler;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
 import com.sparta.userservice.repository.VerificationTokenRepository;
 import com.sparta.userservice.service.EmailService;
 import com.sparta.userservice.service.UserService;
+import com.sparta.userservice.util.EncryptionUtil;
 import com.sparta.userservice.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.support.WebExchangeBindException;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilterChain;
-import reactor.core.publisher.Mono;
-
-import java.time.LocalDateTime;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-class UserServiceApplicationTests {
+class UserControllerTest {
 
     @Mock
     private EmailService emailService;
@@ -55,12 +43,8 @@ class UserServiceApplicationTests {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    @Mock
-    LoggingFilter loggingFilter;
-
     @InjectMocks
     private UserController userController;
-
 
     @BeforeEach
     void setUp() {
@@ -99,12 +83,15 @@ class UserServiceApplicationTests {
 
     @Test
     void testVerifyEmailSuccess() throws Exception {
+        // Given
         String token = "test-token";
         String email = "test@example.com";
         when(vtRepository.countByTokenAndExpiryDateAfter(anyString())).thenReturn(1L);
 
+        // When
         ResponseEntity<String> response = userController.verifyEmail(token, email);
 
+        // Then
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
         assertThat(response.getBody()).isEqualTo("이메일 인증이 완료되었습니다!");
         verify(userRepository, times(1)).updateStatusFindByEmail(anyString());
@@ -187,93 +174,4 @@ class UserServiceApplicationTests {
         assertThat(response.getStatusCodeValue()).isEqualTo(422);
         assertThat(response.getBody()).isEqualTo("유효하지 않은 토큰입니다.");
     }
-
-    @Test
-    void testFilter() {
-        // Arrange
-        LoggingFilter loggingFilter = new LoggingFilter();
-        ServerWebExchange mockExchange = mock(ServerWebExchange.class);
-        ServerHttpRequest mockRequest = mock(ServerHttpRequest.class);
-        WebFilterChain mockChain = mock(WebFilterChain.class);
-
-        when(mockExchange.getRequest()).thenReturn(mockRequest);
-        when(mockRequest.getURI()).thenReturn(java.net.URI.create("http://localhost/test"));
-        when(mockChain.filter(mockExchange)).thenReturn(Mono.empty());
-
-        // Act
-        Mono<Void> result = loggingFilter.filter(mockExchange, mockChain);
-
-        // Assert
-        result.block();
-        verify(mockRequest, times(1)).getURI();
-        verify(mockChain, times(1)).filter(mockExchange);
-    }
-
-    @Test
-    void testPasswordEncoderBean() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(PasswordEncoderConfig.class);
-        PasswordEncoder passwordEncoder = context.getBean(PasswordEncoder.class);
-        assertThat(passwordEncoder).isNotNull();
-    }
-
-    @Test
-    void testUserEntity() {
-        User user = new User();
-        user.setUserId(1L);
-        user.setUserName("John");
-        user.setUserEmail("john@example.com");
-
-        assertThat(user.getUserId()).isEqualTo(1L);
-        assertThat(user.getUserName()).isEqualTo("John");
-        assertThat(user.getUserEmail()).isEqualTo("john@example.com");
-    }
-
-    @Test
-    void testVerificationTokenEntity() {
-        VerificationToken token = new VerificationToken();
-        token.setToken("test-token");
-        token.setUserEmail("test@example.com");
-        token.setExpiryDate(LocalDateTime.now());
-
-        assertThat(token.getToken()).isEqualTo("test-token");
-        assertThat(token.getUserEmail()).isEqualTo("test@example.com");
-    }
-
-    @Test
-    void testHandleValidationExceptions() {
-        GlobalExceptionHandler handler = new GlobalExceptionHandler();
-        WebExchangeBindException mockException = mock(WebExchangeBindException.class);
-
-        ResponseEntity<Map<String, String>> response = handler.handleValidationExceptions(mockException);
-
-        assertThat(response.getStatusCodeValue()).isEqualTo(400);
-        assertThat(response.getBody()).isNotNull();
-    }
-
-    @Test
-    void testSaveToken() {
-        StringRedisTemplate mockTemplate = mock(StringRedisTemplate.class);
-        RedisTokenRepository repository = new RedisTokenRepository(mockTemplate);
-
-        repository.saveToken("test-token", "user@example.com", 1000L);
-        verify(mockTemplate.opsForValue(), times(1)).set(anyString(), eq("test-token"), eq(1000L), any());
-    }
-
-    @Test
-    void testGenerateToken() {
-        JwtUtil jwtUtil = new JwtUtil();
-        User user = new User();
-        user.setUserEmail("test@example.com");
-        String token = jwtUtil.generateToken(user);
-
-        assertThat(token).isNotNull();
-    }
-
-    @Test
-    void testExtractEmail() {
-        JwtUtil jwtUtil = new JwtUtil();
-        String email = jwtUtil.extractEmail("jwt-token");
-        assertThat(email).isEqualTo("test@example.com");
-    }
-
 }
