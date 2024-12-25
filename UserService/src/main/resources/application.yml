@@ -51,9 +51,19 @@ eureka:
     disable-delta: true
     service-url:
       defaultZone: http://localhost:8761/eureka
-#application:
-#  config:
-#    webapi-url: http://localhost:8222/~
+resilience4j:
+  circuitbreaker:
+    instances:
+      exampleService:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+  retry:
+    instances:
+      exampleService:
+        maxAttempts: 3
+        waitDuration: 2s
+
 management:
   tracing:
     enabled: false
