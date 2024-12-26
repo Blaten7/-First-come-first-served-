@@ -1,13 +1,12 @@
 package com.sparta.userservice.controller;
 
 import com.sparta.userservice.dto.UserSignupRequestDto;
-import com.sparta.userservice.entity.User;
+import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
 import com.sparta.userservice.repository.VerificationTokenRepository;
 import com.sparta.userservice.service.EmailService;
 import com.sparta.userservice.service.UserService;
-import com.sparta.userservice.util.EncryptionUtil;
 import com.sparta.userservice.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -117,9 +116,9 @@ class UserControllerTest {
         // Given
         String email = "test@example.com";
         String password = "password";
-        User user = new User();
+        Member user = new Member();
         when(userService.authenticate(anyString(), anyString())).thenReturn(user);
-        when(jwtUtil.generateToken(any(User.class))).thenReturn("jwt-token");
+        when(jwtUtil.generateToken(any(Member.class))).thenReturn("jwt-token");
 
         // When
         ResponseEntity<Map<String, String>> response = userController.login(Map.of("email", email, "password", password));

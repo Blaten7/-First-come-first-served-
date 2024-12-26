@@ -1,11 +1,16 @@
 package com.sparta.userservice.util;
 
-import com.sparta.userservice.entity.User;
+import com.sparta.userservice.entity.Member;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Component
@@ -15,7 +20,7 @@ public class JwtUtil {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1시간
 
-    public String generateToken(User user) {
+    public String generateToken(Member user) {
         return Jwts.builder()
                 .claim("userEmail", user.getUserEmail())
                 .claim("userId", user.getUserId())
@@ -48,12 +53,32 @@ public class JwtUtil {
         }
     }
 
-//    public boolean isTokenValid(String token) {
-//        try {
-//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
+    public Authentication getAuthentication(String token) {
+        String email = extractEmail(token);
+        Member principal = new Member(email, "", new ArrayList<>()); // 권한이 없을 경우 빈 리스트 사용
+        return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
+    }
+
+    public Mono<Boolean> isTokenValid(String token) {
+        return Mono.fromCallable(() -> {
+            try {
+                Jwts.parser()
+                        .setSigningKey(secretKey)
+                        .parseClaimsJws(token);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        });
+    }
+
+
+    public long extractExpiration(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getExpiration().getTime();
+    }
+
 }

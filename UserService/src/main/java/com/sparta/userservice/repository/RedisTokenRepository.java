@@ -1,69 +1,76 @@
 package com.sparta.userservice.repository;
 
 import com.sparta.userservice.util.EncryptionUtil;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.reactivestreams.Publisher;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
 
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 @Repository
 public class RedisTokenRepository {
 
-    private final StringRedisTemplate redisTemplate;
+    private final ReactiveStringRedisTemplate redisTemplate;
 
-    public RedisTokenRepository(StringRedisTemplate redisTemplate) {
+    public RedisTokenRepository(ReactiveStringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    public void saveToken(String token, String userEmail, long expirationTimeInMillis) {
+    public Mono<Void> saveToken(String token, String userEmail, long expirationTimeInMillis) {
         String redisKey = "token:" + userEmail + ":" + token;
-        redisTemplate.opsForValue().set(redisKey, token, expirationTimeInMillis, TimeUnit.MILLISECONDS);
+        return redisTemplate.opsForValue()
+                .set(redisKey, token, Duration.ofMillis(expirationTimeInMillis))
+                .then();
     }
 
-    // 특정 토큰 유효성 확인
-//    public boolean isTokenValid(String token) {
-//        Set<String> keys = redisTemplate.keys("token:*:" + token); // 패턴 검색
-//        System.out.println("검색된 키: " + keys);
-//        return keys != null && !keys.isEmpty();
-//    }
-    public boolean isTokenValid(String token) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey("token:*:" + token));
+    public Mono<Boolean> isTokenValid(String token) {
+        String pattern = "token:*:" + token;
+        return redisTemplate.keys(pattern)
+                .hasElements();
     }
 
-
-    // JWT 토큰 삭제 (현재 기기 로그아웃)
-    public boolean removeToken(String token) {
-        Set<String> keys = redisTemplate.keys("token:*:" + token);
-        if (keys != null && !keys.isEmpty()) {
-            redisTemplate.delete(keys.iterator().next());
-            return true;
-        }
-        return false;
+    public Mono<Boolean> removeToken(String token) {
+        String pattern = "token:*:" + token;
+        return redisTemplate.keys(pattern)
+                .flatMap(redisTemplate::delete)
+                .hasElements();
     }
 
-    // 사용자 이메일 기반 토큰 삭제 (모든 기기 로그아웃)
-    public int removeAllTokensByEmail(String email) throws Exception {
-        System.out.println("레디스 토큰 레포지토리 진입");
-        Set<String> keys = redisTemplate.keys("token:" + EncryptionUtil.decrypt(email) + ":*");
-        if (keys != null && !keys.isEmpty()) {
-            redisTemplate.delete(keys);
-            return keys.size();
-        }
-        return 0;
+    public Mono<Integer> removeAllTokensByEmail(String email) {
+        return Mono.defer(() -> {
+            String pattern = null;
+            try {
+                pattern = "token:" + EncryptionUtil.decrypt(email) + ":*";
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            return redisTemplate.keys(pattern)
+                    .collectList()
+                    .flatMap(keys -> redisTemplate.delete((Publisher<String>) keys)
+                            .thenReturn(keys.size()));
+        });
     }
 
-    public void saveTempToken(String token, String userEmail) {
+    public Mono<Void> saveTempToken(String token, String userEmail) {
         String redisKey = "TEMP:" + userEmail + ":" + token;
-        redisTemplate.opsForValue().set(redisKey, token, 3 * 60 * 1000, TimeUnit.MILLISECONDS);
+        return redisTemplate.opsForValue()
+                .set(redisKey, token, Duration.ofMinutes(3))
+                .then();
     }
 
-//    public boolean isTempTokenValid(String token, String email) {
-//        Set<String> keys = redisTemplate.keys("TEMP:" + email + ":" + token); // 패턴 검색
-//        System.out.println("검색된 키: " + keys);
-//        return keys != null && !keys.isEmpty();
-//    }
-    public boolean isTempTokenValid(String token, String email) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey("TEMP:" + email + ":" + token));
+    public Mono<Boolean> isTempTokenValid(String token, String email) {
+        String redisKey = "TEMP:" + email + ":" + token;
+        return redisTemplate.hasKey(redisKey);
+    }
+
+    public Mono<Void> addToBlacklist(String token, long expirationTimeInMillis) {
+        return redisTemplate.opsForValue()
+                .set(token, "blacklisted", Duration.ofMillis(expirationTimeInMillis))
+                .then();
+    }
+
+    public Mono<Boolean> isBlacklisted(String token) {
+        return redisTemplate.hasKey(token);
     }
 }

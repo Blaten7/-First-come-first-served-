@@ -1,10 +1,10 @@
-package com.sparta.userservice.controller;
+package com.sparta.userservice;
 
 import com.sparta.userservice.component.LoggingFilter;
 import com.sparta.userservice.config.PasswordEncoderConfig;
+import com.sparta.userservice.controller.UserController;
 import com.sparta.userservice.dto.UserSignupRequestDto;
-import com.sparta.userservice.entity.User;
-import com.sparta.userservice.entity.VerificationToken;
+import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.handler.GlobalExceptionHandler;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
@@ -27,7 +27,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -130,9 +129,9 @@ class UserServiceApplicationTests {
         // Given
         String email = "test@example.com";
         String password = "password";
-        User user = new User();
+        Member user = new Member();
         when(userService.authenticate(anyString(), anyString())).thenReturn(user);
-        when(jwtUtil.generateToken(any(User.class))).thenReturn("jwt-token");
+        when(jwtUtil.generateToken(any(Member.class))).thenReturn("jwt-token");
 
         // When
         ResponseEntity<Map<String, String>> response = userController.login(Map.of("email", email, "password", password));
@@ -218,7 +217,7 @@ class UserServiceApplicationTests {
 
     @Test
     void testUserEntity() {
-        User user = new User();
+        Member user = new Member();
         user.setUserId(1L);
         user.setUserName("John");
         user.setUserEmail("john@example.com");
@@ -226,17 +225,6 @@ class UserServiceApplicationTests {
         assertThat(user.getUserId()).isEqualTo(1L);
         assertThat(user.getUserName()).isEqualTo("John");
         assertThat(user.getUserEmail()).isEqualTo("john@example.com");
-    }
-
-    @Test
-    void testVerificationTokenEntity() {
-        VerificationToken token = new VerificationToken();
-        token.setToken("test-token");
-        token.setUserEmail("test@example.com");
-        token.setExpiryDate(LocalDateTime.now());
-
-        assertThat(token.getToken()).isEqualTo("test-token");
-        assertThat(token.getUserEmail()).isEqualTo("test@example.com");
     }
 
     @Test
@@ -262,7 +250,7 @@ class UserServiceApplicationTests {
     @Test
     void testGenerateToken() {
         JwtUtil jwtUtil = new JwtUtil();
-        User user = new User();
+        Member user = new Member();
         user.setUserEmail("test@example.com");
         String token = jwtUtil.generateToken(user);
 
