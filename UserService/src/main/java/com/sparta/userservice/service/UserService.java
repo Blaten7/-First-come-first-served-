@@ -28,6 +28,7 @@ public class UserService {
         user.setProfileImg(userRequest.getProfileImg());
         user.setDescription(EncryptionUtil.encrypt(userRequest.getDescription()));
         user.setStatus("TEMP");
+//        user.setRoles("ROLE_USER");
         user.setCreatedAt(LocalDateTime.now());
         return userRepository.save(user).then();
     }

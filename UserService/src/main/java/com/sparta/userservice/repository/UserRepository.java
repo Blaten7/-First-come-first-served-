@@ -17,10 +17,10 @@ public interface UserRepository extends ReactiveCrudRepository<Member, Long> {
     @Query("UPDATE member SET status = 'VERIFIED' WHERE user_email = :email")
     Mono<Void> updateStatusFindByEmail(String email);
 
-    @Query("UPDATE member SET userPw = :newPassword, pwUpdatedAt = NOW() WHERE userEmail = :email")
+    @Query("UPDATE member SET user_pw = :newPassword, pw_updated_at = NOW() WHERE user_email = :email")
     Mono<Void> updateUserPwAndPwUpdatedAtByUserEmail(String email, String newPassword);
 
-    @Query("DELETE FROM member WHERE userEmail = :email")
+    @Query("DELETE FROM member WHERE user_email = :email")
     Mono<Void> deleteByUserEmail(String email);
 }
 

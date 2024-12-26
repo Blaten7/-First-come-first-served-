@@ -30,19 +30,31 @@ public class SecurityConfig {
         return ServerHttpSecurity.http();
     }
 
+//    @Bean
+//    public SecurityWebFilterChain securityFilterChain(@Qualifier("serverHttpSecurity") ServerHttpSecurity http) {
+//        return http
+//                .csrf(ServerHttpSecurity.CsrfSpec::disable) // CSRF 비활성화
+//                .authorizeExchange(exchange -> exchange
+//                        .pathMatchers("/api/user/signup", "/api/user/auth/verify",
+//                                "/api/user/isValid", "/api/user/isValid/token", "/api/user/login", "/delete/ALL").permitAll() // 인증 없이 접근 허용
+//                        .anyExchange().authenticated() // 나머지 요청은 인증 필요
+//                )
+////                .logout(ServerHttpSecurity.LogoutSpec::disable) // 로그아웃 비활성화
+//                .addFilterAt(new JwtAuthenticationWebFilter(jwtAuthenticationFilter), SecurityWebFiltersOrder.AUTHENTICATION) // JWT 인증 필터 추가
+//                .build();
+//    }
     @Bean
-    public SecurityWebFilterChain securityFilterChain(@Qualifier("serverHttpSecurity") ServerHttpSecurity http) {
+    public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable) // CSRF 비활성화
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/api/user/signup", "/api/user/auth/verify",
-                                "/api/user/isValid", "/api/user/isValid/token", "/api/user/login").permitAll() // 인증 없이 접근 허용
-                        .anyExchange().authenticated() // 나머지 요청은 인증 필요
+                        .pathMatchers("/api/user/signup", "/api/user/auth/verify", "/api/user/login").permitAll()
+                        .anyExchange().authenticated()
                 )
-//                .logout(ServerHttpSecurity.LogoutSpec::disable) // 로그아웃 비활성화
-                .addFilterAt(new JwtAuthenticationWebFilter(jwtAuthenticationFilter), SecurityWebFiltersOrder.AUTHENTICATION) // JWT 인증 필터 추가
+                .addFilterAt(new JwtAuthenticationWebFilter(jwtAuthenticationFilter), SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

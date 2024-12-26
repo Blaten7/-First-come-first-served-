@@ -7,11 +7,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtil {
@@ -55,9 +58,18 @@ public class JwtUtil {
 
     public Authentication getAuthentication(String token) {
         String email = extractEmail(token);
-        Member principal = new Member(email, "", new ArrayList<>()); // 권한이 없을 경우 빈 리스트 사용
-        return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
+
+        // 기본 권한 추가 (ROLE_USER)
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        // Member 객체 생성
+        Member principal = new Member(email, "", new ArrayList<>());
+
+        // UsernamePasswordAuthenticationToken 반환
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
+
 
     public Mono<Boolean> isTokenValid(String token) {
         return Mono.fromCallable(() -> {

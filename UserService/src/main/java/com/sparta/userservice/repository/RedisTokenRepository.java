@@ -4,6 +4,7 @@ import com.sparta.userservice.util.EncryptionUtil;
 import org.reactivestreams.Publisher;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -45,12 +46,21 @@ public class RedisTokenRepository {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
             return redisTemplate.keys(pattern)
-                    .collectList()
-                    .flatMap(keys -> redisTemplate.delete((Publisher<String>) keys)
-                            .thenReturn(keys.size()));
+                    .collectList() // keys를 List로 변환
+                    .flatMap(keys -> {
+                        if (keys.isEmpty()) {
+                            return Mono.just(0); // 키가 없을 경우 처리
+                        }
+                        return Flux.fromIterable(keys) // List를 Flux로 변환
+                                .flatMap(redisTemplate::delete) // 각 키를 삭제
+                                .count() // 삭제된 키의 개수를 반환
+                                .map(Long::intValue); // Mono<Long> -> Mono<Integer>
+                    });
         });
     }
+
 
     public Mono<Void> saveTempToken(String token, String userEmail) {
         String redisKey = "TEMP:" + userEmail + ":" + token;

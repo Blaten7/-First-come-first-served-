@@ -46,6 +46,11 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/delete/ALL")
+    public Mono<Void> deleteAll() {
+        return userRepository.deleteAll();
+    }
+
     @Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
     @ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
     @PostMapping("/signup")
@@ -165,14 +170,14 @@ public class UserController {
     @PostMapping("/logout/all")
     public Mono<ResponseEntity<String>> logoutAll(@RequestHeader("Authorization") String token) {
         log.info("전체 기기 로그아웃 요청 처리 컨트롤러 진입");
+        String tokens = token.replace("Bearer ", "");
 
-        return Mono.fromCallable(() -> jwtUtil.extractEmail(token)) // 동기 메서드를 비동기 체인으로 감싸기
-                .flatMap(email -> redisTokenRepository.addToBlacklist(token, TOKEN_EXPIRATION_TIME)
+        return Mono.fromCallable(() -> jwtUtil.extractEmail(tokens)) // 동기 메서드를 비동기 체인으로 감싸기
+                .flatMap(email -> redisTokenRepository.addToBlacklist(tokens, TOKEN_EXPIRATION_TIME)
                         .then(Mono.just(ResponseEntity.status(HttpStatus.OK).body("모든 기기에서 로그아웃되었습니다.")))
                 )
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 요청입니다.")));
     }
-
 
     @Operation(summary = "비밀번호 변경", description = "비밀번호를 변경하며 모든 기기에서 로그아웃")
     @PutMapping("/password/change/request")
