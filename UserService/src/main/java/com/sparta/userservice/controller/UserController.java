@@ -16,8 +16,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @AllArgsConstructor
@@ -41,9 +43,14 @@ public class UserController {
     public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) throws Exception {
         log.info("회원가입 - 이메일 인증 컨트롤러 진입");
         String email = userRequest.getUserEmail();
-        if (userRepository.existsByUserEmail(EncryptionUtil.encrypt(email))) return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
-        // 토큰을 토큰 저장소에 저장하고 유저정보를 임시 저장.
-        String token = userService.createVerificationToken(userRequest);
+        if (userRepository.existsByUserEmail(EncryptionUtil.encrypt(email)))
+            return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
+        // 임시 토큰 생성, 레디스에 저장
+        String token = jwtUtil.generateTempToken(email);
+        redisTokenRepository.saveTempToken(token, email);
+        // 사용자의 정보를 임시로 저장
+        userService.saveTempUser(userRequest);
+
         String subject = "회원가입 인증 이메일!";
         String body = "http://localhost:8222/api/user/auth/verify?token='" + token + "'&email=" + email;
         emailService.sendEmail(email, subject, body);
@@ -59,12 +66,13 @@ public class UserController {
     @GetMapping("/auth/verify")
     public ResponseEntity<String> verifyEmail(@RequestParam String token, @RequestParam String email) throws Exception {
         log.info("이메일 검증 컨트롤러 진입");
-        if (isValidToken(token)) {
+        if (redisTokenRepository.isTempTokenValid(token, email)) {
             userRepository.updateStatusFindByEmail(EncryptionUtil.encrypt(email));
             return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
+        } else {
+            userRepository.deleteByUserEmail(EncryptionUtil.encrypt(email));
+            return ResponseEntity.status(403).body("유효하지 않은 토큰입니다.");
         }
-//        userRepository.deleteByUserEmail(EncryptionUtil.encrypt(email));
-        return ResponseEntity.status(403).body("유효하지 않은 토큰입니다.");
     }
 
     @PostMapping("/isValid")
@@ -72,13 +80,6 @@ public class UserController {
         log.info("로그인 토큰 검증 컨트롤러 진입 from OtherService");
         log.info("토큰 : " + token);
         return redisTokenRepository.isTokenValid(token);
-//        return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
-    }
-
-    private boolean isValidToken(String token) {
-        log.info("로그인 토큰 검증 컨트롤러 진입");
-        token = token.replace("'", "");
-        return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
     }
 
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
@@ -100,10 +101,8 @@ public class UserController {
 
         return ResponseEntity.ok(Map.of(
                 "token", token,
-                "msg", "로그인 성공!",
-                "userId", EncryptionUtil.decrypt(user.getUserEmail()),
-                "userName", EncryptionUtil.decrypt(user.getUserName())
-        ));
+                "msg", "로그인 성공!")
+        );
     }
 
     @Operation(summary = "현재 기기에서 로그아웃", description = "현재 사용 중인 기기에서 로그아웃")
@@ -145,13 +144,15 @@ public class UserController {
         String confirmPassword = pwChangeRequest.get("confirmPassword");
 
         User user = userService.authenticate(email, oldPassword);
-        if (user == null) return ResponseEntity.status(404).body("현재 비밀번호가 틀렸습니다");
+        if (user == null) return ResponseEntity.status(400).body("현재 비밀번호가 틀렸습니다");
 
-        if (!newPassword.equals(confirmPassword)) return ResponseEntity.status(400).body("변경을 원하는 비밀번호와 비밀번호 확인이 일치하지 않습니다");
+        if (!newPassword.equals(confirmPassword))
+            return ResponseEntity.status(400).body("변경을 원하는 비밀번호와 비밀번호 확인이 일치하지 않습니다");
 
         userRepository.updateUserPwAndPwUpdatedAtByUserEmail(EncryptionUtil.encrypt(email), passwordEncoder.encode(newPassword));
         int removedTokens = redisTokenRepository.removeAllTokensByEmail(EncryptionUtil.encrypt(email));
-        if (removedTokens > 0) return ResponseEntity.status(200).body("비밀번호가 성공적으로 변경되어 모든 기기에서 로그아웃 되었습니다.\n새로운 비밀번호를 사용하여 로그인 해주세요!");
+        if (removedTokens > 0)
+            return ResponseEntity.status(200).body("비밀번호가 성공적으로 변경되어 모든 기기에서 로그아웃 되었습니다.\n새로운 비밀번호를 사용하여 로그인 해주세요!");
         return ResponseEntity.status(422).body("비밀번호는 변경이 잘 되었는데요.. 모든 기기에서 로그아웃은 왠지 모르게 실패했으니 알아서 하세요 ㅇㅋ?");
     }
 

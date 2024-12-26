@@ -2,7 +2,6 @@ package com.sparta.userservice.service;
 
 import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.User;
-import com.sparta.userservice.entity.VerificationToken;
 import com.sparta.userservice.repository.UserRepository;
 import com.sparta.userservice.repository.VerificationTokenRepository;
 import com.sparta.userservice.util.EncryptionUtil;
@@ -20,26 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public String createVerificationToken(UserSignupRequestDto userRequest) {
-        String token = tokenService.generateToken();
-
-        // 이메일 및 토큰을 DB에 임시 저장
-        VerificationToken verificationToken = new VerificationToken(
-                token,
-                userRequest.getUserEmail(),
-                LocalDateTime.now().plusMinutes(5)
-        );
-        try {
-            tokenRepository.save(verificationToken);
-            saveTempUser(userRequest);
-            return token; // 저장 성공 시 토큰 반환
-        } catch (Exception e) {
-            // 저장 실패 시 예외 처리
-            return null;
-        }
-    }
-
-    private void saveTempUser(UserSignupRequestDto userRequest) throws Exception {
+    public void saveTempUser(UserSignupRequestDto userRequest) throws Exception {
         User user = new User();
         user.setUserName(EncryptionUtil.encrypt(userRequest.getUserName()));
         user.setUserEmail(EncryptionUtil.encrypt(userRequest.getUserEmail()));

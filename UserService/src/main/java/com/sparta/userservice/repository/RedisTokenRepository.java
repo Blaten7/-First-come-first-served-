@@ -3,6 +3,7 @@ package com.sparta.userservice.repository;
 import com.sparta.userservice.util.EncryptionUtil;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
+
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -21,11 +22,15 @@ public class RedisTokenRepository {
     }
 
     // 특정 토큰 유효성 확인
+//    public boolean isTokenValid(String token) {
+//        Set<String> keys = redisTemplate.keys("token:*:" + token); // 패턴 검색
+//        System.out.println("검색된 키: " + keys);
+//        return keys != null && !keys.isEmpty();
+//    }
     public boolean isTokenValid(String token) {
-        Set<String> keys = redisTemplate.keys("token:*:" + token); // 패턴 검색
-        System.out.println("검색된 키: " + keys);
-        return keys != null && !keys.isEmpty();
+        return Boolean.TRUE.equals(redisTemplate.hasKey("token:*:" + token));
     }
+
 
     // JWT 토큰 삭제 (현재 기기 로그아웃)
     public boolean removeToken(String token) {
@@ -46,5 +51,19 @@ public class RedisTokenRepository {
             return keys.size();
         }
         return 0;
+    }
+
+    public void saveTempToken(String token, String userEmail) {
+        String redisKey = "TEMP:" + userEmail + ":" + token;
+        redisTemplate.opsForValue().set(redisKey, token, 3 * 60 * 1000, TimeUnit.MILLISECONDS);
+    }
+
+//    public boolean isTempTokenValid(String token, String email) {
+//        Set<String> keys = redisTemplate.keys("TEMP:" + email + ":" + token); // 패턴 검색
+//        System.out.println("검색된 키: " + keys);
+//        return keys != null && !keys.isEmpty();
+//    }
+    public boolean isTempTokenValid(String token, String email) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey("TEMP:" + email + ":" + token));
     }
 }

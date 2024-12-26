@@ -26,6 +26,15 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateTempToken(String email) {
+        return Jwts.builder()
+                .claim("userEmail", email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
     public String extractEmail(String token) {
         try {
             return Jwts.parserBuilder()
