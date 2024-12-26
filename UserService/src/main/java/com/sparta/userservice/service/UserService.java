@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Service
 @AllArgsConstructor
 public class UserService {
-    private final TokenService tokenService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 

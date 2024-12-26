@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -93,7 +92,7 @@ public class UserController {
 
     @Operation(summary = "이메일 인증 확인", description = "이메일 인증을 확인하는 엔드포인트")
     @GetMapping("/auth/verify")
-    public Mono<ResponseEntity<String>> verifyEmail(@RequestParam String token, @RequestParam String email) throws Exception {
+    public Mono<ResponseEntity<String>> verifyEmail(@RequestParam String token, @RequestParam String email){
         log.info("이메일 검증 컨트롤러 진입");
 
         // EncryptionUtil.encrypt(email) 예외 처리 추가

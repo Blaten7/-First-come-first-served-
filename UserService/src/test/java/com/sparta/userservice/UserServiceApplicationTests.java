@@ -1,14 +1,12 @@
 package com.sparta.userservice;
 
 import com.sparta.userservice.component.LoggingFilter;
-import com.sparta.userservice.config.PasswordEncoderConfig;
 import com.sparta.userservice.controller.UserController;
 import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.handler.GlobalExceptionHandler;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
-import com.sparta.userservice.repository.VerificationTokenRepository;
 import com.sparta.userservice.service.EmailService;
 import com.sparta.userservice.service.UserService;
 import com.sparta.userservice.util.JwtUtil;
@@ -41,9 +39,6 @@ class UserServiceApplicationTests {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private VerificationTokenRepository vtRepository;
 
     @Mock
     private JwtUtil jwtUtil;

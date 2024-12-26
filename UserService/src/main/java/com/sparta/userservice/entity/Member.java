@@ -6,8 +6,6 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import javax.naming.Name;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;

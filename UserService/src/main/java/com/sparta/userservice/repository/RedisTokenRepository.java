@@ -1,7 +1,6 @@
 package com.sparta.userservice.repository;
 
 import com.sparta.userservice.util.EncryptionUtil;
-import org.reactivestreams.Publisher;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -40,7 +39,7 @@ public class RedisTokenRepository {
 
     public Mono<Integer> removeAllTokensByEmail(String email) {
         return Mono.defer(() -> {
-            String pattern = null;
+            String pattern;
             try {
                 pattern = "token:" + EncryptionUtil.decrypt(email) + ":*";
             } catch (Exception e) {
