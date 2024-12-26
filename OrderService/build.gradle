@@ -18,6 +18,34 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter'                           //
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'                  // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'                   // WebFlux - 게이트웨이 비동기
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'                 // Gateway
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'                 //
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'                  //
+    implementation 'org.springframework.boot:spring-boot-starter-validation'                // 유효성 검증 의존성
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'                // 스웨거 API 미완료상태
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'                 //
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'               //
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'   // 서비스 등록 및 발견
+    implementation 'org.springframework.boot:spring-boot-starter-mail'                      //
+    // DB
+    implementation 'mysql:mysql-connector-java:8.0.33'                                         //
+    implementation 'com.h2database:h2'                                                      //
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'                //
+    // JWT, Lombok
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'                                        //
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'                                          //
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'                                       //
+    compileOnly 'org.projectlombok:lombok'                                                  //
+    annotationProcessor 'org.projectlombok:lombok'                                          //
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
+    testImplementation 'org.springframework.security:spring-security-test'                  //
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'                            //
 }
 dependencyManagement {
     imports {
