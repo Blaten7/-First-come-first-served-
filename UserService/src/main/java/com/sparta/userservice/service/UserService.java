@@ -3,8 +3,8 @@ package com.sparta.userservice.service;
 import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.entity.VerificationToken;
+import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
-import com.sparta.userservice.repository.VerificationTokenRepository;
 import com.sparta.userservice.util.EncryptionUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,25 +16,19 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
     private final TokenService tokenService;
-    private final VerificationTokenRepository tokenRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RedisTokenRepository redisTokenRepository;
 
     public String createVerificationToken(UserSignupRequestDto userRequest) {
         String token = tokenService.generateToken();
 
-        // 이메일 및 토큰을 DB에 임시 저장
-        VerificationToken verificationToken = new VerificationToken(
-                token,
-                userRequest.getUserEmail(),
-                LocalDateTime.now().plusMinutes(5)
-        );
         try {
-            tokenRepository.save(verificationToken);
             saveTempUser(userRequest);
+            long TOKEN_EXPIRES_IN_MINUTES = 5 * 60 * 1000L;
+            redisTokenRepository.saveToken(token, userRequest.getUserEmail(), TOKEN_EXPIRES_IN_MINUTES);
             return token; // 저장 성공 시 토큰 반환
         } catch (Exception e) {
-            // 저장 실패 시 예외 처리
             return null;
         }
     }

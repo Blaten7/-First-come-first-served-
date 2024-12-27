@@ -64,9 +64,6 @@ resilience4j:
         maxAttempts: 3
         waitDuration: 2s
 
-management:
-  tracing:
-    enabled: false
 jwt:
   secret: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUU=
 #  secret: ${SECRET_KEY}

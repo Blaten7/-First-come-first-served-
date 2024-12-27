@@ -4,7 +4,6 @@ import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
-import com.sparta.userservice.repository.VerificationTokenRepository;
 import com.sparta.userservice.service.EmailService;
 import com.sparta.userservice.service.UserService;
 import com.sparta.userservice.util.EncryptionUtil;
@@ -29,7 +28,6 @@ public class UserController {
     private final EmailService emailService;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final VerificationTokenRepository vtRepository;
     private final JwtUtil jwtUtil;
     private final RedisTokenRepository redisTokenRepository;
     private static final long TOKEN_EXPIRATION_TIME = 15 * 60 * 1000; // 15분
@@ -63,7 +61,7 @@ public class UserController {
             userRepository.updateStatusFindByEmail(EncryptionUtil.encrypt(email));
             return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
         }
-//        userRepository.deleteByUserEmail(EncryptionUtil.encrypt(email));
+        userRepository.deleteByUserEmail(EncryptionUtil.encrypt(email));
         return ResponseEntity.status(403).body("유효하지 않은 토큰입니다.");
     }
 
@@ -77,8 +75,8 @@ public class UserController {
 
     private boolean isValidToken(String token) {
         log.info("로그인 토큰 검증 컨트롤러 진입");
-        token = token.replace("'", "");
-        return vtRepository.countByTokenAndExpiryDateAfter(token) == 1;
+//        token = token.replace("Bearer ", "");
+        return redisTokenRepository.isTokenValid(token);
     }
 
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
@@ -93,11 +91,9 @@ public class UserController {
                     "msg", "로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다."
             ));
         }
-
         String token = jwtUtil.generateToken(user);
         log.info("만들어진 토큰 : " + token);
         redisTokenRepository.saveToken(token, email, TOKEN_EXPIRATION_TIME);
-
         return ResponseEntity.ok(Map.of(
                 "token", token,
                 "msg", "로그인 성공!",
@@ -123,8 +119,8 @@ public class UserController {
     public ResponseEntity<String> logoutAll(@RequestHeader("Authorization") String token) throws Exception {
         log.info("전체 기기 로그아웃 요청 처리 컨트롤러 진입");
         // JWT에서 사용자 이메일 추출
+        token = token.replace("Bearer ", "");
         String email = jwtUtil.extractEmail(token);
-
         // 모든 기기에서 로그아웃
         int removedTokens = redisTokenRepository.removeAllTokensByEmail(email);
         if (removedTokens > 0) {

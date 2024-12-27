@@ -3,10 +3,8 @@ package com.sparta.userservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Entity
@@ -38,12 +36,5 @@ public class Member {
         this.userPw = s;
         this.userAddress = s;
         this.userPH = s;
-
     }
-
-//    @OneToMany(mappedBy = "user")
-//    private List<Order> orders;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Wishlist> wishlists;
 }
