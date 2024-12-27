@@ -65,42 +65,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    public Authentication authenticate(Authentication authentication) {
-        String token = authentication.getCredentials().toString(); // JWT 토큰 가져오기
-
-        try {
-            if (jwtUtil.isTokenValid(token)) {
-                log.info("토큰이 유효합니다. 인증 정보를 생성합니다.");
-                return jwtUtil.getAuthentication(token);
-            } else {
-                log.warn("유효하지 않은 토큰: {}", token);
-                return null;
-            }
-        } catch (Exception e) {
-            log.error("토큰 검증 중 오류 발생: {}", e.getMessage(), e);
-            return null;
-        }
-    }
-
-    public Authentication convert(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization"); // Authorization 헤더 가져오기
-
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // "Bearer " 이후의 토큰 부분 추출
-
-            try {
-                if (jwtUtil.isTokenValid(token)) {
-                    return jwtUtil.getAuthentication(token);
-                } else {
-                    log.warn("유효하지 않은 토큰: {}", token);
-                }
-            } catch (Exception e) {
-                log.error("토큰 검증 중 오류 발생: {}", e.getMessage(), e);
-            }
-        } else {
-            log.warn("Authorization 헤더가 없습니다.");
-        }
-
-        return null;
-    }
+//    public Authentication authenticate(Authentication authentication) {
+//        String token = authentication.getCredentials().toString(); // JWT 토큰 가져오기
+//
+//        try {
+//            if (jwtUtil.isTokenValid(token)) {
+//                log.info("토큰이 유효합니다. 인증 정보를 생성합니다.");
+//                return jwtUtil.getAuthentication(token);
+//            } else {
+//                log.warn("유효하지 않은 토큰: {}", token);
+//                return null;
+//            }
+//        } catch (Exception e) {
+//            log.error("토큰 검증 중 오류 발생: {}", e.getMessage(), e);
+//            return null;
+//        }
+//    }
+//
+//    public Authentication convert(HttpServletRequest request) {
+//        String authHeader = request.getHeader("Authorization"); // Authorization 헤더 가져오기
+//
+//        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+//            String token = authHeader.substring(7); // "Bearer " 이후의 토큰 부분 추출
+//
+//            try {
+//                if (jwtUtil.isTokenValid(token)) {
+//                    return jwtUtil.getAuthentication(token);
+//                } else {
+//                    log.warn("유효하지 않은 토큰: {}", token);
+//                }
+//            } catch (Exception e) {
+//                log.error("토큰 검증 중 오류 발생: {}", e.getMessage(), e);
+//            }
+//        } else {
+//            log.warn("Authorization 헤더가 없습니다.");
+//        }
+//
+//        return null;
+//    }
 }
