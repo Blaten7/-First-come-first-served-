@@ -2,7 +2,6 @@ package com.sparta.userservice.service;
 
 import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.Member;
-import com.sparta.userservice.entity.VerificationToken;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
 import com.sparta.userservice.util.EncryptionUtil;
