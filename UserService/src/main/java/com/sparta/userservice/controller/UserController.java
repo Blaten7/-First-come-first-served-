@@ -121,6 +121,7 @@ public class UserController {
     public ResponseEntity<String> logoutAll(@RequestHeader("Authorization") String token) throws Exception {
         log.info("전체 기기 로그아웃 요청 처리 컨트롤러 진입");
         // JWT에서 사용자 이메일 추출
+        token = token.replace("Bearer ", "");
         String email = jwtUtil.extractEmail(token);
         // 모든 기기에서 로그아웃
         int removedTokens = redisTokenRepository.removeAllTokensByEmail(email);
