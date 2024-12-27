@@ -3,7 +3,6 @@ package com.sparta.userservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.relational.core.mapping.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
