@@ -2,14 +2,17 @@ package com.sparta.userservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Entity
 @Data
-@Table(name = "`user`")
-public class User {
+@Table(name = "`member`")
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -28,6 +31,15 @@ public class User {
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime pwUpdatedAt;
+
+    public Member(String email, String s, ArrayList<Object> objects) {
+        this.userEmail = email;
+        this.userName = s;
+        this.userPw = s;
+        this.userAddress = s;
+        this.userPH = s;
+
+    }
 
 //    @OneToMany(mappedBy = "user")
 //    private List<Order> orders;

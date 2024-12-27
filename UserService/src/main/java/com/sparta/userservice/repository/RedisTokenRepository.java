@@ -3,7 +3,10 @@ package com.sparta.userservice.repository;
 import com.sparta.userservice.util.EncryptionUtil;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Mono;
+
 import java.util.Set;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 @Repository
@@ -47,4 +50,8 @@ public class RedisTokenRepository {
         }
         return 0;
     }
+    public boolean isBlacklisted(String token) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(token));
+    }
+
 }

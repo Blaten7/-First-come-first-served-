@@ -1,7 +1,7 @@
 package com.sparta.userservice.service;
 
 import com.sparta.userservice.dto.UserSignupRequestDto;
-import com.sparta.userservice.entity.User;
+import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.entity.VerificationToken;
 import com.sparta.userservice.repository.UserRepository;
 import com.sparta.userservice.repository.VerificationTokenRepository;
@@ -40,7 +40,7 @@ public class UserService {
     }
 
     private void saveTempUser(UserSignupRequestDto userRequest) throws Exception {
-        User user = new User();
+        Member user = new Member();
         user.setUserName(EncryptionUtil.encrypt(userRequest.getUserName()));
         user.setUserEmail(EncryptionUtil.encrypt(userRequest.getUserEmail()));
         user.setUserPw(passwordEncoder.encode(userRequest.getUserPw()));
@@ -53,10 +53,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User authenticate(String email, String password) throws Exception {
-        Optional<User> optionalUser = userRepository.findByUserEmail(EncryptionUtil.encrypt(email));
+    public Member authenticate(String email, String password) throws Exception {
+        Optional<Member> optionalUser = userRepository.findByUserEmail(EncryptionUtil.encrypt(email));
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+            Member user = optionalUser.get();
 
             // 비밀번호 검증
             if (passwordEncoder.matches(password, user.getUserPw())) {

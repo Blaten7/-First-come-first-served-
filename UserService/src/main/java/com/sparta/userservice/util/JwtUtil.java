@@ -1,12 +1,18 @@
 package com.sparta.userservice.util;
 
-import com.sparta.userservice.entity.User;
+import com.sparta.userservice.entity.Member;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtil {
@@ -15,7 +21,7 @@ public class JwtUtil {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1시간
 
-    public String generateToken(User user) {
+    public String generateToken(Member user) {
         return Jwts.builder()
                 .claim("userEmail", user.getUserEmail())
                 .claim("userId", user.getUserId())
@@ -39,12 +45,25 @@ public class JwtUtil {
         }
     }
 
-//    public boolean isTokenValid(String token) {
-//        try {
-//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
+    public boolean isTokenValid(String token) {
+        try {
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public Authentication getAuthentication(String token) {
+        String email = extractEmail(token);
+
+        // 기본 권한 추가 (ROLE_USER)
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        // Member 객체 생성
+        Member principal = new Member(email, "", new ArrayList<>());
+
+        // UsernamePasswordAuthenticationToken 반환
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
 }

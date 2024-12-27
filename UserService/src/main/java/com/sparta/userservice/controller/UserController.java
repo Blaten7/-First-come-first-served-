@@ -1,7 +1,7 @@
 package com.sparta.userservice.controller;
 
 import com.sparta.userservice.dto.UserSignupRequestDto;
-import com.sparta.userservice.entity.User;
+import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
 import com.sparta.userservice.repository.VerificationTokenRepository;
@@ -87,7 +87,7 @@ public class UserController {
         String email = loginRequest.get("email");
         String password = loginRequest.get("password");
 
-        User user = userService.authenticate(email, password);
+        Member user = userService.authenticate(email, password);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
                     "msg", "로그인 실패: 이메일 또는 비밀번호가 올바르지 않습니다."
@@ -144,7 +144,7 @@ public class UserController {
         String newPassword = pwChangeRequest.get("newPassword");
         String confirmPassword = pwChangeRequest.get("confirmPassword");
 
-        User user = userService.authenticate(email, oldPassword);
+        Member user = userService.authenticate(email, oldPassword);
         if (user == null) return ResponseEntity.status(404).body("현재 비밀번호가 틀렸습니다");
 
         if (!newPassword.equals(confirmPassword)) return ResponseEntity.status(400).body("변경을 원하는 비밀번호와 비밀번호 확인이 일치하지 않습니다");
