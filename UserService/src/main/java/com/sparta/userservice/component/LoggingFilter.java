@@ -13,5 +13,4 @@ public class LoggingFilter implements WebFilter {
         System.out.println("Request URI: " + exchange.getRequest().getURI());
         return chain.filter(exchange);
     }
-
 }

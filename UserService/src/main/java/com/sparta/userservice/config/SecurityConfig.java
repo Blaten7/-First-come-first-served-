@@ -1,34 +1,59 @@
 package com.sparta.userservice.config;
 
 import com.sparta.userservice.component.JwtAuthenticationFilter;
+import com.sparta.userservice.component.JwtAuthenticationWebFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
+@AllArgsConstructor
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    @Bean(name = "serverHttpSecurity")
+    @Primary
+    public ServerHttpSecurity serverHttpSecurity() {
+        return ServerHttpSecurity.http();
     }
 
+//    @Bean
+//    public SecurityWebFilterChain securityFilterChain(@Qualifier("serverHttpSecurity") ServerHttpSecurity http) {
+//        return http
+//                .csrf(ServerHttpSecurity.CsrfSpec::disable) // CSRF 비활성화
+//                .authorizeExchange(exchange -> exchange
+//                        .pathMatchers("/api/user/signup", "/api/user/auth/verify",
+//                                "/api/user/isValid", "/api/user/isValid/token", "/api/user/login", "/delete/ALL").permitAll() // 인증 없이 접근 허용
+//                        .anyExchange().authenticated() // 나머지 요청은 인증 필요
+//                )
+////                .logout(ServerHttpSecurity.LogoutSpec::disable) // 로그아웃 비활성화
+//                .addFilterAt(new JwtAuthenticationWebFilter(jwtAuthenticationFilter), SecurityWebFiltersOrder.AUTHENTICATION) // JWT 인증 필터 추가
+//                .build();
+//    }
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/user/signup", "/api/user/auth/verify", "/api/user/login").permitAll() // 인증 없이 허용
-                        .anyRequest().authenticated() // 나머지 요청은 인증 필요
+    public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
+        return http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/api/user/signup", "/api/user/auth/verify", "/api/user/login").permitAll()
+                        .anyExchange().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
+                .addFilterAt(new JwtAuthenticationWebFilter(jwtAuthenticationFilter), SecurityWebFiltersOrder.AUTHENTICATION)
+                .build();
+    }
 
-        return http.build();
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // 비밀번호 암호화에 BCrypt 사용
     }
 }

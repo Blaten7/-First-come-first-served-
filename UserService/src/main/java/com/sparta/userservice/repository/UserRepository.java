@@ -1,41 +1,26 @@
 package com.sparta.userservice.repository;
 
 import com.sparta.userservice.entity.Member;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.r2dbc.repository.Query;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface UserRepository extends JpaRepository<Member, Long> {
+public interface UserRepository extends ReactiveCrudRepository<Member, Long> {
 
-    boolean existsByUserEmail(String email);
+    Mono<Boolean> existsByUserEmail(String email);
 
-    Optional<Member> findByUserEmail(String email);
+    @Query("select * from member where user_email = :email and status = 'VERIFIED'")
+    Mono<Member> findByUserEmail(String email);
 
-    @Transactional
-    @Modifying
-    @Query("update Member " +
-            "set status = 'VERIFIED' " +
-            "where userEmail = :email")
-    void updateStatusFindByEmail(String email);
+    @Query("UPDATE member SET status = 'VERIFIED' WHERE user_email = :email")
+    Mono<Void> updateStatusFindByEmail(String email);
 
-//    @Query("select userPw from User " +
-//            "where userEmail = :encryptMail")
-//    String findByUserEmailToUserPw(String encryptMail);
+    @Query("UPDATE member SET user_pw = :newPassword, pw_updated_at = NOW() WHERE user_email = :email")
+    Mono<Void> updateUserPwAndPwUpdatedAtByUserEmail(String email, String newPassword);
 
-//    boolean existsByUserPw(String oldPw);
-
-    @Transactional
-    @Modifying
-    @Query("UPDATE Member U " +
-            "SET U.userPw = :newPassword," +
-            "U.pwUpdatedAt = CURRENT_TIMESTAMP " +
-            "WHERE U.userEmail = :email")
-    void updateUserPwAndPwUpdatedAtByUserEmail(String email, String newPassword);
-
-    void deleteByUserEmail(String encrypt);
+    @Query("DELETE FROM member WHERE user_email = :email")
+    Mono<Void> deleteByUserEmail(String email);
 }
+

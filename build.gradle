@@ -15,6 +15,7 @@ subprojects {
     repositories {
         mavenCentral()
     }
+
 }
 group = 'com.sparta'
 version = '0.0.1-SNAPSHOT'
@@ -32,9 +33,6 @@ configurations {
 }
 ext {
     set('springCloudVersion', "2024.0.0")
-}
-
-dependencies {
 }
 
 dependencyManagement {
