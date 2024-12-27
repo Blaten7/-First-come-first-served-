@@ -5,26 +5,27 @@ spring:
   application:
     name: UserService
   profiles:
-    active: reactive
-  r2dbc:
-    url: r2dbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/MemberService
-    username: admin
-    password: dlgudrn1998
-    pool:
-      enabled: true
-      initial-size: 10
-      max-size: 300
-  sql:
-    init:
-      schema-locations: classpath:schema.sql
-      platform: mysql
-      mode: always
+    active: native
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/MemberService
+#    url: ${USER_SERVICE_DB_URL}
+    hikari:
+      username: admin
+      password: dlgudrn1998
+  #      username: ${DB_USERNAME}
+#      password: ${DB_PW}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
   data:
     redis:
       host: localhost
       port: 6379
   main:
-    web-application-type: reactive
+    web-application-type: servlet
     log-startup-info: true
   cloud:
     compatibility-verifier:
@@ -63,13 +64,9 @@ resilience4j:
         maxAttempts: 3
         waitDuration: 2s
 
-management:
-  tracing:
-    enabled: false
 jwt:
   secret: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUU=
 #  secret: ${SECRET_KEY}
 logging:
   level:
-    org.springframework: info
-    io.r2dbc: info
+    org.springframework.cloud: DEBUG

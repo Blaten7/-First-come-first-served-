@@ -1,7 +1,6 @@
 package com.sparta.userservice.util;
 
 import com.sparta.userservice.entity.Member;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,15 +32,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String generateTempToken(String email) {
-        return Jwts.builder()
-                .claim("userEmail", email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
-    }
-
     public String extractEmail(String token) {
         try {
             return Jwts.parserBuilder()
@@ -56,6 +45,14 @@ public class JwtUtil {
         }
     }
 
+    public boolean isTokenValid(String token) {
+        try {
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     public Authentication getAuthentication(String token) {
         String email = extractEmail(token);
 
@@ -68,28 +65,5 @@ public class JwtUtil {
 
         // UsernamePasswordAuthenticationToken 반환
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-    }
-
-
-    public Mono<Boolean> isTokenValid(String token) {
-        return Mono.fromCallable(() -> {
-            try {
-                Jwts.parser()
-                        .setSigningKey(secretKey)
-                        .parseClaimsJws(token);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        });
-    }
-
-
-    public long extractExpiration(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.getExpiration().getTime();
     }
 }

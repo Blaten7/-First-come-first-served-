@@ -1,26 +1,41 @@
 package com.sparta.userservice.repository;
 
 import com.sparta.userservice.entity.Member;
-import org.springframework.data.r2dbc.repository.Query;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 @Repository
-public interface UserRepository extends ReactiveCrudRepository<Member, Long> {
+public interface UserRepository extends JpaRepository<Member, Long> {
 
-    Mono<Boolean> existsByUserEmail(String email);
+    boolean existsByUserEmail(String email);
 
-    @Query("select * from member where user_email = :email and status = 'VERIFIED'")
-    Mono<Member> findByUserEmail(String email);
+    Optional<Member> findByUserEmail(String email);
 
-    @Query("UPDATE member SET status = 'VERIFIED' WHERE user_email = :email")
-    Mono<Void> updateStatusFindByEmail(String email);
+    @Transactional
+    @Modifying
+    @Query("update Member " +
+            "set status = 'VERIFIED' " +
+            "where userEmail = :email")
+    void updateStatusFindByEmail(String email);
 
-    @Query("UPDATE member SET user_pw = :newPassword, pw_updated_at = NOW() WHERE user_email = :email")
-    Mono<Void> updateUserPwAndPwUpdatedAtByUserEmail(String email, String newPassword);
+//    @Query("select userPw from User " +
+//            "where userEmail = :encryptMail")
+//    String findByUserEmailToUserPw(String encryptMail);
 
-    @Query("DELETE FROM member WHERE user_email = :email")
-    Mono<Void> deleteByUserEmail(String email);
+//    boolean existsByUserPw(String oldPw);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Member U " +
+            "SET U.userPw = :newPassword," +
+            "U.pwUpdatedAt = CURRENT_TIMESTAMP " +
+            "WHERE U.userEmail = :email")
+    void updateUserPwAndPwUpdatedAtByUserEmail(String email, String newPassword);
+
+    void deleteByUserEmail(String encrypt);
 }
-
