@@ -44,6 +44,9 @@ public class ProductServiceConnector {
         throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
     }
 
+    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackExistByProductNameAndOverQuantity")
+    @TimeLimiter(name = "productService")
+    @Retry(name = "productService")
     public boolean existByProductNameAndOverQuantity(String productName, int orderQuantity) {
         try {
             Boolean isValid = webClient.post()
@@ -65,7 +68,15 @@ public class ProductServiceConnector {
             return false;
         }
     }
+    // Fallback 메서드
+    public void fallbackExistByProductNameAndOverQuantity(String productName, Throwable throwable) {
+        log.error("Fallback executed due to: {}", throwable.getMessage());
+        throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
+    }
 
+    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackOrderProduct")
+    @TimeLimiter(name = "productService")
+    @Retry(name = "productService")
     public void orderProduct(String productName, Integer orderQuantity) {
         webClient.post()
                 .uri(uriBuilder -> uriBuilder
@@ -77,7 +88,15 @@ public class ProductServiceConnector {
                 .bodyToMono(Void.class)
                 .block();
     }
+    // Fallback 메서드
+    public void fallbackOrderProduct(String productName, Throwable throwable) {
+        log.error("Fallback executed due to: {}", throwable.getMessage());
+        throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
+    }
 
+    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackCancelProduct")
+    @TimeLimiter(name = "productService")
+    @Retry(name = "productService")
     public void cancelProduct(String productName, int cancelQuantity) {
         webClient.post()
                 .uri(uriBuilder -> uriBuilder
@@ -88,5 +107,10 @@ public class ProductServiceConnector {
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
+    }
+    // Fallback 메서드
+    public void fallbackCancelProduct(String productName, Throwable throwable) {
+        log.error("Fallback executed due to: {}", throwable.getMessage());
+        throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
     }
 }
