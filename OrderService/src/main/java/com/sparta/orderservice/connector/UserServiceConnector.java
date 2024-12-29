@@ -1,9 +1,15 @@
 package com.sparta.orderservice.connector;
 
+import com.sparta.orderservice.handler.CustomException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+@Slf4j
 @Component
 public class UserServiceConnector {
 
@@ -13,6 +19,9 @@ public class UserServiceConnector {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8050").build();
     }
 
+    @CircuitBreaker(name = "userService", fallbackMethod = "fallbackIsValidToken")
+    @TimeLimiter(name = "userService")
+    @Retry(name = "userService")
     public boolean isValidToken(String token) {
         try {
             // API 호출
@@ -27,13 +36,13 @@ public class UserServiceConnector {
 
             return !Boolean.TRUE.equals(isValid);
 
-        } catch (WebClientResponseException e) {
-            System.err.println("Error response: " + e.getStatusCode());
-            return false;
         } catch (Exception e) {
-            System.err.println("Unexpected error: " + e.getMessage());
-            return false;
+            throw new RuntimeException("Error during product existence check", e);
         }
+    }
+    public void fallbackIsValidToken(String token, Throwable throwable) {
+        log.error("Fallback executed due to: {}", throwable.getMessage());
+        throw new CustomException("Failed to confirm token: " + token + ". Reason: " + throwable.getMessage());
     }
 
 }

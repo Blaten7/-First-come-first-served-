@@ -74,7 +74,14 @@ resilience4j:
         wait-duration: 500ms
         ignore-exceptions:
           - org.springframework.web.client.HttpClientErrorException
+      userService:
+        max-attempts: 5
+        wait-duration: 500ms
+        ignore-exceptions:
+          - org.springframework.web.client.HttpClientErrorException
   timelimiter:
     instances:
       productService:
+        timeout-duration: 1s
+      userService:
         timeout-duration: 1s
