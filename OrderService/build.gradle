@@ -60,11 +60,14 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
-jar {
-    archiveBaseName = 'api'                                                                 // JAR 파일 기본 이름 설정
-    archiveClassifier = ''                                                                  // 분류자 제거
-    enabled = true
-}
+//jar {
+//    archiveBaseName = 'api'                                                                 // JAR 파일 기본 이름 설정
+//    archiveClassifier = ''                                                                  // 분류자 제거
+//    enabled = true
+//}
 tasks.named('bootJar') {
     enabled = true
+}
+tasks.named('jar') {
+    enabled = false
 }

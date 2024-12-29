@@ -1,33 +1,105 @@
-version: "3.9"
+version: "3.8"
 
 networks:
-  msa-network:
+  MSA:
+    driver: bridge
 
 services:
-  UserService:
-    build:
-      context: ./UserService
+  eureka-server:
+    image: openjdk:17-jdk
+    container_name: eureka-server
     ports:
-      - "${USER_SERVICE_PORT}:8085"
+      - "8761:8761"
     environment:
-      - SERVER_PORT=${USER_SERVICE_PORT}
+      - SERVER_PORT=8761
+    volumes:
+      - ./EurekaServer:/app
+    working_dir: /app
+    command: ["java", "-jar", "build/libs/EurekaServer-0.0.1-SNAPSHOT.jar"]
     networks:
-      - msa-network
-  OrderService:
-    build:
-      context: ./OrderService
+      - MSA
+
+  gateway:
+    image: openjdk:17-jdk
+    container_name: gateway
     ports:
-      - "${ORDER_SERVICE_PORT}:8085"
+      - "8222:8222"
     environment:
-      - SERVER_PORT=${ORDER_SERVICE_PORT}
+      - SERVER_PORT=8222
+    depends_on:
+      - eureka-server
+    volumes:
+      - ./Gateway:/app
+    working_dir: /app
+    command: ["java", "-jar", "build/libs/Gateway-0.0.1-SNAPSHOT.jar"]
     networks:
-      - msa-network
-  ProductService:
-    build:
-      context: ./ProductService
+      - MSA
+
+  order-service:
+    image: openjdk:17-jdk
+    container_name: order-service
     ports:
-      - "${PRODUCT_SERVICE_PORT}:8085"
+      - "8070:8070"
     environment:
-      - SERVER_PORT=${PRODUCT_SERVICE_PORT}
+      - SERVER_PORT=8070
+      - SPRING_PROFILES_ACTIVE=native
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/OrderService
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=dlgudrn1998
+    depends_on:
+      - eureka-server
+    volumes:
+      - ./OrderService:/app
+    working_dir: /app
+    command: ["java", "-jar", "build/libs/OrderService-0.0.1-SNAPSHOT.jar"]
     networks:
-      - msa-network
+      - MSA
+
+  product-service:
+    image: openjdk:17-jdk
+    container_name: product-service
+    ports:
+      - "8060:8060"
+    environment:
+      - SERVER_PORT=8060
+      - SPRING_PROFILES_ACTIVE=native
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/ProductService
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=dlgudrn1998
+    depends_on:
+      - eureka-server
+    volumes:
+      - ./ProductService:/app
+    working_dir: /app
+    command: ["java", "-jar", "build/libs/ProductService-0.0.1-SNAPSHOT.jar"]
+    networks:
+      - MSA
+
+  user-service:
+    image: openjdk:17-jdk
+    container_name: user-service
+    ports:
+      - "8050:8050"
+    environment:
+      - SERVER_PORT=8050
+      - SPRING_PROFILES_ACTIVE=native
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/MemberService
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=dlgudrn1998
+    depends_on:
+      - eureka-server
+    volumes:
+      - ./UserService:/app
+    working_dir: /app
+    command: ["java", "-jar", "build/libs/UserService-0.0.1-SNAPSHOT.jar"]
+    networks:
+      - MSA
+
+  redis:
+    image: redis:6.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - MSA
