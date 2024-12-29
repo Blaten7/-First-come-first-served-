@@ -53,6 +53,7 @@ public class JwtUtil {
             return false;
         }
     }
+
     public Authentication getAuthentication(String token) {
         String email = extractEmail(token);
 

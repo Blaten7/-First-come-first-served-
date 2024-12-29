@@ -1,5 +1,8 @@
 package com.sparta.orderservice.connector;
 
+import com.sparta.orderservice.handler.CustomException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,7 +17,8 @@ public class ProductServiceConnector {
     public ProductServiceConnector(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8060").build();
     }
-
+    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackIsProductExist")
+    @Retry(name = "productService")
     public boolean isProductExist(String productName) {
         try {
             Boolean isValid = webClient.post()
@@ -26,14 +30,14 @@ public class ProductServiceConnector {
                     .bodyToMono(Boolean.class)
                     .block();
             return !Boolean.TRUE.equals(isValid);
-
-        } catch (WebClientResponseException e) {
-            System.err.println("Error response: " + e.getStatusCode());
-            return false;
         } catch (Exception e) {
-            System.err.println("Unexpected error: " + e.getMessage());
-            return false;
+            throw new RuntimeException("Error during product existence check", e);
         }
+    }
+
+    // Fallback 메서드
+    public void fallbackIsProductExist(String productName, Throwable throwable) {
+        throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
     }
 
     public boolean existByProductNameAndOverQuantity(String productName, int orderQuantity) {
