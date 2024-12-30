@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the build artifact (jar file) to the container
-COPY build/libs/EurekaServer-0.0.1-SNAPSHOT.jar app.jar
+COPY build/libs/app.jar app.jar
 
 # Expose Eureka Server port
 EXPOSE 8761

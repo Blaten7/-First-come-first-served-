@@ -6,92 +6,100 @@ networks:
 
 services:
   eureka-server:
-    image: openjdk:17-jdk
+    build:
+      context: ./EurekaServer
     container_name: eureka-server
+    volumes:
+      - ./EurekaServer/src/main:/app/src/main
+      - ./EurekaServer/build/classes/java/main:/app/build/classes/java/main
+    working_dir: /app
+    command: ./mvnw spring-boot:run
     ports:
       - "8761:8761"
-    environment:
-      - SERVER_PORT=8761
-    volumes:
-      - ./EurekaServer:/app
-    working_dir: /app
-    command: ["java", "-jar", "build/libs/EurekaServer-0.0.1-SNAPSHOT.jar"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - MSA
 
   gateway:
-    image: openjdk:17-jdk
+    build:
+      context: ./Gateway
     container_name: gateway
+    volumes:
+      - ./Gateway/src/main:/app/src/main
+      - ./Gateway/build/classes/java/main:/app/build/classes/java/main
+    working_dir: /app
+    command: ./mvnw spring-boot:run
     ports:
       - "8222:8222"
-    environment:
-      - SERVER_PORT=8222
     depends_on:
       - eureka-server
-    volumes:
-      - ./Gateway:/app
-    working_dir: /app
-    command: ["java", "-jar", "build/libs/Gateway-0.0.1-SNAPSHOT.jar"]
     networks:
       - MSA
 
   order-service:
-    image: openjdk:17-jdk
+    build:
+      context: ./OrderService
     container_name: order-service
+    volumes:
+      - ./OrderService/src/main:/app/src/main
+      - ./OrderService/build/classes/java/main:/app/build/classes/java/main
+    working_dir: /app
+    command: ./mvnw spring-boot:run
     ports:
       - "8070:8070"
     environment:
-      - SERVER_PORT=8070
       - SPRING_PROFILES_ACTIVE=native
       - SPRING_DATASOURCE_URL=jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/OrderService
       - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=dlgudrn1998
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
     depends_on:
       - eureka-server
-    volumes:
-      - ./OrderService:/app
-    working_dir: /app
-    command: ["java", "-jar", "build/libs/OrderService-0.0.1-SNAPSHOT.jar"]
     networks:
       - MSA
 
   product-service:
-    image: openjdk:17-jdk
+    build:
+      context: ./ProductService
     container_name: product-service
+    volumes:
+      - ./ProductService/src/main:/app/src/main
+      - ./ProductService/build/classes/java/main:/app/build/classes/java/main
+    working_dir: /app
+    command: ./mvnw spring-boot:run
     ports:
       - "8060:8060"
     environment:
-      - SERVER_PORT=8060
       - SPRING_PROFILES_ACTIVE=native
       - SPRING_DATASOURCE_URL=jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/ProductService
       - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=dlgudrn1998
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
     depends_on:
       - eureka-server
-    volumes:
-      - ./ProductService:/app
-    working_dir: /app
-    command: ["java", "-jar", "build/libs/ProductService-0.0.1-SNAPSHOT.jar"]
     networks:
       - MSA
 
   user-service:
-    image: openjdk:17-jdk
+    build:
+      context: ./UserService
     container_name: user-service
+    volumes:
+      - ./UserService/src/main:/app/src/main
+      - ./UserService/build/classes/java/main:/app/build/classes/java/main
+    working_dir: /app
+    command: ./mvnw spring-boot:run
     ports:
       - "8050:8050"
     environment:
-      - SERVER_PORT=8050
       - SPRING_PROFILES_ACTIVE=native
       - SPRING_DATASOURCE_URL=jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/MemberService
       - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=dlgudrn1998
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
     depends_on:
       - eureka-server
-    volumes:
-      - ./UserService:/app
-    working_dir: /app
-    command: ["java", "-jar", "build/libs/UserService-0.0.1-SNAPSHOT.jar"]
     networks:
       - MSA
 
@@ -100,6 +108,8 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    volumes:
+      - ./data/redis:/data
     command: ["redis-server", "--appendonly", "yes"]
     networks:
       - MSA

@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the build artifact (jar file) to the container
-COPY build/libs/ProductService-0.0.1-SNAPSHOT.jar app.jar
+COPY build/libs/app.jar app.jar
 
 # Expose ProductService port
 EXPOSE 8060

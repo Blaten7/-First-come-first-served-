@@ -71,3 +71,7 @@ tasks.named('bootJar') {
 tasks.named('jar') {
     enabled = false
 }
+bootJar {
+    archiveBaseName.set('app') // 파일 이름 설정
+    archiveVersion.set('')     // 버전 제거
+}

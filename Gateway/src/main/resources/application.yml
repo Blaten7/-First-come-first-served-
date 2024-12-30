@@ -10,6 +10,9 @@ eureka:
 spring:
   application:
     name: Gateway
+  devtools:
+    restart:
+      enabled: true
   cloud:
     gateway:
       discovery:

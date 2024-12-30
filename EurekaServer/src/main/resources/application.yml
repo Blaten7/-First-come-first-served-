@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: EurekaServer
+  devtools:
+    restart:
+      enabled: true
 eureka:
   client:
     register-with-eureka: false

@@ -22,6 +22,7 @@ ext {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
@@ -37,9 +38,7 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
-tasks.named('bootJar') {
-    enabled = true
-}
-tasks.named('jar') {
-    enabled = false
+bootJar {
+    archiveBaseName.set('app')
+    archiveVersion.set('')
 }

@@ -15,6 +15,9 @@ spring:
       password: dlgudrn1998
   #      username: ${DB_USERNAME}
 #      password: ${DB_PW}
+  devtools:
+    restart:
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: update

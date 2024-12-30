@@ -61,12 +61,7 @@ tasks.named('bootJar') {
 tasks.named('jar') {
     enabled = false
 }
-
-//jar {
-//    archiveBaseName = 'api'                                                                 // JAR 파일 기본 이름 설정
-//    archiveClassifier = ''                                                                  // 분류자 제거
-//    enabled = true
-//}
-//tasks.named('bootJar') {
-//    enabled = true
-//}
+bootJar {
+    archiveBaseName.set('app') // 파일 이름 설정
+    archiveVersion.set('')     // 버전 제거
+}

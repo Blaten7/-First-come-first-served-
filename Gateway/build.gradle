@@ -22,6 +22,7 @@ ext {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'                   // WebFlux - 게이트웨이 비동기
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
@@ -52,3 +53,8 @@ tasks.named('bootJar') {
 tasks.named('jar') {
     enabled = false
 }
+bootJar {
+    archiveBaseName.set('app') // 파일 이름 설정
+    archiveVersion.set('')     // 버전 제거
+}
+

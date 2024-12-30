@@ -43,3 +43,13 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+task bootRunAll {
+    dependsOn(
+            ':OrderService:bootRun',
+            ':ProductService:bootRun',
+            ':UserService:bootRun',
+            ':EurekaServer:bootRun',
+            ':Gateway:bootRun'
+    )
+}
+

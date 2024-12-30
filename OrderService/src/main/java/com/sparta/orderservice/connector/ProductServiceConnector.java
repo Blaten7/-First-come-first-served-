@@ -16,13 +16,14 @@ public class ProductServiceConnector {
     private final WebClient webClient;
 
     public ProductServiceConnector(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8060").build();
+        this.webClient = webClientBuilder.baseUrl("http://product-service:8060").build();
     }
 
     @CircuitBreaker(name = "productService", fallbackMethod = "fallbackIsProductExist")
     @TimeLimiter(name = "productService")
     @Retry(name = "productService")
     public boolean isProductExist(String productName) {
+        log.info("찾으려는 상품 이름 : " + productName);
         try {
             Boolean isValid = webClient.post()
                     .uri(uriBuilder -> uriBuilder
@@ -40,7 +41,7 @@ public class ProductServiceConnector {
 
     // Fallback 메서드
     public boolean fallbackIsProductExist(String productName, Throwable throwable) {
-        throw new CustomException(productName + ". 상품 주문 실패\n원인 : " + throwable.getMessage()+"\n원인 : 상품이 존재하지 않음");
+        throw new CustomException(productName + ". 상품 주문 실패<br>원인 : " + throwable.getMessage()+"<br>원인 : 상품이 존재하지 않음");
     }
 
     @CircuitBreaker(name = "productService", fallbackMethod = "fallbackExistByProductNameAndOverQuantity")

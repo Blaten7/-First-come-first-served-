@@ -10,6 +10,7 @@ import com.sparta.orderservice.repository.WishlistRepository;
 import com.sparta.orderservice.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/order")
@@ -53,7 +55,9 @@ public class OrderController {
      */
     @GetMapping("/test")
     public ResponseEntity<String> test(@RequestHeader("Authorization") String token) {
-        if (userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
+        }
         System.out.println("========================================================");
         return new ResponseEntity<>("아아 여기는 OrderService 요청 확인!", HttpStatus.OK);
     }
@@ -65,13 +69,21 @@ public class OrderController {
             @RequestHeader("Authorization") String token,
             @RequestBody OrderRequestDto orderRequest) {
         // 로그인 여부 확인
-        if (userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+        log.info("로그인 검증 시작");
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
+        }
+        log.info("로그인 완료");
         String productName = orderRequest.getProductName();
         int orderQuantity = orderRequest.getStockQuantity();
-
+        log.info("상품 이름 : " + productName + "상품 수량 : " + orderQuantity);
+//        log.info("씨발거 좆같네");
+        log.info("아니 삭제했잖아요 시발로마");
         // 상품 존재하는지, 그리고 재고가 주문수량 이상 있는지 검증
         if (productServiceConnector.isProductExist(productName)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
+        log.info("일단? 상품이 있기는 해");
         if (productServiceConnector.existByProductNameAndOverQuantity(productName, orderQuantity)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 주문 수량보다 적습니다.");
+        log.info("주문하려는 수량보다 재고가 많아!");
 
         // 상품이 존재한다면 주문자의 아이디를 토큰에서 추출
         String email = orderService.extractEmail(token);
@@ -102,7 +114,9 @@ public class OrderController {
     @Operation(summary = "주문 상태 조회", description = "사용자의 주문 상태를 조회합니다.")
     @GetMapping("/view/order/status")
     public ResponseEntity<?> getOrderStatus(@RequestHeader("Authorization") String token) {
-        if (userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
+        }
 
         String email = orderService.extractEmail(token);
         List<Order> orderList = orderRepository.findByUserEmail(email);
@@ -124,7 +138,9 @@ public class OrderController {
     @PutMapping("/cancel/{productName}")
     public ResponseEntity<String> cancelOrder(@RequestHeader("Authorization") String token,
                                               @PathVariable String productName) {
-        if (userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
+        }
 
         String email = orderService.extractEmail(token);
         String preDelivery = "배송 준비중";
@@ -146,7 +162,9 @@ public class OrderController {
     @PutMapping("/refund/{productName}")
     public ResponseEntity<String> returnOrder(@RequestHeader("Authorization") String token,
                                               @PathVariable String productName) {
-        if (userServiceConnector.isValidToken(token)) return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
+        }
 
         String email = orderService.extractEmail(token);
         String orderStatus = "배송 완료";
@@ -162,8 +180,8 @@ public class OrderController {
     public ResponseEntity<String> orderFromWishlist(
             @RequestHeader("Authorization") String token,
             @PathVariable Long wishlistId) {
-        if (userServiceConnector.isValidToken(token)) {
-            return ResponseEntity.status(403).body("로그인이 필요한 서비스 입니다.");
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
         }
 
         Optional<Wishlist> wishlistOptional = wishlistRepository.findById(wishlistId);
@@ -200,8 +218,8 @@ public class OrderController {
     @Operation(summary = "마이페이지 조회", description = "위시리스트와 주문 상태를 함께 조회합니다.")
     @GetMapping("/mypage")
     public ResponseEntity<Map<String, Object>> getMyPage(@RequestHeader("Authorization") String token) {
-        if (userServiceConnector.isValidToken(token)) {
-            return ResponseEntity.status(403).body(Map.of("error", "로그인이 필요한 서비스 입니다."));
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body(Map.of("msg", "로그인이 필요한 서비스입니다."));
         }
 
         String email = orderService.extractEmail(token);
@@ -219,8 +237,8 @@ public class OrderController {
     @Operation(summary = "위시리스트 조회", description = "위시리스트에 등록된 상품을 조회합니다.")
     @GetMapping("/wishlist")
     public ResponseEntity<?> getWishlist(@RequestHeader("Authorization") String token) {
-        if (userServiceConnector.isValidToken(token)) {
-            return ResponseEntity.status(403).body(null);
+        if (!userServiceConnector.isValidToken(token).join()) {
+            return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
         }
 
         String email = orderService.extractEmail(token);
@@ -240,7 +258,7 @@ public class OrderController {
             @PathVariable Long wishlistId,
             @RequestParam int quantity,
             @RequestHeader("Authorization") String token) {
-        if (userServiceConnector.isValidToken(token)) {
+        if (!userServiceConnector.isValidToken(token).join()) {
             return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
         }
 
@@ -258,7 +276,7 @@ public class OrderController {
     public ResponseEntity<String> deleteFromWishlist(
             @PathVariable Long wishlistId,
             @RequestHeader("Authorization") String token) {
-        if (userServiceConnector.isValidToken(token)) {
+        if (!userServiceConnector.isValidToken(token).join()) {
             return ResponseEntity.status(403).body("로그인이 필요한 서비스입니다.");
         }
         if (!wishlistRepository.existsById(wishlistId)) {
