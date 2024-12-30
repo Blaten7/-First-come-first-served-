@@ -218,7 +218,7 @@ public class OrderController {
 
     @Operation(summary = "위시리스트 조회", description = "위시리스트에 등록된 상품을 조회합니다.")
     @GetMapping("/wishlist")
-    public ResponseEntity<List<Wishlist>> getWishlist(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> getWishlist(@RequestHeader("Authorization") String token) {
         if (userServiceConnector.isValidToken(token)) {
             return ResponseEntity.status(403).body(null);
         }
@@ -227,7 +227,7 @@ public class OrderController {
         List<Wishlist> wishlist = wishlistRepository.findByUserEmail(email);
 
         if (wishlist.isEmpty()) {
-            return ResponseEntity.status(404).body(null);
+            return ResponseEntity.status(404).body("위시리스트가 존재하지 않습니다.");
         }
 
         return ResponseEntity.ok(wishlist);

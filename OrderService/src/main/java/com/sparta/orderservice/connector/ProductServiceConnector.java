@@ -39,9 +39,8 @@ public class ProductServiceConnector {
     }
 
     // Fallback 메서드
-    public void fallbackIsProductExist(String productName, Throwable throwable) {
-        log.error("Fallback executed due to: {}", throwable.getMessage());
-        throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
+    public boolean fallbackIsProductExist(String productName, Throwable throwable) {
+        throw new CustomException(productName + ". 상품 주문 실패\n원인 : " + throwable.getMessage()+"\n원인 : 상품이 존재하지 않음");
     }
 
     @CircuitBreaker(name = "productService", fallbackMethod = "fallbackExistByProductNameAndOverQuantity")
@@ -69,9 +68,8 @@ public class ProductServiceConnector {
         }
     }
     // Fallback 메서드
-    public void fallbackExistByProductNameAndOverQuantity(String productName, Throwable throwable) {
-        log.error("Fallback executed due to: {}", throwable.getMessage());
-        throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
+    public boolean fallbackExistByProductNameAndOverQuantity(String productName, Throwable throwable) {
+        throw new CustomException(productName + "상품 주문 실패\n원인 : " + throwable.getMessage()+"\n원인 : 상품 재고 부족");
     }
 
     @CircuitBreaker(name = "productService", fallbackMethod = "fallbackOrderProduct")

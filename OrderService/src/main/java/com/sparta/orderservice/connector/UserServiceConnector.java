@@ -40,9 +40,10 @@ public class UserServiceConnector {
             throw new RuntimeException("Error during product existence check", e);
         }
     }
-    public void fallbackIsValidToken(String token, Throwable throwable) {
+    public boolean fallbackIsValidToken(String token, Throwable throwable) {
         log.error("Fallback executed due to: {}", throwable.getMessage());
-        throw new CustomException("Failed to confirm token: " + token + ". Reason: " + throwable.getMessage());
+//        throw new CustomException("Failed to confirm token: " + token + ". Reason: " + throwable.getMessage());
+        return false;
     }
 
 }
