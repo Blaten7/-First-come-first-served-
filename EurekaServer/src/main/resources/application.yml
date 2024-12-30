@@ -6,6 +6,8 @@ spring:
   devtools:
     restart:
       enabled: true
+    livereload:
+      enabled: true
 eureka:
   client:
     register-with-eureka: false

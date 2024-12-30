@@ -52,4 +52,13 @@ task bootRunAll {
             ':Gateway:bootRun'
     )
 }
+task bootJarAll {
+    group = "build"
+    description = "Build bootJar for all subprojects"
 
+    subprojects.each { subproject ->
+        if (subproject.tasks.findByName("bootJar")) {
+            dependsOn("${subproject.path}:bootJar")
+        }
+    }
+}

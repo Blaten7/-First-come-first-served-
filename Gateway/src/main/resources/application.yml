@@ -13,6 +13,8 @@ spring:
   devtools:
     restart:
       enabled: true
+    livereload:
+      enabled: true
   cloud:
     gateway:
       discovery:

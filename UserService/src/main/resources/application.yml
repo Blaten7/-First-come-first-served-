@@ -18,6 +18,8 @@ spring:
   devtools:
     restart:
       enabled: true
+    livereload:
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: update

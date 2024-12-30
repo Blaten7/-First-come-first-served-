@@ -68,6 +68,7 @@ public class OrderController {
             @PathVariable("where") String where,
             @RequestHeader("Authorization") String token,
             @RequestBody OrderRequestDto orderRequest) {
+        log.info("테스트용로그asdf");
         // 로그인 여부 확인
         log.info("로그인 검증 시작");
         if (!userServiceConnector.isValidToken(token).join()) {
@@ -77,8 +78,6 @@ public class OrderController {
         String productName = orderRequest.getProductName();
         int orderQuantity = orderRequest.getStockQuantity();
         log.info("상품 이름 : " + productName + "상품 수량 : " + orderQuantity);
-//        log.info("씨발거 좆같네");
-        log.info("아니 삭제했잖아요 시발로마");
         // 상품 존재하는지, 그리고 재고가 주문수량 이상 있는지 검증
         if (productServiceConnector.isProductExist(productName)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
         log.info("일단? 상품이 있기는 해");

@@ -30,6 +30,8 @@ spring:
   devtools:
     restart:
       enabled: true
+    livereload:
+      enabled: true
 eureka:
   instance:
     hostname: localhost
