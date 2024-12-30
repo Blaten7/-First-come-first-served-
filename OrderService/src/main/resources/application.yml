@@ -43,9 +43,9 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
-management:
-  tracing:
-    enabled: false
+#management:
+#  tracing:
+#    enabled: false
 jwt:
   secret: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUU=
 logging:

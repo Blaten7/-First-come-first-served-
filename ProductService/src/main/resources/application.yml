@@ -49,6 +49,6 @@ eureka:
 logging:
   level:
     org.springframework.cloud: DEBUG
-management:
-  tracing:
-    enabled: false
+#management:
+#  tracing:
+#    enabled: false
