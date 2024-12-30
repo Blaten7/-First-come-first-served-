@@ -5,7 +5,7 @@ eureka:
     register-with-eureka: false
     registry-fetch-interval-seconds: 5
     service-url:
-      defaultZone: http://eureka-server:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 spring:
   application:
@@ -22,18 +22,18 @@ spring:
           enabled: true
       routes:
         - id: UserService
-#          uri: lb://USERSERVICE
-          uri: http://user-service:8050
+          uri: lb://USERSERVICE
+#          uri: http://user-service:8050
           predicates:
             - Path=/api/user/**
         - id: ProductService
-#          uri: lb://PRODUCTSERVICE
-          uri: http://product-service:8060
+          uri: lb://PRODUCTSERVICE
+#          uri: http://product-service:8060
           predicates:
             - Path=/api/product/**
         - id: OrderService
-#          uri: lb://ORDERSERVICE
-          uri: http://order-service:8070
+          uri: lb://ORDERSERVICE
+#          uri: http://order-service:8070
           predicates:
             - Path=/api/order/**
 
