@@ -19,6 +19,7 @@ public class Order {
 
     private String productName; // 상품 이름
     private String orderStatus; // 주문 상태
+    private String paymentStatus; // 결제 프로세스 상태
     private int totalAmount; // 주문 수량
 
 //    @OneToMany(mappedBy = "order")
