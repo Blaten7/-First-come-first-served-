@@ -5,17 +5,16 @@ welcome:
 spring:
   application:
     name: UserService
+  config:
+    import: optional:file:.env[.properties]
   profiles:
     active: native
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/MemberService
-#    url: ${USER_SERVICE_DB_URL}
+    url: ${USER_SERVICE_DB_URL}
     hikari:
-      username: admin
-      password: dlgudrn1998
-  #      username: ${DB_USERNAME}
-#      password: ${DB_PW}
+      username: ${DB_USERNAME}
+      password: ${DB_PW}
   devtools:
     restart:
       enabled: true
@@ -39,8 +38,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: dpfmzlskwpf@gmail.com
-    password: gojz trfn nsfp gqis
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_APP_KEY}
     properties:
       mail:
         smtp:
@@ -59,8 +58,7 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 jwt:
-  secret: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUU=
-#  secret: ${SECRET_KEY}
+  secret: ${SECRET_KEY}
 logging:
   level:
-    org.springframework.cloud: DEBUG
+    org.springframework.cloud: info
