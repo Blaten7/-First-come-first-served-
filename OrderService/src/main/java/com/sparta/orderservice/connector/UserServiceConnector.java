@@ -18,25 +18,24 @@ public class UserServiceConnector {
     private final WebClient webClient;
 
     public UserServiceConnector(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://user-service:8050").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:8050").build();
     }
 
     @CircuitBreaker(name = "userService", fallbackMethod = "fallbackIsValidToken")
     @TimeLimiter(name = "userService")
     @Retry(name = "userService")
     public CompletableFuture<Boolean> isValidToken(String token) {
-        return CompletableFuture.supplyAsync(() -> {
-            Boolean isValid = webClient.post()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/api/user/isValid")
-                            .build())
-                    .header("Authorization", token)
-                    .retrieve()
-                    .bodyToMono(Boolean.class)
-                    .block(); // 블로킹 방식
-            return Boolean.TRUE.equals(isValid);
-        });
+        return webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/user/isValid")
+                        .build())
+                .header("Authorization", token)
+                .retrieve()
+                .bodyToMono(Boolean.class) // 비동기 방식으로 처리
+                .defaultIfEmpty(false)     // 결과가 없을 경우 기본값 설정
+                .toFuture();               // Mono를 CompletableFuture로 변환
     }
+
 
     public CompletableFuture<Boolean> fallbackIsValidToken(String token, Throwable throwable) {
         log.error("Fallback executed due to: {}", throwable.getMessage());
