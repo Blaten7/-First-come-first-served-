@@ -79,7 +79,7 @@ public class OrderController {
         int orderQuantity = orderRequest.getStockQuantity();
         log.info("상품 이름 : " + productName + "상품 수량 : " + orderQuantity);
         // 상품 존재하는지, 그리고 재고가 주문수량 이상 있는지 검증
-        if (productServiceConnector.isProductExist(productName)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
+        if (productServiceConnector.isProductExist(productName).join()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
         log.info("일단? 상품이 있기는 해");
         if (productServiceConnector.existByProductNameAndOverQuantity(productName, orderQuantity)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 주문 수량보다 적습니다.");
         log.info("주문하려는 수량보다 재고가 많아!");
@@ -192,7 +192,7 @@ public class OrderController {
         String productName = wishlist.getProductName();
         int orderQuantity = wishlist.getQuantity();
 
-        if (productServiceConnector.isProductExist(productName)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
+        if (productServiceConnector.isProductExist(productName).join()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
         if (productServiceConnector.existByProductNameAndOverQuantity(productName, orderQuantity)) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 주문 수량보다 적습니다.");
 
         // 주문 생성
