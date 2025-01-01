@@ -14,20 +14,22 @@ management:
 spring:
   application:
     name: PurchaseService
+  config:
+    import: optional:file:.env[.properties]
   profiles:
     active: native
   main:
-    web-application-type: servlet
+    web-application-type: reactive
     log-startup-info: true
   cloud:
     compatibility-verifier:
       enabled: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db.cfu4cgmokcze.ap-northeast-2.rds.amazonaws.com:3306/ProductService
+    url: ${PURCHASE_SERVICE_DB_URL}
     hikari:
-      username: admin
-      password: dlgudrn1998
+      username: ${DB_USERNAME}
+      password: ${DB_PW}
   jpa:
     hibernate:
       ddl-auto: update
@@ -47,7 +49,7 @@ eureka:
     registry-fetch-interval-seconds: 5000
     disable-delta: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_DEFAULT_ZONE}
     healthcheck:
       enabled: true # Health check ???
 logging:

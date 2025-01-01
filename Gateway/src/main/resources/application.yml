@@ -5,16 +5,12 @@ eureka:
     register-with-eureka: false
     registry-fetch-interval-seconds: 5
     service-url:
-      defaultZone: http://localhost:8761/eureka
-
+      defaultZone: ${EUREKA_DEFAULT_ZONE}
 spring:
   application:
     name: Gateway
-  devtools:
-    restart:
-      enabled: true
-    livereload:
-      enabled: true
+  config:
+    import: optional:file:.env[.properties]
   cloud:
     gateway:
       discovery:
