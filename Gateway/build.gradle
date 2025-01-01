@@ -22,6 +22,7 @@ ext {
 }
 
 dependencies {
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'                   // WebFlux - 게이트웨이 비동기
     implementation 'org.springframework.boot:spring-boot-starter-actuator'

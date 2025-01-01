@@ -55,7 +55,7 @@ eureka:
     registry-fetch-interval-seconds: 5000
     disable-delta: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_DEFAULT_ZONE}
 
 jwt:
   secret: ${SECRET_KEY}

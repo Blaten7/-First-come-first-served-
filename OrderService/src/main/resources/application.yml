@@ -10,7 +10,7 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${PURCHASE_SERVICE_DB_URL}
+    url: ${ORDER_SERVICE_DB_URL}
     hikari:
       username: ${DB_USERNAME}
       password: ${DB_PW}
