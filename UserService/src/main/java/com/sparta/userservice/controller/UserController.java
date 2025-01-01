@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +33,12 @@ public class UserController {
     private final RedisTokenRepository redisTokenRepository;
     private static final long TOKEN_EXPIRATION_TIME = 15 * 60 * 1000; // 15분
     private final PasswordEncoder passwordEncoder;
+    private Environment env;
+
+    @GetMapping("/")
+    public String welcome() {
+        return env.getProperty("welcome.message");
+    }
 
     @Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
     @ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
