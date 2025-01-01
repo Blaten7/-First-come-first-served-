@@ -4,7 +4,6 @@ import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
-import com.sparta.userservice.service.EmailService;
 import com.sparta.userservice.service.UserService;
 import com.sparta.userservice.util.EncryptionUtil;
 import com.sparta.userservice.util.JwtUtil;
@@ -26,7 +25,6 @@ import java.util.Map;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private final EmailService emailService;
     private final UserService userService;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;

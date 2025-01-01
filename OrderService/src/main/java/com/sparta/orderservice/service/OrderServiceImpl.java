@@ -11,7 +11,7 @@ import java.security.Key;
 @Service
 public class OrderServiceImpl implements OrderService {
     @Value("${jwt.secret}")
-    private Key secretKey;
+    private String secretKey;
 
     @Override
     public String extractEmail(String token) {

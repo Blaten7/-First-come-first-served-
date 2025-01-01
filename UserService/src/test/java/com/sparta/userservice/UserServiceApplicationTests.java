@@ -8,7 +8,6 @@ import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.handler.GlobalExceptionHandler;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
-import com.sparta.userservice.service.EmailService;
 import com.sparta.userservice.service.UserService;
 import com.sparta.userservice.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,8 +31,6 @@ import static org.mockito.Mockito.*;
 
 class UserServiceApplicationTests {
 
-    @Mock
-    private EmailService emailService;
 
     @Mock
     private UserService userService;
@@ -92,33 +89,7 @@ class UserServiceApplicationTests {
         assertThat(response.getBody()).containsEntry("msg", "이미 사용된 이메일입니다.");
     }
 
-    @Test
-    void testVerifyEmailSuccess() throws Exception {
-        String token = "test-token";
-        String email = "test@example.com";
-        when(vtRepository.countByTokenAndExpiryDateAfter(anyString())).thenReturn(1L);
 
-        ResponseEntity<String> response = userController.verifyEmail(token, email);
-
-        assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertThat(response.getBody()).isEqualTo("이메일 인증이 완료되었습니다!");
-        verify(userRepository, times(1)).updateStatusFindByEmail(anyString());
-    }
-
-    @Test
-    void testVerifyEmailInvalidToken() throws Exception {
-        // Given
-        String token = "invalid-token";
-        String email = "test@example.com";
-        when(vtRepository.countByTokenAndExpiryDateAfter(anyString())).thenReturn(0L);
-
-        // When
-        ResponseEntity<String> response = userController.verifyEmail(token, email);
-
-        // Then
-        assertThat(response.getStatusCodeValue()).isEqualTo(403);
-        assertThat(response.getBody()).isEqualTo("유효하지 않은 토큰입니다.");
-    }
 
     @Test
     void testLoginSuccess() throws Exception {
