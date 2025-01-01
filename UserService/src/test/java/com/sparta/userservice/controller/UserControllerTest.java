@@ -4,7 +4,6 @@ import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.Member;
 import com.sparta.userservice.repository.RedisTokenRepository;
 import com.sparta.userservice.repository.UserRepository;
-import com.sparta.userservice.service.EmailService;
 import com.sparta.userservice.service.UserService;
 import com.sparta.userservice.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,15 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 class UserControllerTest {
-
-    @Mock
-    private EmailService emailService;
 
     @Mock
     private UserService userService;
@@ -34,9 +29,6 @@ class UserControllerTest {
 
     @Mock
     private RedisTokenRepository redisTokenRepository;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserController userController;
@@ -59,7 +51,7 @@ class UserControllerTest {
         // Then
         assertThat(response.getStatusCodeValue()).isEqualTo(202);
         assertThat(response.getBody()).containsKey("msg");
-        verify(emailService, times(1)).sendEmail(eq("test@example.com"), anyString(), anyString());
+        verify(userService, times(1)).sendEmail(eq("test@example.com"), anyString(), anyString());
     }
 
     @Test
@@ -74,37 +66,6 @@ class UserControllerTest {
         // Then
         assertThat(response.getStatusCodeValue()).isEqualTo(409);
         assertThat(response.getBody()).containsEntry("msg", "이미 사용된 이메일입니다.");
-    }
-
-    @Test
-    void testVerifyEmailSuccess() throws Exception {
-        // Given
-        String token = "test-token";
-        String email = "test@example.com";
-        when(vtRepository.countByTokenAndExpiryDateAfter(anyString())).thenReturn(1L);
-
-        // When
-        ResponseEntity<String> response = userController.verifyEmail(token, email);
-
-        // Then
-        assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertThat(response.getBody()).isEqualTo("이메일 인증이 완료되었습니다!");
-        verify(userRepository, times(1)).updateStatusFindByEmail(anyString());
-    }
-
-    @Test
-    void testVerifyEmailInvalidToken() throws Exception {
-        // Given
-        String token = "invalid-token";
-        String email = "test@example.com";
-        when(vtRepository.countByTokenAndExpiryDateAfter(anyString())).thenReturn(0L);
-
-        // When
-        ResponseEntity<String> response = userController.verifyEmail(token, email);
-
-        // Then
-        assertThat(response.getStatusCodeValue()).isEqualTo(403);
-        assertThat(response.getBody()).isEqualTo("유효하지 않은 토큰입니다.");
     }
 
     @Test

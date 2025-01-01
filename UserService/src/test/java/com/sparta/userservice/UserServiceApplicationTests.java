@@ -1,6 +1,7 @@
 package com.sparta.userservice;
 
 import com.sparta.userservice.component.LoggingFilter;
+import com.sparta.userservice.config.PasswordEncoderConfig;
 import com.sparta.userservice.controller.UserController;
 import com.sparta.userservice.dto.UserSignupRequestDto;
 import com.sparta.userservice.entity.Member;
@@ -74,7 +75,7 @@ class UserServiceApplicationTests {
         // Then
         assertThat(response.getStatusCodeValue()).isEqualTo(202);
         assertThat(response.getBody()).containsKey("msg");
-        verify(emailService, times(1)).sendEmail(eq("test@example.com"), anyString(), anyString());
+        verify(userService, times(1)).sendEmail(eq("test@example.com"), anyString(), anyString());
     }
 
     @Test

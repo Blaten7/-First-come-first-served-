@@ -51,7 +51,7 @@ public class UserController {
         String token = userService.createVerificationToken(userRequest);
         String subject = "회원가입 인증 이메일!";
         String body = "http://localhost:8222/api/user/auth/verify?token='" + token + "'&email=" + email;
-        emailService.sendEmail(email, subject, body);
+        userService.sendEmail(email, subject, body);
         return ResponseEntity
                 .status(202)
                 .body(Map.of("msg",
