@@ -1,6 +1,7 @@
 server:
   port: 8050
-# spring.application.name=UserService
+welcome:
+  message: "유저서비스 근무중 이상 무!"
 spring:
   application:
     name: UserService

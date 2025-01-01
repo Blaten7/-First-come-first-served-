@@ -2,9 +2,7 @@ package com.sparta.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EnableFeignClients
 @SpringBootApplication(exclude = {
         org.springframework.boot.autoconfigure.web.reactive.ReactiveWebServerFactoryAutoConfiguration.class,
         org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration.class
