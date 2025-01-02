@@ -106,7 +106,6 @@ class UserControllerTest {
     void testLogoutSuccess() {
         // Given
         String token = "Bearer jwt-token";
-        when(redisTokenRepository.isTokenValid(anyString())).thenReturn(true);
         when(redisTokenRepository.removeToken(anyString())).thenReturn(true);
 
         // When
@@ -121,7 +120,6 @@ class UserControllerTest {
     void testLogoutInvalidToken() {
         // Given
         String token = "Bearer invalid-token";
-        when(redisTokenRepository.isTokenValid(anyString())).thenReturn(false);
 
         // When
         ResponseEntity<String> response = userController.logout(token);
