@@ -52,6 +52,6 @@ eureka:
       defaultZone: ${EUREKA_DEFAULT_ZONE}
     healthcheck:
       enabled: true # Health check ???
-logging:
-  level:
-    org.springframework.cloud: DEBUG
+#logging:
+#  level:
+#    org.springframework.cloud: DEBUG
