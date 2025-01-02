@@ -17,15 +17,19 @@ public class ProductConnection {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8060").build();
     }
 
-    public Mono<Integer> getRemainingStock() {
+    public Flux<Product> getFFProduct() {
         return webClient.post()
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/product/live/stock")
                         .build())
                 .retrieve()
                 .bodyToFlux(Product.class) // Flux<Product>로 응답 수신
-                .map(Product::getStock)    // Product 객체에서 stock 필드 추출
-                .reduce(0, Integer::sum);  // 모든 stock 값을 합산하여 Mono<Integer>로 변환
+                .map(product -> new Product(
+                        product.getProductId(),
+                        product.getProductName(),
+                        product.getProductDescription(),
+                        product.getProductPrice(),
+                        product.getStockQuantity()
+                ));
     }
-
 }

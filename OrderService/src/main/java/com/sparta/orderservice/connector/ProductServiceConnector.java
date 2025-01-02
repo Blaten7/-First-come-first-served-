@@ -1,12 +1,15 @@
 package com.sparta.orderservice.connector;
 
+import com.sparta.orderservice.dto.Product;
 import com.sparta.orderservice.handler.CustomException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.concurrent.CompletableFuture;
@@ -21,45 +24,25 @@ public class ProductServiceConnector {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8060").build();
     }
 
-    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackIsProductExist")
+    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackFindByProductNameAndOverQuantity")
     @Retry(name = "productService")
-    public CompletableFuture<Boolean> isProductExist(String productName) {
-        return webClient.post()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/api/product/isExist")
-                        .queryParam("productName", productName)
-                        .build())
-                .retrieve()
-                .bodyToMono(Boolean.class)
-                .defaultIfEmpty(false)
-                .subscribeOn(Schedulers.boundedElastic())
-                .toFuture();
-    }
-
-    public CompletableFuture<Boolean> fallbackIsProductExist(String productName, Throwable throwable) {
-        throw new CustomException(productName + ". 상품 주문 실패<br>원인 : " + throwable.getMessage() + "<br>원인 : 상품이 존재하지 않음");
-    }
-
-    @CircuitBreaker(name = "productService", fallbackMethod = "fallbackExistByProductNameAndOverQuantity")
-    @Retry(name = "productService")
-    public CompletableFuture<Boolean> existByProductNameAndOverQuantity(String productName, int orderQuantity) {
+    public Flux<Product> findByProductNameAndOverQuantity(String productName) {
+        log.info("상품 검증 요청 메서드 진입");
         return webClient.post()
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/product/isOverQuantity")
                         .queryParam("productName", productName)
-                        .queryParam("orderQuantity", orderQuantity)
                         .build())
                 .retrieve()
-                .bodyToMono(Boolean.class)
-                .defaultIfEmpty(false)
-                .subscribeOn(Schedulers.boundedElastic())
-                .toFuture();
+                .bodyToFlux(Product.class)
+                .map(product -> new Product(
+                        product.getProductName(),
+                        product.getStockQuantity()
+                ));
     }
 
-    public CompletableFuture<Boolean> fallbackExistByProductNameAndOverQuantity(String productName, int orderQuantity, Throwable throwable) {
-        return CompletableFuture.failedFuture(
-                new CustomException(productName + " 상품 주문 실패<br>원인 : " + throwable.getMessage() + "<br>원인 : 상품 재고 부족")
-        );
+    public Flux<Boolean> fallbackFindByProductNameAndOverQuantity(String productName, Throwable throwable) {
+        throw new CustomException(productName + " 상품 주문 실패<br>원인 : " + throwable.getMessage() + "<br>원인 : 상품 재고 부족");
     }
 
     @CircuitBreaker(name = "productService", fallbackMethod = "fallbackOrderProduct")
@@ -78,7 +61,7 @@ public class ProductServiceConnector {
                 .toFuture();
     }
 
-    public CompletableFuture<Void> fallbackOrderProduct(String productName, Throwable throwable) {
+    public CompletableFuture<Void> fallbackOrderProduct(String productName, Integer orderQuantity, Throwable throwable) {
         throw new CustomException("Failed to order product: " + productName + ". Reason: " + throwable.getMessage());
     }
 
@@ -101,4 +84,5 @@ public class ProductServiceConnector {
     public CompletableFuture<Void> fallbackCancelProduct(String productName, Throwable throwable) {
         throw new CustomException("Failed to cancel product: " + productName + ". Reason: " + throwable.getMessage());
     }
+
 }

@@ -135,17 +135,17 @@ class ProductControllerTest {
         assertThat(result).isTrue();
     }
 
-    @Test
-    void testIsOverQuantity() {
-        // Given
-        when(productRepository.existsByProductNameAndStockQuantityGreaterThanEqual("Test Product", 5)).thenReturn(true);
-
-        // When
-        boolean result = productController.isOver("Test Product", 5);
-
-        // Then
-        assertThat(result).isTrue();
-    }
+//    @Test
+//    void testIsOverQuantity() {
+//        // Given
+//        when(productRepository.existsByProductNameAndStockQuantityGreaterThanEqual("Test Product", 5)).thenReturn(true);
+//
+//        // When
+//        boolean result = productController.isOver("Test Product", 5);
+//
+//        // Then
+//        assertThat(result).isTrue();
+//    }
 
     @Test
     void testOrderProduct() {

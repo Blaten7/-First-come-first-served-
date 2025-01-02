@@ -2,6 +2,7 @@ package com.sparta.orderservice.controller;
 
 import com.sparta.orderservice.connector.ProductServiceConnector;
 import com.sparta.orderservice.dto.OrderRequestDto;
+import com.sparta.orderservice.dto.Product;
 import com.sparta.orderservice.entity.Order;
 import com.sparta.orderservice.entity.Wishlist;
 import com.sparta.orderservice.repository.OrderRepository;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,43 +60,49 @@ public class OrderController {
 
     @Operation(summary = "주문 또는 찜하기", description = "상품을 주문 또는 위시리스트에 추가합니다.")
     @PostMapping("/product/{where}")
-    public ResponseEntity<String> order(
+    public Mono<ResponseEntity<String>> order(
             @PathVariable("where") String where,
             @RequestHeader("Authorization") String token,
             @RequestBody OrderRequestDto orderRequest) {
         String productName = orderRequest.getProductName();
         int orderQuantity = orderRequest.getStockQuantity();
-        // 상품 존재하는지, 그리고 재고가 주문수량 이상 있는지 검증
-        if (!productServiceConnector.isProductExist(productName).join()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
-        if (!productServiceConnector.existByProductNameAndOverQuantity(productName, orderQuantity).join()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 주문 수량보다 적습니다.");
 
-        // 상품이 존재한다면 주문자의 아이디를 토큰에서 추출
-        String email = orderService.extractEmail(token.replace("Bearer ", ""));
-        if (where.equals("주문")) {
-            // 주문 수량만큼 상품 재고량 감소
-            productServiceConnector.orderProduct(productName, orderQuantity);
-            log.info("재고 감소 완료");
-            // 주문 내역을 주문 엔티티에 저장
-            Order order = new Order();
-            order.setUserEmail(email);
-            order.setProductName(productName);
-            order.setOrderDate(LocalDateTime.now());
-            order.setOrderStatus("배송 준비중");
-            order.setTotalAmount(orderQuantity);
-            orderRepository.save(order);
-            log.info("주문정보 저장 완료");
-            return ResponseEntity.status(200).body("주문이 정상 처리되었습니다.");
-        } else if (where.equals("찜")) {
-            Wishlist wishlist = new Wishlist();
-            wishlist.setCreatedAt(LocalDateTime.now());
-            wishlist.setQuantity(orderQuantity);
-            wishlist.setProductName(productName);
-            wishlist.setUserEmail(email);
-            wishlistRepository.save(wishlist);
-            return ResponseEntity.status(200).body("위시리스트에 정상 추가되었습니다.");
-        } else {
-            return ResponseEntity.status(404).body("주문 또는 찜 선택은 필수 사항입니다,");
-        }
+        Flux<Product> productOpt = productServiceConnector.findByProductNameAndOverQuantity(productName);
+
+        return productOpt.next() // Flux에서 첫 번째 값을 Mono로 가져오기
+                .flatMap(product -> {
+                    if (product.getStockQuantity() < orderQuantity) {
+                        return Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                .body("상품 재고가 주문 수량보다 적습니다."));
+                    }
+                    String email = orderService.extractEmail(token.replace("Bearer ", ""));
+                    switch (where) {
+                        case "주문":
+                            // 주문 생성
+                            Order order = new Order();
+                            order.setUserEmail(email);
+                            order.setProductName(productName);
+                            order.setOrderDate(LocalDateTime.now());
+                            order.setOrderStatus("배송 준비중");
+                            order.setTotalAmount(orderQuantity);
+                            orderRepository.save(order); // 동기 방식으로 저장
+                            // 재고 감소
+                            productServiceConnector.orderProduct(productName, orderQuantity);
+                            return Mono.just(ResponseEntity.ok("상품 주문이 완료되었습니다."));
+                        case "찜":
+                            Wishlist wishlist = new Wishlist();
+                            wishlist.setCreatedAt(LocalDateTime.now());
+                            wishlist.setQuantity(orderQuantity);
+                            wishlist.setProductName(productName);
+                            wishlist.setUserEmail(email);
+                            wishlistRepository.save(wishlist);
+                            return Mono.just(ResponseEntity.ok("위시리스트에 추가되었습니다."));
+                    }
+                    return Mono.just(ResponseEntity.ok("주문 로직 정상 실행 완료"));
+                })
+                .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("존재하지 않는 상품입니다.")));
+
     }
 
     @Operation(summary = "주문 상태 조회", description = "사용자의 주문 상태를 조회합니다.")
@@ -152,45 +161,60 @@ public class OrderController {
 
     @Operation(summary = "위시리스트 상품 주문", description = "위시리스트에서 선택한 상품을 주문합니다.")
     @PostMapping("/wishlist/order/{wishlistId}")
-    public ResponseEntity<String> orderFromWishlist(
+    public Mono<ResponseEntity<String>> orderFromWishlist(
             @RequestHeader("Authorization") String token,
             @PathVariable Long wishlistId) {
 
+        // 위시리스트 확인
         Optional<Wishlist> wishlistOptional = wishlistRepository.findById(wishlistId);
         if (wishlistOptional.isEmpty()) {
-            return ResponseEntity.status(404).body("위시리스트에 해당 상품이 존재하지 않습니다.");
+            return Mono.just(ResponseEntity.status(404).body("위시리스트에 해당 상품이 존재하지 않습니다."));
         }
 
         Wishlist wishlist = wishlistOptional.get();
         String productName = wishlist.getProductName();
         int orderQuantity = wishlist.getQuantity();
 
-        if (productServiceConnector.isProductExist(productName).join()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("존재하지 않는 상품입니다.");
-        if (productServiceConnector.existByProductNameAndOverQuantity(productName, orderQuantity).join()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("상품 재고가 주문 수량보다 적습니다.");
+        // 상품 검증
+        Flux<Product> productOpt = productServiceConnector.findByProductNameAndOverQuantity(productName);
 
-        // 주문 생성
-        String email = orderService.extractEmail(token);
-        Order order = new Order();
-        order.setUserEmail(email);
-        order.setProductName(productName);
-        order.setOrderDate(LocalDateTime.now());
-        order.setOrderStatus("배송 준비중");
-        order.setTotalAmount(orderQuantity);
-        orderRepository.save(order);
+        return productOpt.next() // Flux에서 첫 번째 값을 Mono로 가져오기
+                .flatMap(product -> {
+                    // 재고 확인
+                    log.info("상품 재고 : " + product.getStockQuantity());
+                    if (product.getStockQuantity() < orderQuantity) {
+                        return Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                .body("상품 재고가 주문 수량보다 적습니다."));
+                    }
 
-        // 재고 감소
-        productServiceConnector.orderProduct(productName, orderQuantity);
+                    // 주문 생성
+                    String email = orderService.extractEmail(token.replace("Bearer ", ""));
+                    Order order = new Order();
+                    order.setUserEmail(email);
+                    order.setProductName(productName);
+                    order.setOrderDate(LocalDateTime.now());
+                    order.setOrderStatus("배송 준비중");
+                    order.setTotalAmount(orderQuantity);
 
-        // 위시리스트에서 삭제
-        wishlistRepository.delete(wishlist);
+                    orderRepository.save(order); // 동기 방식으로 저장
 
-        return ResponseEntity.status(200).body("위시리스트 상품이 주문되었습니다.");
+                    // 재고 감소
+                    productServiceConnector.orderProduct(productName, orderQuantity);
+
+                    // 위시리스트에서 삭제
+                    wishlistRepository.delete(wishlist);
+
+                    return Mono.just(ResponseEntity.ok("위시리스트 상품이 주문되었습니다."));
+                })
+                .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("존재하지 않는 상품입니다.")));
     }
+
 
     @Operation(summary = "마이페이지 조회", description = "위시리스트와 주문 상태를 함께 조회합니다.")
     @GetMapping("/mypage")
     public ResponseEntity<Map<String, Object>> getMyPage(@RequestHeader("Authorization") String token) {
-
+        token = token.replace("Bearer ", "");
         String email = orderService.extractEmail(token);
 
         List<Wishlist> wishlist = wishlistRepository.findByUserEmail(email);
@@ -206,7 +230,7 @@ public class OrderController {
     @Operation(summary = "위시리스트 조회", description = "위시리스트에 등록된 상품을 조회합니다.")
     @GetMapping("/wishlist")
     public ResponseEntity<?> getWishlist(@RequestHeader("Authorization") String token) {
-
+        token = token.replace("Bearer ", "");
         String email = orderService.extractEmail(token);
         List<Wishlist> wishlist = wishlistRepository.findByUserEmail(email);
 

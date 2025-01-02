@@ -95,9 +95,9 @@ public class ProductController {
 
     @Operation(summary = "주문서비스에서 요청보낼 메서드", description = "주문들어온 상품이 있기는 한건지")
     @PostMapping("/isOverQuantity")
-    public boolean isOver(@RequestParam String productName, @RequestParam int orderQuantity) {
+    public Optional<Product> isOver(@RequestParam String productName) {
         log.info("상품 수량 확인 여부 메서드 진입");
-        return productRepository.existsByProductNameAndStockQuantityGreaterThanEqual(productName, orderQuantity);
+        return productRepository.findByProductName(productName);
     }
 
     @Operation(summary = "주문!", description = "상품이름으로 검색해서 주문 수량만큼 재고를 감소")
@@ -118,7 +118,7 @@ public class ProductController {
 
     @Operation(summary = "선착순 구매 상품 실시간 조회", description = "제곧내")
     @PostMapping("/live/stock")
-    public int liveStock() {
+    public List<Product> liveStock() {
         String productName = "선착순";
         return productRepository.findByProductName2(productName);
     }

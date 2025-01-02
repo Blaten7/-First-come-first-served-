@@ -27,9 +27,4 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
 
-//    @OneToMany(mappedBy = "product")
-//    private List<Wishlist> wishlists;
-//
-//    @OneToMany(mappedBy = "product")
-//    private List<OrderItem> orderItems;
 }

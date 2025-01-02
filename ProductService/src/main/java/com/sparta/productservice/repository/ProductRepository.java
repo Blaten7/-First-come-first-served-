@@ -7,19 +7,20 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByProductName(String productName);
 
-    @Query("select p.stockQuantity from Product p " +
-            "where p.productName = :productName")
-    int findByProductName2(String productName);
+    @Query("SELECT p FROM Product p WHERE p.productName = :productName")
+    List<Product> findByProductName2(String productName);
 
-    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
-            "FROM Product p WHERE p.productName = :productName AND p.stockQuantity >= :orderQuantity")
-    boolean existsByProductNameAndStockQuantityGreaterThanEqual(@Param("productName") String productName, @Param("orderQuantity") int orderQuantity);
+//    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
+//            "FROM Product p WHERE p.productName = :productName AND p.stockQuantity >= :orderQuantity")
+//    List<Product> findByProductNameAndStockQuantityGreaterThanEqual(@Param("productName") String productName, @Param("orderQuantity") int orderQuantity);
 
     @Transactional
     @Modifying
