@@ -4,10 +4,6 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-
 @Service
 public class OrderServiceImpl implements OrderService {
     @Value("${jwt.secret}")
