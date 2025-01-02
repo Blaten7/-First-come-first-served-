@@ -2,6 +2,7 @@ package com.sparta.purchaseservice.controller;
 
 import com.sparta.purchaseservice.connector.OrderConnection;
 import com.sparta.purchaseservice.connector.ProductConnection;
+import com.sparta.purchaseservice.dto.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,13 +26,12 @@ public class PurchaseController {
     private final OrderConnection orderConnection;
     private boolean apiActive = false; // 현재 상태를 저장
     private static final ZonedDateTime START_TIME = ZonedDateTime.of(2025, 1, 3, 2, 25, 0, 0, ZoneId.of("Asia/Seoul"));
-    private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 1, 3, 2, 26, 0, 0, ZoneId.of("Asia/Seoul"));
+    private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 1, 3, 23, 26, 0, 0, ZoneId.of("Asia/Seoul"));
 
     @GetMapping("/test")
     public Mono<String> test() {
         return Mono.just("선착순 구매 서비스 정상 확인.");
     }
-
 
     @Scheduled(fixedRate = 3000, initialDelay = 3000) // 3초마다 실행
     public void updateApiStatus() {
@@ -57,17 +60,30 @@ public class PurchaseController {
         System.out.println("API 비활성화 상태로 변경되었습니다. 현재 시간: " + ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
     }
 
-//    @Operation(summary = "상품 재고 실시간 조회", description = "특정 상품의 남은 재고 수량을 조회합니다.")
-//    @GetMapping("/live/stock")
-//    public Mono<ResponseEntity<Integer>> getRemainingStock(@RequestHeader("Authorization") String token) {
-//        if (!apiActive) {
-//            return Mono.just(ResponseEntity.status(403).build()); // API 비활성화 시 403 반환
-//        }
-//
-//        return productConnection.getRemainingStock()
-//                .map(ResponseEntity::ok)
-//                .defaultIfEmpty(ResponseEntity.notFound().build());
-//    }
+    @Operation(summary = "상품 재고 실시간 조회", description = "특정 상품들의 상세 정보와 남은 재고 수량을 조회합니다.")
+    @GetMapping("/live/stock")
+    public Mono<ResponseEntity<String>> getRemainingStock(@RequestHeader("Authorization") String token) {
+        if (!apiActive) {
+            return Mono.just(ResponseEntity.status(403).build()); // API 비활성화 시 403 반환
+        }
+        return productConnection.getFFProduct()
+                .collectList()
+                .map(products -> {
+                    StringBuilder htmlResponse = new StringBuilder();
+                    htmlResponse.append("<html><body><h1>선착순 구매상품 리스트</h1><ul>");
+                    for (Product product : products) {
+                        htmlResponse.append("<li>")
+                                .append(product.getProductName())
+                                .append(" - <a href='http://localhost:8222/api/order/product/주문")
+                                .append("'>주문</a></li>")
+                                .append("<br>상품 설명 : ").append(product.getProductDescription())
+                                .append("<br>남은 재고 : ").append(product.getStockQuantity());
+                    }
+                    htmlResponse.append("</ul></body></html>");
+                    return ResponseEntity.ok(htmlResponse.toString());
+                })
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 
 //    @Operation(summary = "결제 프로세스 시작", description = "주문을 위한 결제 프로세스를 시작합니다.")
 //    @PostMapping("/{productId}/start")

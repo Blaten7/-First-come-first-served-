@@ -20,5 +20,4 @@ public class PurchaseServiceApplication {
         );
         SpringApplication.run(PurchaseServiceApplication.class, args);
     }
-
 }
