@@ -31,10 +31,11 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-            URI path = exchange.getRequest().getURI();
-            log.info("JwtAuthenticationFilter 실행 - 요청 URI: {}", path);
+            URI uri = exchange.getRequest().getURI();
+            String path = uri.getPath();
+            log.info("JwtAuthenticationFilter 실행 - 요청 URI: {}", uri);
             String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-            if ("/api/user/login".equals(path.getPath())) {
+            if ("/api/user/login".equals(path) || "/api/user/signup".equals(path)) {
                 return chain.filter(exchange.mutate().request(exchange.getRequest()).build());
             }
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {

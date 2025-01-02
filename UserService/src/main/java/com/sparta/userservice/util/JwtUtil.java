@@ -35,7 +35,7 @@ public class JwtUtil {
                     .build()
                     .parseClaimsJws(token)
                     .getBody()
-                    .get("userEmail", String.class);
+                    .getSubject();
         } catch (Exception e) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다", e);
         }

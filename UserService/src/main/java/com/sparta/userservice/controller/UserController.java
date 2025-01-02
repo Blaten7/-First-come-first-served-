@@ -68,19 +68,6 @@ public class UserController {
         return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
     }
 
-//    @PostMapping("/isValid")
-//    private boolean isValidTokenFromOrderService(@RequestHeader("Authorization") String token) {
-//        log.info("로그인 토큰 검증 컨트롤러 진입 from OtherService");
-//        log.info("토큰 : " + token);
-//        return redisTokenRepository.isTokenValid(token);
-//    }
-//
-//    private boolean isValidToken(String token) {
-//        log.info("로그인 토큰 검증 컨트롤러 진입");
-////        token = token.replace("Bearer ", "");
-//        return redisTokenRepository.isTokenValid(token);
-//    }
-
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginRequest) throws Exception {
@@ -154,9 +141,4 @@ public class UserController {
         return ResponseEntity.status(422).body("비밀번호는 변경이 잘 되었는데요.. 모든 기기에서 로그아웃은 왠지 모르게 실패했으니 알아서 하세요 ㅇㅋ?");
     }
 
-//    @Operation(summary = "로그인 검증", description = "다른 서비스에서 로그인 여부 확인시 사용")
-//    @PostMapping("/api/user/isValid/token")
-//    public boolean isValidJWTToken(String token) {
-//        return redisTokenRepository.isTokenValid(token);
-//    }
 }
