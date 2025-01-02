@@ -12,6 +12,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
@@ -22,36 +24,56 @@ public class PurchaseController {
 
     private final ProductConnection productConnection;
     private final OrderConnection orderConnection;
-    private final AtomicBoolean apiActive = new AtomicBoolean(false);
+    private boolean apiActive = false; // 현재 상태를 저장
+    private static final ZonedDateTime START_TIME = ZonedDateTime.of(2025, 1, 3, 2, 25, 0, 0, ZoneId.of("Asia/Seoul"));
+    private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 1, 3, 2, 26, 0, 0, ZoneId.of("Asia/Seoul"));
 
     @GetMapping("/test")
     public Mono<String> test() {
         return Mono.just("선착순 구매 서비스 정상 확인.");
     }
 
-    @Scheduled(fixedRate = 3000) // 매 분마다 상태 갱신
+
+    @Scheduled(fixedRate = 3000, initialDelay = 3000) // 3초마다 실행
     public void updateApiStatus() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime startTime = LocalDateTime.of(2025, 1, 3, 0, 7); // 예: 시작시간 9:00
-        LocalDateTime endTime = LocalDateTime.of(2025, 1, 3, 0, 22); // 예: 종료시간 18:00
-        if (now.isAfter(startTime) && now.isBefore(endTime)) {
-            apiActive.set(true);
-        } else {
-            apiActive.set(false);
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        boolean newStatus = now.isAfter(START_TIME) && now.isBefore(END_TIME);
+
+        // 상태가 변경된 경우에만 동작 수행
+        if (apiActive != newStatus) {
+            apiActive = newStatus;
+            if (apiActive) {
+                onActivation();
+            } else {
+                onDeactivation();
+            }
         }
     }
 
-    @Operation(summary = "상품 재고 실시간 조회", description = "특정 상품의 남은 재고 수량을 조회합니다.")
-    @GetMapping("/live/stock")
-    public Mono<ResponseEntity<Integer>> getRemainingStock(@RequestHeader("Authorization") String token) {
-//        if (!apiActive.get()) {
-//            return Mono.just(ResponseEntity.status(403).build()); // API 비활성화 시 403 반환
-//        }
-
+    private Mono<ResponseEntity<Integer>> onActivation() {
+        System.out.println("API 활성화 상태로 변경되었습니다. 현재 시간: " + ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
+        // 활성화 상태에서 수행할 동작 추가
         return productConnection.getRemainingStock()
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
+
+    private void onDeactivation() {
+        System.out.println("API 비활성화 상태로 변경되었습니다. 현재 시간: " + ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
+        // 비활성화 상태에서 수행할 동작 추가
+    }
+
+//    @Operation(summary = "상품 재고 실시간 조회", description = "특정 상품의 남은 재고 수량을 조회합니다.")
+//    @GetMapping("/live/stock")
+//    public Mono<ResponseEntity<Integer>> getRemainingStock(@RequestHeader("Authorization") String token) {
+//        if (!apiActive) {
+//            return Mono.just(ResponseEntity.status(403).build()); // API 비활성화 시 403 반환
+//        }
+//
+//        return productConnection.getRemainingStock()
+//                .map(ResponseEntity::ok)
+//                .defaultIfEmpty(ResponseEntity.notFound().build());
+//    }
 
 //    @Operation(summary = "결제 프로세스 시작", description = "주문을 위한 결제 프로세스를 시작합니다.")
 //    @PostMapping("/{productId}/start")
@@ -60,7 +82,7 @@ public class PurchaseController {
 //                .map(order -> ResponseEntity.ok(order))
 //                .defaultIfEmpty(ResponseEntity.badRequest().build());
 //    }
-//
+
 //    @Operation(summary = "결제 완료 처리", description = "결제 요청을 처리하고 주문을 완료합니다.")
 //    @PostMapping("/{orderId}/complete")
 //    public Mono<ResponseEntity<Order>> completePayment(@RequestHeader("Authorization") String token) {
