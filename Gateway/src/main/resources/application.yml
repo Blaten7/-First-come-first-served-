@@ -16,6 +16,8 @@ spring:
       discovery:
         locator:
           enabled: true
+      default-filters:
+        - name: JwtAuthenticationFilter
       routes:
         - id: UserService
           uri: lb://USERSERVICE
@@ -37,3 +39,11 @@ spring:
 management:
   tracing:
     enabled: false
+
+jwt:
+  secret: ${SECRET_KEY}
+
+logging:
+  level:
+    org.springframework.security.web.csrf: DEBUG
+    org.springframework.security.web.FilterChainProxy: DEBUG

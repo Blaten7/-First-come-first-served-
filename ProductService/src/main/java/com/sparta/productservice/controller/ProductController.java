@@ -89,7 +89,7 @@ public class ProductController {
     @Operation(summary = "주문서비스에서 요청보낼 메서드", description = "주문들어온 상품이 있기는 한건지")
     @PostMapping("/isExist")
     public boolean exist(@RequestParam String productName) {
-        log.info("상품 존재 확인 여부 메서드 진입");
+        log.info("상품 존재 확인 여부 메서드 진입 \n상품이름 : {}", productName);
         return productRepository.existsByProductName(productName);
     }
 

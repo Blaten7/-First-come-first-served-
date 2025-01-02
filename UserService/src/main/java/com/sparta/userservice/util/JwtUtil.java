@@ -4,10 +4,6 @@ import com.sparta.userservice.entity.Member;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ public class JwtUtil {
 
     public String generateToken(Member user) {
         return Jwts.builder()
-                .claim("userEmail", user.getUserEmail())
+                .setSubject(user.getUserEmail())
                 .claim("userId", user.getUserId())
                 .claim("userName", user.getUserName())
                 .setIssuedAt(new Date())
@@ -45,26 +41,17 @@ public class JwtUtil {
         }
     }
 
-    public boolean isTokenValid(String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public Authentication getAuthentication(String token) {
-        String email = extractEmail(token);
-
-        // 기본 권한 추가 (ROLE_USER)
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        // Member 객체 생성
-        Member principal = new Member(email, "", new ArrayList<>());
-
-        // UsernamePasswordAuthenticationToken 반환
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-    }
+//    public Authentication getAuthentication(String token) {
+//        String email = extractEmail(token);
+//
+//        // 기본 권한 추가 (ROLE_USER)
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+//
+//        // Member 객체 생성
+//        Member principal = new Member(email, "", new ArrayList<>());
+//
+//        // UsernamePasswordAuthenticationToken 반환
+//        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+//    }
 }

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @AllArgsConstructor
@@ -33,7 +34,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private Environment env;
 
-    @GetMapping("/")
+    @GetMapping("/welcome")
     public String welcome() {
         return env.getProperty("welcome.message");
     }
@@ -44,7 +45,8 @@ public class UserController {
     public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) throws Exception {
         log.info("회원가입 - 이메일 인증 컨트롤러 진입");
         String email = userRequest.getUserEmail();
-        if (userRepository.existsByUserEmail(EncryptionUtil.encrypt(email))) return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
+        if (userRepository.existsByUserEmail(EncryptionUtil.encrypt(email)))
+            return ResponseEntity.status(409).body(Map.of("msg", "이미 사용된 이메일입니다."));
         // 토큰을 토큰 저장소에 저장하고 유저정보를 임시 저장.
         String token = userService.createVerificationToken(userRequest);
         String subject = "회원가입 인증 이메일!";
@@ -62,26 +64,22 @@ public class UserController {
     @GetMapping("/auth/verify")
     public ResponseEntity<String> verifyEmail(@RequestParam String token, @RequestParam String email) throws Exception {
         log.info("이메일 검증 컨트롤러 진입");
-        if (isValidToken(token)) {
-            userRepository.updateStatusFindByEmail(EncryptionUtil.encrypt(email));
-            return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
-        }
-        userRepository.deleteByUserEmail(EncryptionUtil.encrypt(email));
-        return ResponseEntity.status(403).body("유효하지 않은 토큰입니다.");
+        userRepository.updateStatusFindByEmail(EncryptionUtil.encrypt(email));
+        return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
     }
 
-    @PostMapping("/isValid")
-    private boolean isValidTokenFromOrderService(@RequestHeader("Authorization") String token) {
-        log.info("로그인 토큰 검증 컨트롤러 진입 from OtherService");
-        log.info("토큰 : " + token);
-        return redisTokenRepository.isTokenValid(token);
-    }
-
-    private boolean isValidToken(String token) {
-        log.info("로그인 토큰 검증 컨트롤러 진입");
-//        token = token.replace("Bearer ", "");
-        return redisTokenRepository.isTokenValid(token);
-    }
+//    @PostMapping("/isValid")
+//    private boolean isValidTokenFromOrderService(@RequestHeader("Authorization") String token) {
+//        log.info("로그인 토큰 검증 컨트롤러 진입 from OtherService");
+//        log.info("토큰 : " + token);
+//        return redisTokenRepository.isTokenValid(token);
+//    }
+//
+//    private boolean isValidToken(String token) {
+//        log.info("로그인 토큰 검증 컨트롤러 진입");
+////        token = token.replace("Bearer ", "");
+//        return redisTokenRepository.isTokenValid(token);
+//    }
 
     @Operation(summary = "로그인", description = "JWT 토큰을 이용한 로그인 기능")
     @PostMapping("/login")
@@ -97,7 +95,6 @@ public class UserController {
         }
 
         String token = jwtUtil.generateToken(user);
-        log.info("만들어진 토큰 : " + token);
         redisTokenRepository.saveToken(token, email, TOKEN_EXPIRATION_TIME);
 
         return ResponseEntity.ok(Map.of(
@@ -112,10 +109,8 @@ public class UserController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
         log.info("현재 기기 로그아웃 요청 처리 컨트롤러 진입");
-        if (redisTokenRepository.isTokenValid(token)) {
-            if (redisTokenRepository.removeToken(token)) {
-                return ResponseEntity.ok("현재 기기에서 로그아웃되었습니다!");
-            }
+        if (redisTokenRepository.removeToken(token)) {
+            return ResponseEntity.ok("현재 기기에서 로그아웃되었습니다!");
         }
         return ResponseEntity.status(422).body("유효하지 않은 토큰입니다.");
     }
@@ -149,17 +144,19 @@ public class UserController {
         Member user = userService.authenticate(email, oldPassword);
         if (user == null) return ResponseEntity.status(404).body("현재 비밀번호가 틀렸습니다");
 
-        if (!newPassword.equals(confirmPassword)) return ResponseEntity.status(400).body("변경을 원하는 비밀번호와 비밀번호 확인이 일치하지 않습니다");
+        if (!newPassword.equals(confirmPassword))
+            return ResponseEntity.status(400).body("변경을 원하는 비밀번호와 비밀번호 확인이 일치하지 않습니다");
 
         userRepository.updateUserPwAndPwUpdatedAtByUserEmail(EncryptionUtil.encrypt(email), passwordEncoder.encode(newPassword));
         int removedTokens = redisTokenRepository.removeAllTokensByEmail(EncryptionUtil.encrypt(email));
-        if (removedTokens > 0) return ResponseEntity.status(200).body("비밀번호가 성공적으로 변경되어 모든 기기에서 로그아웃 되었습니다.\n새로운 비밀번호를 사용하여 로그인 해주세요!");
+        if (removedTokens > 0)
+            return ResponseEntity.status(200).body("비밀번호가 성공적으로 변경되어 모든 기기에서 로그아웃 되었습니다.\n새로운 비밀번호를 사용하여 로그인 해주세요!");
         return ResponseEntity.status(422).body("비밀번호는 변경이 잘 되었는데요.. 모든 기기에서 로그아웃은 왠지 모르게 실패했으니 알아서 하세요 ㅇㅋ?");
     }
 
-    @Operation(summary = "로그인 검증", description = "다른 서비스에서 로그인 여부 확인시 사용")
-    @PostMapping("/api/user/isValid/token")
-    public boolean isValidJWTToken(String token) {
-        return redisTokenRepository.isTokenValid(token);
-    }
+//    @Operation(summary = "로그인 검증", description = "다른 서비스에서 로그인 여부 확인시 사용")
+//    @PostMapping("/api/user/isValid/token")
+//    public boolean isValidJWTToken(String token) {
+//        return redisTokenRepository.isTokenValid(token);
+//    }
 }

@@ -18,9 +18,9 @@ public class LoggingFilter implements GlobalFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info("Request received at: {}", exchange.getRequest().getPath());
+        log.info("게이트웨이 요청 URL: {}", exchange.getRequest().getPath());
         return chain.filter(exchange)
-                .doOnSuccess(aVoid -> log.info("Request processed successfully"))
-                .doOnError(e -> log.error("Request failed: {}", e.getMessage()));
+                .doOnSuccess(aVoid -> log.info("Request 200 ok"))
+                .doOnError(e -> log.error("Bad request: {}", e.getMessage()));
     }
 }
