@@ -13,6 +13,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByProductName(String productName);
 
+    @Query("select p.stockQuantity from Product p " +
+            "where p.productName = :productName")
+    int findByProductName2(String productName);
+
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
             "FROM Product p WHERE p.productName = :productName AND p.stockQuantity >= :orderQuantity")
     boolean existsByProductNameAndStockQuantityGreaterThanEqual(@Param("productName") String productName, @Param("orderQuantity") int orderQuantity);

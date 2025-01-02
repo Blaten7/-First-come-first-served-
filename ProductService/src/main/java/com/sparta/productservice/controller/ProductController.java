@@ -115,4 +115,11 @@ public class ProductController {
         productRepository.updateProductStockQuantityPlusOrderQuantity(productName, cancelQuantity);
         log.info("주문 취소완료");
     }
+
+    @Operation(summary = "선착순 구매 상품 실시간 조회", description = "제곧내")
+    @PostMapping("/live/stock")
+    public int liveStock() {
+        String productName = "선착순";
+        return productRepository.findByProductName2(productName);
+    }
 }
