@@ -16,6 +16,7 @@ public class GatewayApplication {
         dotenv.entries().forEach(entry ->
                 System.setProperty(entry.getKey(), entry.getValue())
         );
+        System.out.println("SECRET_KEY: " + dotenv.get("SECRET_KEY"));
         SpringApplication.run(GatewayApplication.class, args);
     }
 

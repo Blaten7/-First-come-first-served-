@@ -3,8 +3,7 @@ package com.sparta.gateway.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
-import org.springframework.core.env.Environment;
-
+import lombok.extern.slf4j.Slf4j;
 import java.security.Key;
 import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,9 +11,6 @@ import java.util.Base64;
 
 public class JwtUtil {
 
-    static Environment env;
-
-//    private static final String SECRET_KEY = env.getProperty("jwt.secret");
     private static final String SECRET_KEY = "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUU=";
     private static final Key KEY = new SecretKeySpec(
             Base64.getDecoder().decode(SECRET_KEY), "HmacSHA256"

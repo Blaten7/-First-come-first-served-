@@ -1,11 +1,8 @@
 package com.sparta.purchaseservice.connector;
 
-import aj.org.objectweb.asm.commons.Remapper;
 import com.sparta.purchaseservice.dto.Product;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,9 +15,6 @@ public class ProductConnection {
 
     public ProductConnection(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://localhost:8060").build();
-    }
-    public Flux<?> getAllProducts() {
-        return null;
     }
 
     public Mono<Integer> getRemainingStock() {

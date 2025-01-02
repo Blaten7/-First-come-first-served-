@@ -42,10 +42,10 @@ management:
   tracing:
     enabled: false
 
-jwt:
-  secret: ${SECRET_KEY}
-
 logging:
   level:
     org.springframework.security.web.csrf: DEBUG
     org.springframework.security.web.FilterChainProxy: DEBUG
+
+jwt:
+  secret: ${SECRET_KEY}

@@ -8,13 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,17 +46,15 @@ public class PurchaseController {
         }
     }
 
-    private Mono<ResponseEntity<Integer>> onActivation() {
+    private void onActivation() {
         System.out.println("API 활성화 상태로 변경되었습니다. 현재 시간: " + ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
-        // 활성화 상태에서 수행할 동작 추가
-        return productConnection.getRemainingStock()
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+//        return productConnection.getRemainingStock()
+//                .map(ResponseEntity::ok)
+//                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     private void onDeactivation() {
         System.out.println("API 비활성화 상태로 변경되었습니다. 현재 시간: " + ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
-        // 비활성화 상태에서 수행할 동작 추가
     }
 
 //    @Operation(summary = "상품 재고 실시간 조회", description = "특정 상품의 남은 재고 수량을 조회합니다.")
