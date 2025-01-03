@@ -119,7 +119,7 @@ public class OrderController {
 
     @Operation(summary = "주문 취소", description = "배송 전 상태인 상품의 주문을 취소합니다.")
     @Transactional
-    @PutMapping("/cancel/{productName}")
+    @PatchMapping("/cancel/{productName}")
     public ResponseEntity<String> cancelOrder(@RequestHeader("Authorization") String token,
                                               @PathVariable String productName) {
 
@@ -132,7 +132,7 @@ public class OrderController {
     }
 
     @Operation(summary = "반품 신청", description = "배송 완료된 상품을 반품 신청합니다.")
-    @PutMapping("/refund/{productName}")
+    @PatchMapping("/refund/{productName}")
     public ResponseEntity<String> returnOrder(@RequestHeader("Authorization") String token,
                                               @PathVariable String productName) {
         String email = orderService.extractEmail(token);
@@ -228,7 +228,7 @@ public class OrderController {
 
 
     @Operation(summary = "위시리스트 수정", description = "위시리스트 상품 수량을 수정합니다.")
-    @PutMapping("/wishlist/quantity/update/{wishlistId}")
+    @PatchMapping("/wishlist/quantity/update/{wishlistId}")
     public ResponseEntity<String> updateWishlist(
             @PathVariable Long wishlistId,
             @RequestParam int quantity,

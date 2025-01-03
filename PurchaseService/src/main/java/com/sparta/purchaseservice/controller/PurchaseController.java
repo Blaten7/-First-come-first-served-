@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -95,6 +92,7 @@ public class PurchaseController {
             return Mono.just(ResponseEntity.ok("고객이 결제 시도 중 이탈했습니다."));
         } else {
             orderConnection.startPayment(token);
+            completePayment(token).subscribe();
             return Mono.just(ResponseEntity.status(200).body("결제 프로세스가 시작되었습니다."));
         }
     }
