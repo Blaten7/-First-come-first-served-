@@ -81,7 +81,7 @@ public class ProductServiceConnector {
                 .toFuture();
     }
 
-    public CompletableFuture<Void> fallbackCancelProduct(String productName, Throwable throwable) {
+    public CompletableFuture<Void> fallbackCancelProduct(String productName,int cancelQuantity, Throwable throwable) {
         throw new CustomException("Failed to cancel product: " + productName + ". Reason: " + throwable.getMessage());
     }
 

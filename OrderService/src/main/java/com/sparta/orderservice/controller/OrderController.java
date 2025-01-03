@@ -102,13 +102,13 @@ public class OrderController {
                 })
                 .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("존재하지 않는 상품입니다.")));
-
     }
 
     @Operation(summary = "주문 상태 조회", description = "사용자의 주문 상태를 조회합니다.")
     @GetMapping("/view/order/status")
     public ResponseEntity<?> getOrderStatus(@RequestHeader("Authorization") String token) {
 
+        token = token.replace("Bearer ", "");
         String email = orderService.extractEmail(token);
         List<Order> orderList = orderRepository.findByUserEmail(email);
 
@@ -117,13 +117,6 @@ public class OrderController {
         return ResponseEntity.status(200).body(orderList);
     }
 
-    /*
-        사용자의 로그인 토큰과 취소할 상품의 이름과 // 수량을 받고, 수량은 제외. 그냥 전부 취소시키는걸ㄹ ㅗ핪디ㅏ
-        사용자의 주문목록에 상품의 이름이 있을까 없을까
-        있다면 주문 상태가 배송 중 혹은 배송 완료가 아닌지 확인
-        아니면 주문취소후 상품서비스 가서 해당 수량만큼 재고 다시 증가
-        그리고 주문목록에서도 삭제.
-     */
     @Operation(summary = "주문 취소", description = "배송 전 상태인 상품의 주문을 취소합니다.")
     @Transactional
     @PutMapping("/cancel/{productName}")
@@ -138,14 +131,6 @@ public class OrderController {
         return ResponseEntity.status(200).body("주문이 취소되었습니다.");
     }
 
-    /*
-        토큰과 상품이름을 받고
-        사용자가 로그인 했는지 확인
-        했다면 토큰에서 이메일 추출
-        이메일 값으로 주문목록에서 상품이름이면서 배송완료가 있는지 확인
-        있다면 반품신청으로 상태변경.
-        D+1일후에 회수완료로 상태변경하고 상품서비스로가서 재고 수량만큼 추가
-     */
     @Operation(summary = "반품 신청", description = "배송 완료된 상품을 반품 신청합니다.")
     @PutMapping("/refund/{productName}")
     public ResponseEntity<String> returnOrder(@RequestHeader("Authorization") String token,
@@ -270,4 +255,23 @@ public class OrderController {
         return ResponseEntity.ok("위시리스트 항목이 삭제되었습니다.");
     }
 
+    @Operation(summary = "결제 프로세스 시작", description = "선착순 구매 상품 한정")
+    @PostMapping("/purchase/start")
+    public void purchaseStart(@RequestParam String token) {
+        log.info("[주문] 결제 프로세스 시작");
+        token = token.replace("Bearer ", "");
+        String email = orderService.extractEmail(token);
+        orderRepository.updateOrderStatusPurchaseStart(email);
+        String productName = "선착순";
+        productServiceConnector.orderProduct(productName, 1);
+    }
+
+    @Operation(summary = "결제 프로세스 완료", description = "선착순 구매 상품 한정")
+    @PostMapping("/purchase/end")
+    public void purchaseComplete(@RequestParam  String token) {
+        log.info("[주문] 결제 프로세스 완료");
+        token = token.replace("Bearer ", "");
+        String email = orderService.extractEmail(token);
+        orderRepository.updateOrderStatusPurchaseComplete(email);
+    }
 }

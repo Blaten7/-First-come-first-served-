@@ -85,27 +85,31 @@ public class PurchaseController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-//    @Operation(summary = "결제 프로세스 시작", description = "주문을 위한 결제 프로세스를 시작합니다.")
-//    @PostMapping("/{productId}/start")
-//    public Mono<ResponseEntity<String>> startPaymentProcess(@RequestHeader("Authorization") String token) {
-//        return orderConnection.startPayment(productId, request)
-//                .map(order -> ResponseEntity.ok(order))
-//                .defaultIfEmpty(ResponseEntity.badRequest().build());
-//    }
+    @Operation(summary = "결제 프로세스 시작", description = "주문을 위한 결제 프로세스를 시작합니다.")
+    @PostMapping("/live/product/start")
+    public Mono<ResponseEntity<String>> startPaymentProcess(@RequestHeader("Authorization") String token) {
+        log.info("결제 프로세스 시작");
+        boolean isAbandoned = Math.random() < 0.2; // 20% 확률로 이탈
+        if (isAbandoned) {
+            productConnection.cancelProduct();
+            return Mono.just(ResponseEntity.ok("고객이 결제 시도 중 이탈했습니다."));
+        } else {
+            orderConnection.startPayment(token);
+            return Mono.just(ResponseEntity.status(200).body("결제 프로세스가 시작되었습니다."));
+        }
+    }
 
-//    @Operation(summary = "결제 완료 처리", description = "결제 요청을 처리하고 주문을 완료합니다.")
-//    @PostMapping("/{orderId}/complete")
-//    public Mono<ResponseEntity<Order>> completePayment(@RequestHeader("Authorization") String token) {
-//        return orderConnection.completePayment(orderId)
-//                .map(order -> ResponseEntity.ok(order))
-//                .defaultIfEmpty(ResponseEntity.badRequest().build());
-//    }
-//
-//    @Operation(summary = "주문 정보 조회", description = "특정 주문의 상세 정보를 조회합니다.")
-//    @GetMapping("/{orderId}")
-//    public Mono<ResponseEntity<Order>> getOrderDetails(@RequestHeader("Authorization") String token) {
-//        return orderConnection.getOrderDetails(orderId)
-//                .map(order -> ResponseEntity.ok(order))
-//                .defaultIfEmpty(ResponseEntity.notFound().build());
-//    }
+    @Operation(summary = "결제 완료 처리", description = "결제 요청을 처리하고 주문을 완료합니다.")
+    @PostMapping("/live/product/complete")
+    public Mono<ResponseEntity<String>> completePayment(@RequestHeader("Authorization") String token) {
+        log.info("임의로 결제 완료 처리");
+        boolean isAbandoned = Math.random() < 0.2; // 20% 확률로 이탈
+        if (isAbandoned) {
+            productConnection.cancelProduct();
+            return Mono.just(ResponseEntity.ok("고객이 결제 중 상태에서 이탈했습니다."));
+        } else {
+            orderConnection.completePayment(token);
+            return Mono.just(ResponseEntity.status(200).body("결제가 완료되었습니다."));
+        }
+    }
 }

@@ -54,4 +54,18 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "where o.userEmail = :email and " +
             "o.orderStatus = :preDelivery")
     void updateByUserEmailAndOrderStatus(String email, String preDelivery);
+
+    @Transactional
+    @Modifying
+    @Query("update Order o " +
+            "set o.orderStatus = '결제 시도중' " +
+            "where o.userEmail = :email")
+    void updateOrderStatusPurchaseStart(String email);
+
+    @Transactional
+    @Modifying
+    @Query("update Order o " +
+            "set o.orderStatus = '결제 및 주문 완료' " +
+            "where o.userEmail = :email")
+    void updateOrderStatusPurchaseComplete(String email);
 }
