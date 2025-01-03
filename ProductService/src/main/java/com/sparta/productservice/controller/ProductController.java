@@ -73,16 +73,12 @@ public class ProductController {
 
     @Operation(summary = "상품 상세 정보 조회", description = "특정 상품의 상세 정보를 조회합니다.")
     @GetMapping("/view")
-    public ResponseEntity<?> getProductDetails(
-            @RequestParam(required = false) String productName,
-            @RequestParam(required = false) Long productId
-    ) {
-        if (productId != null) {
-            return ResponseEntity.ok(productRepository.findById(productId));
-        } else if (productName != null) {
+    public ResponseEntity<?> getProductDetails(@RequestParam String productName) {
+        log.info("상품이름 :" + productName);
+        if (productName != null) {
             return ResponseEntity.ok(productRepository.findByProductName(productName));
         } else {
-            return ResponseEntity.status(400).body("상품아이디 또는 상품이름중 하나는 입력해주세요 양심이 있으시면요");
+            return ResponseEntity.status(400).body("상품아이디 또는 상품이름중 하나는 입력해주세요");
         }
     }
 
@@ -122,4 +118,10 @@ public class ProductController {
         String productName = "선착순";
         return productRepository.findByProductName2(productName);
     }
+
+//    @Operation(summary = "재고 증가", description = "선착순 구매 상품. 결제 프로세스 진입 시, 재고감소 선처리 작업 롤백")
+//    @PatchMapping("/rollback")
+//    public void rollback(@RequestParam String productName, @RequestParam int rollbackQuantity) {
+//
+//    }
 }

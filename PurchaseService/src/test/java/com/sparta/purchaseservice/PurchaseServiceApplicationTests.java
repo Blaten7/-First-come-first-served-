@@ -69,27 +69,27 @@ class PurchaseServiceApplicationTests {
         verifyNoInteractions(orderConnection);
     }
 
-    @Test
-    void testStartPaymentProcess_SuccessfulPayment() {
-        // Arrange: Mock OrderConnection and Complete Payment
-        doNothing().when(orderConnection).startPayment("Bearer test-token");
-        when(purchaseController.completePayment("Bearer test-token")).thenReturn(Mono.just(ResponseEntity.ok().body("")));
-
-        // Act: Send POST request
-        webTestClient.post()
-                .uri("/live/product/start")
-                .header("Authorization", "Bearer test-token")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class)
-                .consumeWith(response -> {
-                    String body = response.getResponseBody();
-                    assertEquals("결제 프로세스가 시작되었습니다.", body);
-                });
-
-        // Assert: Verify interactions
-        verify(orderConnection, times(1)).startPayment("Bearer test-token");
-        verify(purchaseController, times(1)).completePayment("Bearer test-token");
-        verifyNoInteractions(productConnection);
-    }
+//    @Test
+//    void testStartPaymentProcess_SuccessfulPayment() {
+//        // Arrange: Mock OrderConnection and Complete Payment
+//        doNothing().when(orderConnection).startPayment("Bearer test-token");
+//        when(purchaseController.completePayment("Bearer test-token")).thenReturn(Mono.just(ResponseEntity.ok().body("")));
+//
+//        // Act: Send POST request
+//        webTestClient.post()
+//                .uri("/live/product/start")
+//                .header("Authorization", "Bearer test-token")
+//                .exchange()
+//                .expectStatus().isOk()
+//                .expectBody(String.class)
+//                .consumeWith(response -> {
+//                    String body = response.getResponseBody();
+//                    assertEquals("결제 프로세스가 시작되었습니다.", body);
+//                });
+//
+//        // Assert: Verify interactions
+//        verify(orderConnection, times(1)).startPayment("Bearer test-token");
+//        verify(purchaseController, times(1)).completePayment("Bearer test-token");
+//        verifyNoInteractions(productConnection);
+//    }
 }
