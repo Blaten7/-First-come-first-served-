@@ -7,10 +7,14 @@ import com.sparta.purchaseservice.service.PurchaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -23,9 +27,14 @@ public class PurchaseController {
     private final ProductConnection productConnection;
     private final OrderConnection orderConnection;
     private final PurchaseService purchaseService;
-    private boolean apiActive = false; // 현재 상태를 저장
+
+    private final RedisTemplate<String, String> redisTemplate;
+    private static final String PURCHASE_LOCK_KEY = "purchase_lock:";
+    private static final long LOCK_TIMEOUT = 10000; // 10 seconds
+
     private static final ZonedDateTime START_TIME = ZonedDateTime.of(2025, 1, 4, 0, 25, 0, 0, ZoneId.of("Asia/Seoul"));
     private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 1, 4, 23, 26, 0, 0, ZoneId.of("Asia/Seoul"));
+    private boolean apiActive = false; // 현재 상태를 저장
 
     @GetMapping("/test")
     public Mono<String> test() {
@@ -89,9 +98,26 @@ public class PurchaseController {
     public Mono<ResponseEntity<String>> startPaymentProcess(@RequestHeader("Authorization") String token) {
         log.info("결제 프로세스 시작");
         if (!apiActive) {
-            return Mono.just(ResponseEntity.status(403).build()); // API 비활성화 시 403 반환
+            return Mono.just(ResponseEntity.status(403).build());
         }
-        orderConnection.startPayment(token);
-        return purchaseService.startPaymentProcess(token);
+
+        String lockKey = PURCHASE_LOCK_KEY + token;
+
+        return Mono.fromCallable(() -> {
+            Boolean locked = redisTemplate.opsForValue()
+                    .setIfAbsent(lockKey, "locked", Duration.ofMillis(LOCK_TIMEOUT));
+
+            if (Boolean.TRUE.equals(locked)) {
+                try {
+                    orderConnection.startPayment(token);
+                    return purchaseService.startPaymentProcess(token).block();
+                } finally {
+                    redisTemplate.delete(lockKey);
+                }
+            } else {
+                return ResponseEntity.status(429)
+                        .body("이미 진행 중인 결제가 있습니다. 잠시 후 다시 시도해주세요.");
+            }
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 }
