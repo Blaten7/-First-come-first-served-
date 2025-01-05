@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.redisson:redisson:3.22.1'
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'com.sun.jersey:jersey-client:1.19.4'

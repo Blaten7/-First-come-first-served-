@@ -7,6 +7,8 @@ import com.sparta.purchaseservice.service.PurchaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RTopic;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,9 +33,10 @@ public class PurchaseController {
     private final RedisTemplate<String, String> redisTemplate;
     private static final String PURCHASE_LOCK_KEY = "purchase_lock:";
     private static final long LOCK_TIMEOUT = 10000; // 10 seconds
+    private final RedissonClient redisson;
 
     private static final ZonedDateTime START_TIME = ZonedDateTime.of(2025, 1, 4, 0, 25, 0, 0, ZoneId.of("Asia/Seoul"));
-    private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 1, 4, 23, 26, 0, 0, ZoneId.of("Asia/Seoul"));
+    private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 2, 14, 23, 26, 0, 0, ZoneId.of("Asia/Seoul"));
     private boolean apiActive = false; // 현재 상태를 저장
 
     @GetMapping("/test")
@@ -109,9 +112,19 @@ public class PurchaseController {
 
             if (Boolean.TRUE.equals(locked)) {
                 try {
+                    // 결제 프로세스 시작
                     orderConnection.startPayment(token);
-                    return purchaseService.startPaymentProcess(token).block();
+                    ResponseEntity<String> response = purchaseService.startPaymentProcess(token).block();
+
+                    // 결제 성공 시 Pub/Sub 채널로 이벤트 발행
+                    if (response != null && response.getStatusCode().is2xxSuccessful()) {
+                        RTopic topic = redisson.getTopic("payment:notifications");
+                        topic.publish("결제가 완료되었습니다. 토큰: " + token);
+                    }
+
+                    return response;
                 } finally {
+                    // 락 해제
                     redisTemplate.delete(lockKey);
                 }
             } else {
@@ -120,4 +133,5 @@ public class PurchaseController {
             }
         }).subscribeOn(Schedulers.boundedElastic());
     }
+
 }
