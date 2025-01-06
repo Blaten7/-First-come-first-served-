@@ -34,9 +34,21 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private Environment env;
 
-    @GetMapping("/welcome")
-    public String welcome() {
-        return env.getProperty("welcome.message");
+    @PostMapping("/k6/test/signup")
+    public void testSignup(@RequestBody Map<String, String> body) throws Exception {
+        String email = body.get("email");
+        String password = body.get("password");
+        String username = body.get("username");
+        Member member = new Member();
+        member.setUserName(EncryptionUtil.encrypt(username));
+        member.setUserEmail(EncryptionUtil.encrypt(email));
+        member.setUserPw(passwordEncoder.encode(password));
+        userRepository.save(member);
+    }
+
+    @DeleteMapping("/k6/test/deleteUser")
+    public void deleteUser(@RequestParam String email) throws Exception {
+        userRepository.deleteByUserEmail(EncryptionUtil.encrypt(email));
     }
 
     @Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
