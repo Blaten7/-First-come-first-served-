@@ -16,4 +16,8 @@ public class Product {
         this.productName = productName;
         this.stockQuantity = stockQuantity;
     }
+
+    public Product() {
+
+    }
 }

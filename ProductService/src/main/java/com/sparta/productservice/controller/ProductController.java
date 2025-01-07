@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
@@ -46,17 +47,30 @@ public class ProductController {
         productRepository.save(product);
         return ResponseEntity.status(201).body("상품 등록이 완료되었습니다.");
     }
-    @Operation(summary = "", description = "")
+
+    @Operation(summary = "상품 수량 업데이트", description = "상품 이름으로 수량을 업데이트합니다.")
     @PostMapping("/updateQuantity")
     public ResponseEntity<String> updateQuantity(@Valid @RequestBody ProductRequestDto productRequest) {
-        return null;
+        Product product = productRepository.findByProductName(productRequest.getProductName())
+                .orElse(null);
+        if (product == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품이 존재하지 않습니다");
+        product.setStockQuantity(productRequest.getStockQuantity());
+        productRepository.save(product);
+        return ResponseEntity.ok("상품 수량이 업데이트되었습니다: " + productRequest.getProductName() + ", 새로운 수량: " + productRequest.getStockQuantity());
     }
 
-    @Operation(summary = "", description = "")
+
+    @Operation(summary = "상품 설명 업데이트", description = "상품 이름으로 설명을 업데이트합니다.")
     @PostMapping("/updateDetails")
     public ResponseEntity<String> updateDetails(@Valid @RequestBody ProductRequestDto productRequest) {
-        return null;
+        Product product = productRepository.findByProductName(productRequest.getProductName())
+                .orElse(null);
+        if (product == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품이 존재하지 않습니다");
+        product.setProductDescription(productRequest.getProductDescription());
+        productRepository.save(product);
+        return ResponseEntity.ok("상품 설명이 업데이트되었습니다: " + productRequest.getProductName() + ", 새로운 설명: " + productRequest.getProductDescription());
     }
+
 
     @Operation(summary = "상품 리스트 조회", description = "등록된 상품 목록을 조회합니다.")
     @GetMapping("/view/list")
@@ -75,10 +89,10 @@ public class ProductController {
     @GetMapping("/view")
     public ResponseEntity<?> getProductDetails(@RequestParam String productName) {
         log.info("상품이름 :" + productName);
-        if (productName != null) {
+        if (!productName.isBlank()) {
             return ResponseEntity.ok(productRepository.findByProductName(productName));
         } else {
-            return ResponseEntity.status(400).body("상품아이디 또는 상품이름중 하나는 입력해주세요");
+            return ResponseEntity.status(400).body("해당 상품이 존재하지 않습니다.");
         }
     }
 

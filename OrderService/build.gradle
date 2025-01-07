@@ -51,6 +51,17 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'                  //
     testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'                            //
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    // Test
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation 'it.ozimov:embedded-redis:0.7.3'
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
 }
 dependencyManagement {
     imports {

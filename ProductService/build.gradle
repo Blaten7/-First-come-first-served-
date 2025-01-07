@@ -18,17 +18,17 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter'                           //
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'                  // JPA
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'                 // Gateway
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'                 //
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'                  //
     implementation 'org.springframework.boot:spring-boot-starter-validation'                // 유효성 검증 의존성
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'                // 스웨거 API 미완료상태
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'                 //
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'               //
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'   // 서비스 등록 및 발견
     implementation 'org.springframework.boot:spring-boot-starter-mail'                      //
     // DB
@@ -44,8 +44,15 @@ dependencies {
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
     testImplementation 'org.springframework.security:spring-security-test'                  //
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'                            //
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+    implementation 'org.slf4j:slf4j-api:1.7.32' // SLF4J API
+    // 로깅 의존성 추가
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0' // JUnit 5
+    // 테스트 의존성
 }
 dependencyManagement {
     imports {
@@ -66,12 +73,10 @@ bootJar {
     archiveBaseName.set('app') // 파일 이름 설정
     archiveVersion.set('')     // 버전 제거
 }
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
-//jar {
-//    archiveBaseName = 'api'                                                                 // JAR 파일 기본 이름 설정
-//    archiveClassifier = ''                                                                  // 분류자 제거
-//    enabled = true
-//}
-//tasks.named('bootJar') {
-//    enabled = true
-//}
+test {
+    systemProperty 'file.encoding', 'UTF-8'
+}
