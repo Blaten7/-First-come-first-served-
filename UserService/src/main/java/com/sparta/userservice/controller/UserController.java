@@ -126,7 +126,6 @@ public class UserController {
         if (removedTokens > 0) {
             return ResponseEntity.ok("모든 기기에서 로그아웃되었습니다!");
         }
-        log.warn("삭제된 토큰 : " + removedTokens);
         return ResponseEntity.status(422).body("유효하지 않은 요청입니다.");
     }
 
