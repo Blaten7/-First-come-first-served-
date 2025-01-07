@@ -352,21 +352,28 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
             </td>
         </tr>
         <tr>
-            <th>25.01.0 []</th>
+            <th>25.01.07 [화]</th>
             <td>
-                .
+                오늘부터 각 서비스별 테스트코드 작성<br>
+                및 테스트 커버리지 100% 달성
             </td>
             <td>
-                .
+                <details>
+                    <summary>UserService Test Coverage 100% 이미지</summary>
+                    <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/UserService/UserService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                </details>
             </td>
         </tr>
         <tr>
-            <th>25.01.0 []</th>
+            <th>25.01.08 [수]</th>
             <td>
                 .
             </td>
             <td>
-                .
+                <details>
+                    <summary>ProductService Test Coverage 100% 이미지</summary>
+                    <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/ProductService/ProductService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                </details>
             </td>
         </tr>
         <tr>
