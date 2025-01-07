@@ -40,6 +40,11 @@ public class Member {
 
     }
 
+    public Member(String mail, String username) {
+        this.userEmail = mail;
+        this.userName = username;
+    }
+
 //    @OneToMany(mappedBy = "user")
 //    private List<Order> orders;
 //
