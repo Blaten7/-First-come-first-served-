@@ -34,25 +34,7 @@ public class OrderController {
     private final OrderRepository orderRepository;
     private final WishlistRepository wishlistRepository;
 
-    /*
-        요구사항.
-        마이페이지를 통해 위시리스트에 등록한 상품과 주문한 상품의 상태를 조회 할 수 있습니다.
-            * 위시리스트에서는 내가 등록한 상품에 대한 정보를 보여주는 기능을 기본으로 하고
-              =제품의 상세페이지로 이동
-              =상품의 수량 변경 및 주문
-              =위시리스트 내 항목의 수정
-            * 주문 내역에서는 사용자가 주문한 상품에 대한 상태를 보여주고
-              상품에 대한 주문 취소, 반품 기능을 제공
-              =주문 상품에 대한 상태조회 [ 주문 후 D+1일에 배송중. D+2일에 배송 완료로 자동 상태변경 ]
-              =주문 상품에 대한 취소
-                주문 상태가 배송 중이 되기 이전까지만 취소가 가능.
-                취소 후에는 상품의 재고가 복구 되어야 하며, 취소후 상태는 취소완료로 변경
-              =상품에 대한 반품
-                배송 완료 후 D+1일까지만 반품 가능. 그 이후엔 안됨
-                배송 완료가 된 상품에 대해서만 반품이 가능.
-                반품한 상품은 반품신청후 D+1일에 재고에 반영.
-                재고 반영 후 상태는 반품완료로 변경
-     */
+
     @GetMapping("/test")
     public ResponseEntity<String> test(@RequestHeader("Authorization") String token) {
         return new ResponseEntity<>("아아 여기는 OrderService 요청 확인!", HttpStatus.OK);

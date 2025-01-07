@@ -35,7 +35,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'                //
     // JWT, Lombok
     annotationProcessor 'org.projectlombok:lombok'                                          //
-    implementation 'ch.qos.logback:logback-classic:1.2.11' // 유지
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'                                        //
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'                                          //
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'                                       //
@@ -47,7 +46,8 @@ dependencies {
     testImplementation 'it.ozimov:embedded-redis:0.7.3'
     testImplementation 'org.mockito:mockito-core:5.2.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
-    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    implementation 'ch.qos.logback:logback-classic:1.4.11' // Logback 최신 버전
+    implementation 'org.slf4j:slf4j-api:2.0.16'           // SLF4J 최신 버전
 }
 dependencyManagement {
     imports {
