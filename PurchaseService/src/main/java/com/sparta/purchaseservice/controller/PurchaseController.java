@@ -7,11 +7,12 @@ import com.sparta.purchaseservice.service.PurchaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RTopic;
-import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -19,6 +20,12 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
+import java.util.Collections;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Arrays;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,11 +40,36 @@ public class PurchaseController {
     private final RedisTemplate<String, String> redisTemplate;
     private static final String PURCHASE_LOCK_KEY = "purchase_lock:";
     private static final long LOCK_TIMEOUT = 10000; // 10 seconds
-    private final RedissonClient redisson;
 
     private static final ZonedDateTime START_TIME = ZonedDateTime.of(2025, 1, 4, 0, 25, 0, 0, ZoneId.of("Asia/Seoul"));
-    private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 2, 14, 23, 26, 0, 0, ZoneId.of("Asia/Seoul"));
+    private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 5, 4, 23, 26, 0, 0, ZoneId.of("Asia/Seoul"));
     private boolean apiActive = false; // 현재 상태를 저장
+
+    private static final String LOCK_SCRIPT =
+            "if redis.call('setnx', KEYS[1], ARGV[1]) == 1 then " +
+                    "redis.call('pexpire', KEYS[1], ARGV[2]) " +
+                    "return 1 " +
+                    "else " +
+                    "return 0 " +
+                    "end";
+
+    private final RedisScript<Long> lockScript = new DefaultRedisScript<>(LOCK_SCRIPT, Long.class);
+
+    private static final String DECREMENT_STOCK_SCRIPT =
+            "if redis.call('get', KEYS[1]) == ARGV[1] then " +
+                    "local stock = tonumber(redis.call('get', KEYS[2])) " +
+                    "if stock > 0 then " +
+                    "redis.call('decr', KEYS[2]) " +
+                    "redis.call('del', KEYS[1]) " +
+                    "return 1 " +
+                    "else " +
+                    "return 0 " +
+                    "end " +
+                    "else " +
+                    "return -1 " +
+                    "end";
+
+    private final RedisScript<Long> decrementStockScript = new DefaultRedisScript<>(DECREMENT_STOCK_SCRIPT, Long.class);
 
     @GetMapping("/test")
     public Mono<String> test() {
@@ -96,42 +128,86 @@ public class PurchaseController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
+    @Scheduled(fixedRate = 60000) // 1분마다 실행
+    public void syncStockToRedis() {
+        productConnection.getFFProduct()
+                .collectList()
+                .subscribe(products -> {
+                    int totalStock = products.stream()
+                            .mapToInt(Product::getStockQuantity)
+                            .sum();
+                    redisTemplate.opsForValue().set("product_stock", String.valueOf(totalStock));
+                    log.info("Redis 재고 동기화 완료: " + totalStock);
+                });
+    }
+
+    @Transactional
     @Operation(summary = "결제 프로세스 시작", description = "주문을 위한 결제 프로세스를 시작합니다.")
     @PostMapping("/live/product/start")
     public Mono<ResponseEntity<String>> startPaymentProcess(@RequestHeader("Authorization") String token) {
-        log.info("결제 프로세스 시작");
         if (!apiActive) {
-            return Mono.just(ResponseEntity.status(403).build());
+            return Mono.just(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body("서비스가 현재 비활성화 상태입니다."));
         }
 
         String lockKey = PURCHASE_LOCK_KEY + token;
+        String stockKey = "product_stock";
+        String lockValue = UUID.randomUUID().toString();
 
-        return Mono.fromCallable(() -> {
-            Boolean locked = redisTemplate.opsForValue()
-                    .setIfAbsent(lockKey, "locked", Duration.ofMillis(LOCK_TIMEOUT));
+        return Mono.defer(() -> {
+            try {
+                Long acquired = redisTemplate.execute(lockScript,
+                        Collections.singletonList(lockKey),
+                        lockValue,
+                        String.valueOf(LOCK_TIMEOUT));
 
-            if (Boolean.TRUE.equals(locked)) {
-                try {
-                    // 결제 프로세스 시작
-                    orderConnection.startPayment(token);
-                    ResponseEntity<String> response = purchaseService.startPaymentProcess(token).block();
-
-                    // 결제 성공 시 Pub/Sub 채널로 이벤트 발행
-                    if (response != null && response.getStatusCode().is2xxSuccessful()) {
-                        RTopic topic = redisson.getTopic("payment:notifications");
-                        topic.publish("결제가 완료되었습니다. 토큰: " + token);
-                    }
-
-                    return response;
-                } finally {
-                    // 락 해제
-                    redisTemplate.delete(lockKey);
+                if (acquired != null && acquired == 1L) {
+                    return processPayment(token, lockKey, stockKey, lockValue);
+                } else {
+                    return Mono.just(ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                            .body("이미 진행 중인 결제가 있습니다."));
                 }
-            } else {
-                return ResponseEntity.status(429)
-                        .body("이미 진행 중인 결제가 있습니다. 잠시 후 다시 시도해주세요.");
+            } catch (Exception e) {
+                log.error("Lock acquisition error", e);
+                return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("시스템 오류가 발생했습니다."));
             }
         }).subscribeOn(Schedulers.boundedElastic());
     }
 
+    private Mono<ResponseEntity<String>> processPayment(String token, String lockKey, String stockKey, String lockValue) {
+        return Mono.fromCallable(() -> {
+            try {
+                Long decrementResult = redisTemplate.execute(decrementStockScript,
+                        Arrays.asList(lockKey, stockKey),
+                        lockValue);
+
+                if (decrementResult != null && decrementResult == 1) {
+                    return purchaseService.startPaymentProcess(token)
+                            .timeout(Duration.ofSeconds(5))
+                            .block();
+                } else if (decrementResult == 0) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT)
+                            .body("재고가 부족합니다.");
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body("재고 처리 중 오류가 발생했습니다.");
+                }
+            } finally {
+                releaseLock(lockKey, lockValue);
+            }
+        }).onErrorResume(e -> {
+            log.error("Payment process error", e);
+            redisTemplate.opsForValue().increment(stockKey);
+            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("결제 처리 중 오류가 발생했습니다."));
+        });
+    }
+
+    private void releaseLock(String lockKey, String lockValue) {
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        redisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
+                Collections.singletonList(lockKey),
+                lockValue);
+    }
 }

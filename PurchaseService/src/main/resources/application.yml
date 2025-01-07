@@ -35,6 +35,10 @@ spring:
       ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
+  data:
+    redis:
+      port: 6379
+      host: localhost
 eureka:
   instance:
     hostname: localhost
