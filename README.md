@@ -374,6 +374,14 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
                     <summary>ProductService Test Coverage 100% 이미지</summary>
                     <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/ProductService/ProductService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
                 </details>
+                <details>
+                    <summary>EurekaServer Test Coverage 100% 이미지</summary>
+                    <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/EurekaServer/EurekaServer%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                </details>
+                <details>
+                    <summary>Gateway Test Coverage 100% 이미지</summary>
+                    <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/Gateway/Gateway%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                </details>
             </td>
         </tr>
         <tr>
