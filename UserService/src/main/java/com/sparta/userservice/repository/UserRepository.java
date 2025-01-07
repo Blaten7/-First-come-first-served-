@@ -23,12 +23,6 @@ public interface UserRepository extends JpaRepository<Member, Long> {
             "where userEmail = :email")
     void updateStatusFindByEmail(String email);
 
-//    @Query("select userPw from User " +
-//            "where userEmail = :encryptMail")
-//    String findByUserEmailToUserPw(String encryptMail);
-
-//    boolean existsByUserPw(String oldPw);
-
     @Transactional
     @Modifying
     @Query("UPDATE Member U " +

@@ -43,4 +43,8 @@ public class UserSignupRequestDto {
         this.userEmail = mail;
         this.userPw = password;
     }
+
+    public UserSignupRequestDto() {
+
+    }
 }

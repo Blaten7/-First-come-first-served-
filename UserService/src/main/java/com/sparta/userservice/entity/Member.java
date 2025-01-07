@@ -44,10 +44,4 @@ public class Member {
         this.userEmail = mail;
         this.userName = username;
     }
-
-//    @OneToMany(mappedBy = "user")
-//    private List<Order> orders;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Wishlist> wishlists;
 }
