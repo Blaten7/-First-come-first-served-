@@ -49,6 +49,7 @@ jwt:
 logging:
   level:
     org.springframework.cloud: INFO
+    io.github.resilience4j: DEBUG
 resilience4j:
   circuitbreaker:
     configs:
@@ -62,25 +63,25 @@ resilience4j:
         # COUNT_BASED일 경우: 최근 N번의 호출을 저장
         # TIME_BASED일 경우: 최근 N초 동안의 호출을 저장
         slidingWindowSize: 5  # 슬라이딩 윈도우의 크기를 5번의 호출로 설정
-        minimumNumberOfCalls: 5  # 서킷 브레이커가 동작하기 위해 필요한 최소한의 호출 수를 5로 설정
+        minimumNumberOfCalls: 1  # 서킷 브레이커가 동작하기 위해 필요한 최소한의 호출 수를 5로 설정
         slowCallRateThreshold: 100  # 느린 호출의 비율이 이 임계값(100%)을 초과하면 서킷 브레이커가 동작
         slowCallDurationThreshold: 60000  # 느린 호출의 기준 시간(밀리초)으로, 60초 이상 걸리면 느린 호출로 간주
-        failureRateThreshold: 50  # 실패율이 이 임계값(50%)을 초과하면 서킷 브레이커가 동작
+        failureRateThreshold: 1  # 실패율이 이 임계값(50%)을 초과하면 서킷 브레이커가 동작
         permittedNumberOfCallsInHalfOpenState: 3  # 서킷 브레이커가 Half-open 상태에서 허용하는 최대 호출 수를 3으로 설정
         # 서킷 브레이커가 Open 상태에서 Half-open 상태로 전환되기 전에 기다리는 시간
         waitDurationInOpenState: 20s  # Open 상태에서 Half-open 상태로 전환되기 전에 대기하는 시간을 20초로 설정
   retry:
     instances:
       productService:
-        max-attempts: 5
-        wait-duration: 500ms
+        max-attempts: 3
+        wait-duration: 200ms
         ignore-exceptions:
-          - org.springframework.web.client.HttpClientErrorException
       userService:
-        max-attempts: 5
-        wait-duration: 500ms
+        max-attempts: 3
+        wait-duration: 200ms
         ignore-exceptions:
           - org.springframework.web.client.HttpClientErrorException
+          - org.springframework.web.reactive.function.client.WebClientRequestException
   timelimiter:
     instances:
       productService:

@@ -16,7 +16,6 @@ public class PurchaseNotificationListner {
     public void subscribeToNotifications() {
         RTopic topic = redissonClient.getTopic("payment:notifications");
         topic.addListener(String.class, (channel, message) -> {
-            // 메시지를 처리하는 로직
             System.out.println("결제 알림 수신: " + message);
         });
     }

@@ -385,12 +385,15 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
             </td>
         </tr>
         <tr>
-            <th>25.01.0 []</th>
+            <th>25.01.09 [목]</th>
             <td>
                 .
             </td>
             <td>
-                .
+                <details>
+                    <summary>OrderService Test Coverage 100% 이미지</summary>
+                    <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/OrderService/OrderService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                </details>
             </td>
         </tr>
         <tr>
