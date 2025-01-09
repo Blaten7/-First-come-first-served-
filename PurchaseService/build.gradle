@@ -53,10 +53,18 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'                                                  //
     annotationProcessor 'org.projectlombok:lombok'                                          //
     // Test
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
     testImplementation 'org.springframework.security:spring-security-test'                  //
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'                            //
+    testImplementation 'io.projectreactor:reactor-test:3.5.10'
+    // Test
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'                  //
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation 'it.ozimov:embedded-redis:0.7.3'
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+    implementation 'ch.qos.logback:logback-classic:1.4.11' // Logback 최신 버전
+    implementation 'org.slf4j:slf4j-api:2.0.16'           // SLF4J 최신 버전
 }
 dependencyManagement {
     imports {

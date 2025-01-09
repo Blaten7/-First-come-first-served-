@@ -394,12 +394,18 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
                     <summary>OrderService Test Coverage 100% 이미지</summary>
                     <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/OrderService/OrderService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
                 </details>
+                <details>
+                    <summary>PurchaseService Test Coverage 90% 이미지</summary>
+                    <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/PurchaseService/PurchaseService%20-%20test%20coverage%2090%25.png" alt="테스트 커버리지 90%">
+                </details><br>
+                전체 모듈 테스트코드 작성 1차 완료        
             </td>
         </tr>
         <tr>
             <th>25.01.0 []</th>
             <td>
-                .
+                모든 서비스 로직 예외처리 및 정상화<br>
+                k6 성능테스트 정상화<br>
             </td>
             <td>
                 .
