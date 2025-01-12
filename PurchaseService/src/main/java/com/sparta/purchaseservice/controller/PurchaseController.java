@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class PurchaseController {
 
     private final RedisTemplate<String, String> redisTemplate;
     private static final String PURCHASE_LOCK_KEY = "purchase_lock:";
-    private static final long LOCK_TIMEOUT = 10000; // 10 seconds
+    private static final long LOCK_TIMEOUT = 5000; // 10 seconds
 
     private static final ZonedDateTime START_TIME = ZonedDateTime.of(2025, 1, 4, 0, 25, 0, 0, ZoneId.of("Asia/Seoul"));
     private static final ZonedDateTime END_TIME = ZonedDateTime.of(2025, 5, 4, 23, 26, 0, 0, ZoneId.of("Asia/Seoul"));
@@ -141,7 +142,7 @@ public class PurchaseController {
                 });
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Operation(summary = "결제 프로세스 시작", description = "주문을 위한 결제 프로세스를 시작합니다.")
     @PostMapping("/live/product/start")
     public Mono<ResponseEntity<String>> startPaymentProcess(@RequestHeader("Authorization") String token) {
@@ -197,17 +198,24 @@ public class PurchaseController {
                 releaseLock(lockKey, lockValue);
             }
         }).onErrorResume(e -> {
-            log.error("Payment process error", e);
-            redisTemplate.opsForValue().increment(stockKey);
+            log.error("결제 처리 중 오류 발생", e);
+            redisTemplate.opsForValue().increment(stockKey); // Long 타입 반환
             return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("결제 처리 중 오류가 발생했습니다."));
+                            .body("결제 처리 과정에서 오류가 발생했습니다."))
+                    .onErrorResume(redisError -> {
+                        log.error("Redis 작업 실패", redisError);
+                        return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("재고 수량 조정 중 오류가 발생했습니다."));
+                    });
         });
     }
 
-    private void releaseLock(String lockKey, String lockValue) {
-        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-        redisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
-                Collections.singletonList(lockKey),
-                lockValue);
+    private Mono<Void> releaseLock(String lockKey, String lockValue) {
+        return Mono.fromCallable(() -> {
+            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+            return redisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
+                    Collections.singletonList(lockKey),
+                    lockValue);
+        }).then();
     }
 }
