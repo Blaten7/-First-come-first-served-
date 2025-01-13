@@ -95,9 +95,6 @@ public class PurchaseController {
 
     private void onActivation() {
         System.out.println("API 활성화 상태로 변경되었습니다. 현재 시간: " + ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
-//        return productConnection.getRemainingStock()
-//                .map(ResponseEntity::ok)
-//                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     private void onDeactivation() {
@@ -152,7 +149,6 @@ public class PurchaseController {
         }
 
         String lockKey = PURCHASE_LOCK_KEY + token;
-        String stockKey = "product_stock";
         String lockValue = UUID.randomUUID().toString();
 
         return Mono.defer(() -> {
@@ -163,7 +159,9 @@ public class PurchaseController {
                         String.valueOf(LOCK_TIMEOUT));
 
                 if (acquired != null && acquired == 1L) {
-                    return processPayment(token, lockKey, stockKey, lockValue);
+                    return purchaseService.startPaymentProcess(token)
+                            .timeout(Duration.ofSeconds(5))
+                            .doFinally(signal -> releaseLock(lockKey, lockValue));
                 } else {
                     return Mono.just(ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                             .body("이미 진행 중인 결제가 있습니다."));
@@ -176,46 +174,50 @@ public class PurchaseController {
         }).subscribeOn(Schedulers.boundedElastic());
     }
 
-    private Mono<ResponseEntity<String>> processPayment(String token, String lockKey, String stockKey, String lockValue) {
-        return Mono.fromCallable(() -> {
-            try {
-                Long decrementResult = redisTemplate.execute(decrementStockScript,
-                        Arrays.asList(lockKey, stockKey),
-                        lockValue);
-
-                if (decrementResult != null && decrementResult == 1) {
-                    return purchaseService.startPaymentProcess(token)
-                            .timeout(Duration.ofSeconds(5))
-                            .block();
-                } else if (decrementResult == 0) {
-                    return ResponseEntity.status(HttpStatus.CONFLICT)
-                            .body("재고가 부족합니다.");
-                } else {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body("재고 처리 중 오류가 발생했습니다.");
-                }
-            } finally {
-                releaseLock(lockKey, lockValue);
-            }
-        }).onErrorResume(e -> {
-            log.error("결제 처리 중 오류 발생", e);
-            redisTemplate.opsForValue().increment(stockKey); // Long 타입 반환
-            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body("결제 처리 과정에서 오류가 발생했습니다."))
-                    .onErrorResume(redisError -> {
-                        log.error("Redis 작업 실패", redisError);
-                        return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body("재고 수량 조정 중 오류가 발생했습니다."));
-                    });
-        });
-    }
+//    private Mono<ResponseEntity<String>> processPayment(String token, String lockKey, String stockKey, String lockValue) {
+//        return Mono.fromCallable(() -> {
+//            try {
+//                Long decrementResult = redisTemplate.execute(decrementStockScript,
+//                        Arrays.asList(lockKey, stockKey),
+//                        lockValue);
+//
+//                if (decrementResult != null && decrementResult == 1) {
+//                    return purchaseService.startPaymentProcess(token)
+//                            .timeout(Duration.ofSeconds(5))
+//                            .block();
+//                } else if (decrementResult == 0) {
+//                    return ResponseEntity.status(HttpStatus.CONFLICT)
+//                            .body("재고가 부족합니다.");
+//                } else {
+//                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                            .body("재고 처리 중 오류가 발생했습니다.");
+//                }
+//            } finally {
+//                releaseLock(lockKey, lockValue)
+//                        .doOnError(e -> log.error("Lock release failed", e)).block();
+//            }
+//        }).onErrorResume(e -> {
+//            log.error("결제 처리 중 오류 발생", e);
+//            redisTemplate.opsForValue().increment(stockKey); // Long 타입 반환
+//            return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                            .body("결제 처리 과정에서 오류가 발생했습니다."))
+//                    .onErrorResume(redisError -> {
+//                        log.error("Redis 작업 실패", redisError);
+//                        return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                                .body("재고 수량 조정 중 오류가 발생했습니다."));
+//                    });
+//        });
+//    }
 
     private Mono<Void> releaseLock(String lockKey, String lockValue) {
-        return Mono.fromCallable(() -> {
-            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-            return redisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
-                    Collections.singletonList(lockKey),
-                    lockValue);
-        }).then();
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        return Mono.fromCallable(() ->
+                        redisTemplate.execute(
+                                new DefaultRedisScript<>(script, Long.class),
+                                Collections.singletonList(lockKey),
+                                lockValue
+                        ))
+                .doOnError(e -> log.error("Failed to release lock: {}", lockKey, e))
+                .then();
     }
 }
