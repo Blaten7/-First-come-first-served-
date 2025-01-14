@@ -150,6 +150,7 @@ public class PurchaseController {
 
         String lockKey = PURCHASE_LOCK_KEY + token;
         String lockValue = UUID.randomUUID().toString();
+        String stockKey = "product_stock";
 
         return Mono.defer(() -> {
             try {
@@ -159,8 +160,19 @@ public class PurchaseController {
                         String.valueOf(LOCK_TIMEOUT));
 
                 if (acquired != null && acquired == 1L) {
+                    // Redis 재고 감소를 이후로 지연
                     return purchaseService.startPaymentProcess(token)
-                            .timeout(Duration.ofSeconds(5))
+                            .flatMap(response -> {
+                                if (response.getStatusCode() == HttpStatus.OK) {
+                                    // 결제 성공 시에만 Redis 재고 감소
+                                    Long result = redisTemplate.execute(decrementStockScript,
+                                            Arrays.asList(lockKey, stockKey),
+                                            lockValue);
+                                    return Mono.just(response);
+                                }
+                                // 결제 실패나 이탈의 경우 Redis 재고 변경하지 않음
+                                return Mono.just(response);
+                            })
                             .doFinally(signal -> releaseLock(lockKey, lockValue));
                 } else {
                     return Mono.just(ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)

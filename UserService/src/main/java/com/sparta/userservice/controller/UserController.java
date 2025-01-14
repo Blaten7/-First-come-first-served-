@@ -47,8 +47,9 @@ public class UserController {
     }
 
     @DeleteMapping("/k6/test/deleteUser")
-    public void deleteUser(@RequestParam String email) throws Exception {
-        userRepository.deleteByUserEmail(EncryptionUtil.encrypt(email));
+    public void deleteUser() throws Exception {
+        String email = EncryptionUtil.encrypt("anrqlcdmlrja@naver.com");
+        userRepository.deleteByUserEmail(email);
     }
 
     @Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")

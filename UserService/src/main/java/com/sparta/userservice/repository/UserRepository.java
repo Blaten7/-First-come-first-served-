@@ -31,5 +31,7 @@ public interface UserRepository extends JpaRepository<Member, Long> {
             "WHERE U.userEmail = :email")
     void updateUserPwAndPwUpdatedAtByUserEmail(String email, String newPassword);
 
+    @Query("delete from Member " +
+            "where userEmail != :encrypt")
     void deleteByUserEmail(String encrypt);
 }

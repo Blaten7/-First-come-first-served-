@@ -26,7 +26,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                     boolean isAbandoned = Math.random() < 0.2;
                     if (isAbandoned) {
                         return productConnection.cancelProduct()
-                                .then(Mono.error(new PaymentProcessingException("고객이 결제 시도 중 이탈했습니다.")));
+                                .then(Mono.just(ResponseEntity.status(HttpStatus.NO_CONTENT).body("고객이 결제 시도 중 이탈했습니다")));
                     }
 
                     // OrderConnection의 startPayment를 Mono로 래핑
@@ -50,7 +50,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         boolean isAbandoned = Math.random() < 0.2;
         if (isAbandoned) {
             return productConnection.cancelProduct()
-                    .then(Mono.error(new PaymentProcessingException("고객이 결제 중 이탈했습니다.")));
+                    .then(Mono.just(ResponseEntity.status(HttpStatus.NO_CONTENT).body("고객이 결제 중 이탈했습니다")));
         }
 
         // OrderConnection의 completePayment를 Mono로 래핑
