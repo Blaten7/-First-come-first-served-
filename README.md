@@ -64,7 +64,7 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 - 데이터는 DB와 캐시를 활용하여 안전하게 관리해야 한다.
 
 <details>
-    <summary>📊 ERD 구상</summary>
+    <summary>📊 ERD 구상 <a href="#top">🔝</a></summary>
   <img src="https://github.com/Blaten7/image/blob/main/images/FcomeFserve/ERD_1차.png?raw=true" alt="">
 <h3>📝 초기 데이터 설계</h3>
 
@@ -102,11 +102,9 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 - 주문 취소/환불 처리를 위한 상태값 확장
 - 결제 정보 연동을 위한 테이블 추가 검토
 - 상품 이미지 관리를 위한 별도 테이블 고려
-
 </details>
 
-
-<h2 id="skills">🛠️ 기술스택</h2>
+<h2 id="skills">🛠️ 기술스택 <a href="#top">🔝</a></h2>
 <table>
   <tr>
     <td>백엔드</td>
@@ -164,9 +162,9 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 </table>
 
 <br>
-<h2 id="structure">🏗️ 프로젝트 구조</h2>
+<h2 id="structure">🏗️ 프로젝트 구조 <a href="#top">🔝</a></h2>
 <hr>
-<h3>⚙️ 시스템 아키텍쳐</h3>
+<h3>⚙️ 시스템 아키텍쳐 <a href="#top">🔝</a></h3>
 <details>
     <summary>자세히보기</summary>
 
@@ -183,7 +181,7 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 
 </details>
 
-<h3 id="MSA">🔄 전체 MSA 구조도</h3>
+<h3 id="MSA">🔄 전체 MSA 구조도 <a href="#top">🔝</a></h3>
 <details>
     <summary>자세히보기</summary>
 <h3>FcomeFeserve Project</h3>
@@ -192,7 +190,7 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/MSA%20%EA%B5%AC%EC%A1%B0%EB%8F%842.png" alt="MSA 구조도">
 </details>
 
-<h3 id="modules">📦 세부 모듈 설명</h3>
+<h3 id="modules">📦 세부 모듈 설명 <a href="#top">🔝</a></h3>
 <details>
   <summary>자세히보기</summary>
 
@@ -233,12 +231,12 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 - 인증/인가 처리
 - 사용자 프로필 관리
 </details>
-<h2 id="play">💻 실행방법</h2>
+<h2 id="play">💻 실행방법 <a href="#top">🔝</a></h2>
 <hr>
 <h3>[ API 명세 ]</h3>
 <a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ">Postman API 명세서 보기</a>
 
-<h2 id="details">✨ 구현 내용</h2>
+<h2 id="details">✨ 구현 내용 <a href="#top">🔝</a></h2>
 <hr>
 
 ### 1. MSA 기반 서비스 독립성과 확장성 향상
@@ -258,16 +256,16 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 - Docker Compose 를 사용하여 로컬 개발 환경 및 배포 환경에서 동일한 구성을 유지.
 - 모든 서비스와 외부 의존성을 컨테이너로 구성해 일관된 개발/운영 환경 제공.
 
-<h2 id="select">🤔 기술적 의사결정</h2>
+<h2 id="select">🤔 기술적 의사결정 <a href="#top">🔝</a></h2>
 <hr>
 
-<h2 id="trouble_shooting">🔍 트러블슈팅</h2>
+<h2 id="trouble_shooting">🔍 트러블슈팅 <a href="#top">🔝</a></h2>
 <hr>
 
-<h2 id="levelUp">⚡ 성능개선</h2>
+<h2 id="levelUp">⚡ 성능개선 <a href="#top">🔝</a></h2>
 <hr>
 
-<h2>📆 프로젝트 일정</h2>
+<h2>📆 프로젝트 일정 <a href="#top">🔝</a></h2>
 <hr>
 <details>
     <summary>계획 및 실천</summary>
@@ -607,6 +605,6 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
       </table>
 </details>
 
-<h2 id="result">🎉 결과</h2>
+<h2 id="result">🎉 결과 <a href="#top">🔝</a></h2>
 <hr>
 잘끝남 ㅈㅈ
