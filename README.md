@@ -36,7 +36,7 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
 
 <h1>🎯 기획</h1>
 <hr>
-https://github.com/Blaten7/-First-come-first-served-.wiki.git
+https://github.com/Blaten7/-First-come-first-served-/wiki/%F0%9F%93%8A-ERD-%EA%B5%AC%EC%83%81
 <details>
     <summary>📊 ERD 구상</summary>
   <img src="https://github.com/Blaten7/image/blob/main/images/FcomeFserve/ERD_1차.png?raw=true" alt="">
