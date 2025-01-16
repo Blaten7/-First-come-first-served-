@@ -1,16 +1,89 @@
-<h1>💻 선착순 구매 프로젝트</h1>
-<hr>
-무신사, 29cm 등 이커머스 서비스 내에서 선착순 구매가 진행되는 상황을 기반으로 설계된 프로젝트로,<br>
-Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 프로젝트
-<h2>프로젝트 개요</h2>
-* 기본적인 E-commerce 서비스를 위한 회원 플랫폼을 개발<br>
-* 사용자는 플랫폼을 통해 회원가입, 로그인, 로그아웃, 마이페이지 등의<br>
-&nbsp;&nbsp;기본적인 유저 관리 기능을 편리하게 이용할 수 있어야 합니다.<br>
-* 커머스를 이용하기 위한 핵심 요소인 WishList, 주문내역, 주문상태 조회 등의 기능을 제공하여<br>
-* 사용자가 원하는 물품의 구매 및 진행 상태를 원할하게 인지할 수 있도록 하여야 합니다.<br>
-* 올바른 주문 및 결제/환불 등을 처리하기 위해선 회원의 개인정보가 저장되어야 합니다.
+# 📋 목차
+- [👋 소개](#intro)             
+- [🎯 기획](#idea)            
+- [🛠️ 기술스택](#skills)
+- [🏗️ 프로젝트 구조](#structure)
+    - [⚙️ 시스템 아키텍쳐](#modules)
+    - [🔄 전체 MSA 구조도](#MSA)
+    - [📦 세부 모듈 설명](#modules)
+- [💻 실행방법]()
+- [✨ 구현 내용]()
+- [🤔 기술적 의사결정]()
+- [🔍 트러블슈팅]()
+- [⚡ 성능개선]()
+- [📅 프로젝트 일정](#schedules)
+- [🎉 결과]()
 
-<h2>🛠️ 기술스택</h2>
+<h1 id="intro">👋 프로젝트 소개</h1>
+<hr>
+무신사, 29cm와 같은 이커머스 플랫폼에서 발생하는 선착순 한정판 상품 구매 상황을 시뮬레이션한 프로젝트입니다.<br>
+대규모 트래픽 상황에서의 동시성 이슈를 Redis를 활용해 해결하고,<br>
+MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니다.
+<h3>💻 선착순 구매 프로젝트 개요</h3>
+
+본 프로젝트는 E-commerce 서비스를 위한 회원 플랫폼으로, 다음과 같은 핵심 기능을 제공합니다:
+
+* 회원 관리 시스템
+    - 회원가입, 로그인, 로그아웃 등 기본적인 사용자 인증
+    - 개인정보 관리 및 마이페이지 기능
+    - 회원 정보 기반의 주문/결제/환불 처리
+
+* 커머스 핵심 기능
+    - WishList를 통한 관심 상품 관리
+    - 주문 내역 조회 및 관리
+    - 실시간 주문 상태 추적
+
+
+<h1>🎯 기획</h1>
+<hr>
+https://github.com/Blaten7/-First-come-first-served-.wiki.git
+<details>
+    <summary>📊 ERD 구상</summary>
+  <img src="https://github.com/Blaten7/image/blob/main/images/FcomeFserve/ERD_1차.png?raw=true" alt="">
+<h3>📝 초기 데이터 설계</h3>
+
+1. **사용자(User) 정보 관리**
+- 기본적인 회원 정보(이름, 이메일, 비밀번호) 외에도 배송을 위한 주소, 연락처 정보 포함
+- 프로필 이미지와 자기소개 등 부가적인 사용자 정보도 고려
+- 비밀번호 변경 이력 관리를 위한 pwUpdatedAt 필드 추가
+- 회원 탈퇴 등을 고려하여 생성일(createdAt) 기록
+
+2. **상품(Product) 관리**
+- 상품의 기본 정보(이름, 설명, 가격) 관리
+- 재고 수량(stockQuantity)을 통한 재고 관리
+- 상품의 등록일(createdAt)과 수정일(updatedAt)을 통한 이력 관리
+- 가격은 소수점 연산을 고려하여 decimal(10,2) 타입 선택
+
+3. **주문(Order) 시스템**
+- 주문번호(orderNum)를 통한 주문 식별
+- 주문 상태(orderStatus)를 통한 주문 진행 상황 관리
+- 총 주문금액(totalAmount) 별도 관리
+- 주문 시각(orderDate) 기록
+
+4. **주문상품(OrderItem) 관리**
+- 하나의 주문에 여러 상품을 담을 수 있도록 설계
+- Order와 Product를 연결하는 중간 테이블 역할
+- 외래키를 통한 관계 설정으로 데이터 정합성 보장
+
+5. **위시리스트(Wishlist) 기능**
+- 사용자가 관심 있는 상품을 저장할 수 있는 기능
+- 사용자와 상품 간의 다대다 관계 해소
+- 수량(quantity) 필드를 통해 향후 장바구니 기능으로의 확장 고려
+- 생성 시각(createdAt) 기록으로 위시리스트 추가 이력 관리
+
+### 향후 고려사항
+- 상품의 카테고리 분류 체계 추가 필요
+- 주문 취소/환불 처리를 위한 상태값 확장
+- 결제 정보 연동을 위한 테이블 추가 검토
+- 상품 이미지 관리를 위한 별도 테이블 고려
+
+</details>
+<details>
+    <summary>🗃 데이터 플로우</summary>
+</details>
+
+
+<h2 id="skills">🛠️ 기술스택</h2>
 <table>
   <tr>
     <td>백엔드</td>
@@ -59,14 +132,88 @@ Redis에 기반한 대규모 주문 처리 및 MSA 등을 경험할 수 있는 �
   </tr>
 </table>
 
-<h2>💡 기획</h2><br>
-<h3>📄 1차 기획안 - ERD, API 명세</h3>
+<br>
+
+<h2>💡 프로젝트 구조</h2><br>
+
+<h3>📄 전체 MSA 구조도</h3>
 <details>
     <summary>자세히보기</summary>
-  <img src="https://github.com/Blaten7/image/blob/main/images/FcomeFserve/ERD_1차.png?raw=true" alt="">
-<h3>[ API 명세 ]</h3>
-<a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ">Postman API 명세서 보기</a>
+<h3>FcomeFeserve Project</h3>
+<h4>프로젝트 구조</h4><br>
+<h6>MSA(Microservice Architecture) 기반의 이커머스 서비스 프로젝트입니다.</h6><br>
+<img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/MSA%20%EA%B5%AC%EC%A1%B0%EB%8F%842.png" alt="MSA 구조도">
+<h3>📄 모듈(서비스) 설명</h3><br>
+🔍 EurekaServer<br><br>
+
+Spring Cloud Netflix Eureka 기반 서비스 디스커버리 서버<br>
+마이크로서비스 등록 및 위치 관리<br>
+서비스 인스턴스의 상태 모니터링<br><br>
+
+🌐 Gateway<br><br>
+
+Spring Cloud Gateway 기반 API Gateway<br>
+라우팅, 로드밸런싱<br>
+공통 필터 처리 (인증/인가, 로깅 등)<br><br>
+
+📦 OrderService<br><br>
+
+주문 처리 및 관리<br>
+주문 상태 추적<br>
+주문 관련 스케줄링 작업<br>
+외부 서비스 연동<br><br>
+
+🛍️ ProductService<br><br>
+
+상품 정보 관리<br>
+상품 카탈로그 제공<br>
+재고 관리<br>
+
+💳 PurchaseService<br><br>
+
+구매 프로세스 관리<br>
+결제 처리<br>
+구매 이력 관리<br><br>
+
+👥 UserService<br><br>
+
+사용자 계정 관리<br>
+인증/인가 처리<br>
+사용자 프로필 관리<br>
+
+<h3>시작하기</h3>
+![img.png](img.png)
+<br><br>
+<h4>서비스 포트</h4>
+
+<li>
+    Eureka Server :
+</li>
+<li>
+    Gateway :
+</li>
+<li>
+    Order Service :
+</li>
+<li>
+    Product Service :
+</li>
+<li>
+    Purchase Service :
+</li>
+<li>
+    UserService :
+</li>
+
 </details>
+
+<h3>📄 세부 모듈 설명</h3>
+<details>
+    <summary>자세히보기</summary>
+<h3>[ API 명세 ]</h3>
+</details>
+<br>
+<br>
 <br>
 <h3>📆 프로젝트 일정 계획표</h3>
 <details>
