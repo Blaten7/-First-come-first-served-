@@ -1,3 +1,11 @@
+# 선착순 구매 프로젝트 - First come, First serve
+
+- 현시점 완성도 약 30%
+- 리드미 작성 계획
+- 5분 기록보드 분리 및 정리 +20%
+- 깃허브 위키 사용하여 토글 없애기 +15%
+- 아니다 토글을 아예 없애기보다 진짜 간략하게 핵심만 간단히 기술, 결과적으로 토글을 없애는게 맞긴 함. +15%
+- 가독성 향상 및 문장 다듬기 20%
 # 📋 목차
 - [👋 소개](#intro)             
 - [🎯 기획](#idea)            
@@ -6,20 +14,20 @@
     - [⚙️ 시스템 아키텍쳐](#modules)
     - [🔄 전체 MSA 구조도](#MSA)
     - [📦 세부 모듈 설명](#modules)
-- [💻 실행방법]()
-- [✨ 구현 내용]()
-- [🤔 기술적 의사결정]()
-- [🔍 트러블슈팅]()
-- [⚡ 성능개선]()
+- [💻 실행방법](#play)
+- [✨ 구현 내용](#details)
+- [🤔 기술적 의사결정](#select)
+- [🔍 트러블슈팅](#trouble_shooting)
+- [⚡ 성능개선](#levelUp)
 - [📅 프로젝트 일정](#schedules)
-- [🎉 결과]()
+- [🎉 결과](#result)
 
-<h1 id="intro">👋 프로젝트 소개</h1>
+<h1 id="intro">👋 소개</h1>
 <hr>
 무신사, 29cm와 같은 이커머스 플랫폼에서 발생하는 선착순 한정판 상품 구매 상황을 시뮬레이션한 프로젝트입니다.<br>
 대규모 트래픽 상황에서의 동시성 이슈를 Redis를 활용해 해결하고,<br>
 MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니다.
-<h3>💻 선착순 구매 프로젝트 개요</h3>
+<h3>💻 개요</h3>
 
 본 프로젝트는 E-commerce 서비스를 위한 회원 플랫폼으로, 다음과 같은 핵심 기능을 제공합니다:
 
@@ -34,9 +42,24 @@ MSA 아키텍처를 통해 서비스 간 안정적인 확장을 구현했습니�
     - 실시간 주문 상태 추적
 
 
-<h1>🎯 기획</h1>
+<h1 id="idea">🎯 기획</h1>
 <hr>
-https://github.com/Blaten7/-First-come-first-served-/wiki/%F0%9F%93%8A-ERD-%EA%B5%AC%EC%83%81
+
+## 요구사항 분석
+
+### 기능적 요구사항
+
+- 사용자는 실시간으로 상품 구매가 가능해야 한다.
+- 선착순 구매 성공 여부를 즉시 확인할 수 있어야 한다.
+- 관리자는 상품의 재고를 실시간으로 조회 및 수정할 수 있어야 한다.
+- 
+### 비기능적 요구사항
+
+- 시스템은 1초 내 5,000 TPS를 처리할 수 있어야 한다.
+- 구매 요청은 100ms 이내에 응답해야 한다.
+- 시스템 가용성은 99.9% 이상을 유지해야 한다.
+- 데이터는 DB와 캐시를 활용하여 안전하게 관리해야 한다.
+
 <details>
     <summary>📊 ERD 구상</summary>
   <img src="https://github.com/Blaten7/image/blob/main/images/FcomeFserve/ERD_1차.png?raw=true" alt="">
@@ -78,9 +101,6 @@ https://github.com/Blaten7/-First-come-first-served-/wiki/%F0%9F%93%8A-ERD-%EA%B
 - 상품 이미지 관리를 위한 별도 테이블 고려
 
 </details>
-<details>
-    <summary>🗃 데이터 플로우</summary>
-</details>
 
 
 <h2 id="skills">🛠️ 기술스택</h2>
@@ -88,8 +108,8 @@ https://github.com/Blaten7/-First-come-first-served-/wiki/%F0%9F%93%8A-ERD-%EA%B
   <tr>
     <td>백엔드</td>
     <td>
-      <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white" alt="">
-      <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="">
+      <img src="https://img.shields.io/badge/java 17-007396?style=for-the-badge&logo=java&logoColor=white" alt="">
+      <img src="https://img.shields.io/badge/springboot 3.4.0-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="">
       <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" alt="">
 <img src="https://img.shields.io/badge/spring%20data%20jpa-004225?style=for-the-badge&logo=spring&logoColor=white" alt="">
     </td>
@@ -104,14 +124,25 @@ https://github.com/Blaten7/-First-come-first-served-/wiki/%F0%9F%93%8A-ERD-%EA%B
   <tr>
     <td>데이터베이스</td>
     <td>
-        <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="">
+        <img src="https://img.shields.io/badge/MySQL 8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="">
         <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="">
     </td>
   </tr>
   <tr>
-    <td>IDE</td>
+    <td>분산시스템 / 아키텍쳐</td>
     <td>
-      <img src="https://img.shields.io/badge/intelliJ IDEA-000000?style=for-the-badge&logo=intelliJ IDEA&logoColor=white" alt="">
+        <img src="https://img.shields.io/badge/Eureka_Server-5A5A5A?style=for-the-badge&logo=spring&logoColor=white" alt="">
+        <img src="https://img.shields.io/badge/Spring_Cloud_Gateway-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="">
+        <img src="https://img.shields.io/badge/MSA-0088CC?style=for-the-badge&logo=microgen&logoColor=white" alt="">
+        <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="">
+    </td>
+  </tr>
+  <tr>
+    <td>테스트 도구</td>
+    <td>
+        <img src="https://img.shields.io/badge/K6-5563C1?style=for-the-badge&logo=k6&logoColor=white" alt="K6">
+        <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" alt="Postman">
+        <img src="https://img.shields.io/badge/JUnit5-25A162?style=for-the-badge&logo=junit5&logoColor=white" alt="JUnit">
     </td>
   </tr>
   <tr>
@@ -122,102 +153,121 @@ https://github.com/Blaten7/-First-come-first-served-/wiki/%F0%9F%93%8A-ERD-%EA%B
     </td>
   </tr>
   <tr>
-    <td>분산시스템 / 아키텍쳐</td>
+    <td>IDE</td>
     <td>
-        <img src="https://img.shields.io/badge/Eureka_Server-5A5A5A?style=for-the-badge&logo=spring&logoColor=white" alt="">
-        <img src="https://img.shields.io/badge/Spring_Cloud_Gateway-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="">
-        <img src="https://img.shields.io/badge/MSA-0088CC?style=for-the-badge&logo=microgen&logoColor=white" alt="">
-        <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="">
-</td>
+      <img src="https://img.shields.io/badge/intelliJ IDEA-000000?style=for-the-badge&logo=intelliJ IDEA&logoColor=white" alt="">
+    </td>
   </tr>
 </table>
 
 <br>
+<h2 id="structure">🏗️ 프로젝트 구조</h2>
+<hr>
+<h3>⚙️ 시스템 아키텍쳐</h3>
+<details>
+    <summary>자세히보기</summary>
 
-<h2>💡 프로젝트 구조</h2><br>
+#### 시스템 개요도 - 타임라인
+- 선착순 구매 시스템의 핵심 프로세스를 시간순으로 표현
+- 각 단계별 주요 기능을 직관적인 아이콘으로 시각화
+  ![시스템 개요 - 타임라인 형식](https://github.com/Blaten7/image/blob/main/images/FcomeFserve/%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B0%9C%EC%9A%94%20-%20%ED%83%80%EC%9E%84%EB%9D%BC%EC%9D%B8%20%ED%98%95%EC%8B%9D.png?raw=true)
 
-<h3>📄 전체 MSA 구조도</h3>
+#### 상세 시퀀스 다이어그램
+- 서비스 간 상세 데이터 흐름
+- 성공/실패 시나리오 포함
+- 각 단계별 구체적인 상호작용 명세
+  ![시퀀스 다이어그램](https://github.com/Blaten7/image/blob/main/images/FcomeFserve/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png?raw=true)
+
+</details>
+
+<h3 id="MSA">🔄 전체 MSA 구조도</h3>
 <details>
     <summary>자세히보기</summary>
 <h3>FcomeFeserve Project</h3>
 <h4>프로젝트 구조</h4><br>
 <h6>MSA(Microservice Architecture) 기반의 이커머스 서비스 프로젝트입니다.</h6><br>
 <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/MSA%20%EA%B5%AC%EC%A1%B0%EB%8F%842.png" alt="MSA 구조도">
-<h3>📄 모듈(서비스) 설명</h3><br>
-🔍 EurekaServer<br><br>
-
-Spring Cloud Netflix Eureka 기반 서비스 디스커버리 서버<br>
-마이크로서비스 등록 및 위치 관리<br>
-서비스 인스턴스의 상태 모니터링<br><br>
-
-🌐 Gateway<br><br>
-
-Spring Cloud Gateway 기반 API Gateway<br>
-라우팅, 로드밸런싱<br>
-공통 필터 처리 (인증/인가, 로깅 등)<br><br>
-
-📦 OrderService<br><br>
-
-주문 처리 및 관리<br>
-주문 상태 추적<br>
-주문 관련 스케줄링 작업<br>
-외부 서비스 연동<br><br>
-
-🛍️ ProductService<br><br>
-
-상품 정보 관리<br>
-상품 카탈로그 제공<br>
-재고 관리<br>
-
-💳 PurchaseService<br><br>
-
-구매 프로세스 관리<br>
-결제 처리<br>
-구매 이력 관리<br><br>
-
-👥 UserService<br><br>
-
-사용자 계정 관리<br>
-인증/인가 처리<br>
-사용자 프로필 관리<br>
-
-<h3>시작하기</h3>
-![img.png](img.png)
-<br><br>
-<h4>서비스 포트</h4>
-
-<li>
-    Eureka Server :
-</li>
-<li>
-    Gateway :
-</li>
-<li>
-    Order Service :
-</li>
-<li>
-    Product Service :
-</li>
-<li>
-    Purchase Service :
-</li>
-<li>
-    UserService :
-</li>
-
 </details>
 
-<h3>📄 세부 모듈 설명</h3>
+<h3 id="modules">📦 세부 모듈 설명</h3>
 <details>
-    <summary>자세히보기</summary>
+  <summary>자세히보기</summary>
+
+# 🔍 EurekaServer
+
+- Spring Cloud Netflix Eureka 기반 서비스 디스커버리 서버
+- 마이크로서비스 등록 및 위치 관리
+- 서비스 인스턴스의 상태 모니터링
+
+# 🌐 Gateway
+
+- Spring Cloud Gateway 기반 API Gateway
+- 라우팅, 로드밸런싱
+- 공통 필터 처리 (인증/인가, 로깅 등)
+
+# 📦 OrderService
+
+- 주문 처리 및 관리
+- 주문 상태 추적
+- 주문 관련 스케줄링 작업
+- 외부 서비스 연동
+
+# 🛍️ ProductService
+
+- 상품 정보 관리
+- 상품 카탈로그 제공
+- 재고 관리
+
+# 💳 PurchaseService
+
+- 구매 프로세스 관리
+- 결제 처리
+- 구매 이력 관리
+
+# 👥 UserService
+
+- 사용자 계정 관리
+- 인증/인가 처리
+- 사용자 프로필 관리
+</details>
+<h2 id="play">💻 실행방법</h2>
+<hr>
 <h3>[ API 명세 ]</h3>
-</details>
-<br>
-<br>
-<br>
-<h3>📆 프로젝트 일정 계획표</h3>
+<a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ">Postman API 명세서 보기</a>
+
+<h2 id="details">✨ 구현 내용</h2>
+<hr>
+
+### 1. MSA 기반 서비스 독립성과 확장성 향상
+- Eureka 서비스 디스커버리를 사용하여 서비스 간 동적 등록 및 상태 모니터링.
+- Spring Cloud Gateway 를 통해 클라이언트 요청을 서비스로 라우팅하고, 인증 및 요청 검증 처리.
+- 일부 모듈은 Spring WebFlux 기반으로 비동기 처리 구조를 채택하여 높은 응답 속도와 확장성을 제공.
+### 2. 동적 서비스 등록 및 라우팅
+- Eureka 로 각 서비스를 자동 등록 및 관리하며, 서비스 확장 및 축소가 가능한 환경 구성.
+- API Gateway 를 활용하여 요청을 효율적으로 라우팅하고, 인증 및 로깅을 중앙화.
+### 3. 외부 모듈 통신 및 비동기 지원
+- Spring WebClient 를 사용해 비동기 HTTP 호출을 구현하며, 간결하고 확장 가능한 모듈 간 통신 제공.
+- Resilience4j Circuit Breaker 의 Retry 및 Timeout 설정을 통해 네트워크 장애 시에도 안정적으로 요청을 처리.
+### 4. Redis를 이용한 캐싱 처리
+- Redis를 통해 실시간 데이터 캐싱을 구현하여 데이터 조회 성능 최적화.
+- 동시성 문제를 해결하기 위해 Redi 의 분산 락을 일부 로직에 적용.
+### 5. 컨테이너 기반 개발 및 배포 환경
+- Docker Compose 를 사용하여 로컬 개발 환경 및 배포 환경에서 동일한 구성을 유지.
+- 모든 서비스와 외부 의존성을 컨테이너로 구성해 일관된 개발/운영 환경 제공.
+
+<h2 id="select">🤔 기술적 의사결정</h2>
+<hr>
+
+<h2 id="trouble_shooting">🔍 트러블슈팅</h2>
+<hr>
+
+<h2 id="levelUp">⚡ 성능개선</h2>
+<hr>
+
+<h2>📆 프로젝트 일정</h2>
+<hr>
 <details>
-    <summary>자세히보기</summary>
+    <summary>계획 및 실천</summary>
     <table>
         <tr>
             <th>/</th>
@@ -553,3 +603,7 @@ Spring Cloud Gateway 기반 API Gateway<br>
         </tr>
       </table>
 </details>
+
+<h2 id="result">🎉 결과</h2>
+<hr>
+잘끝남 ㅈㅈ
