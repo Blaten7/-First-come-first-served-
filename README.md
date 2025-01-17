@@ -4,22 +4,24 @@
 
 ## 📋 목차
 ***
-- [👋 소개](#소개)             
+- [👋 소개](#intro)             
 - [🎯 기획](#idea)            
 - [🛠️ 기술스택](#skills)
-- [🏗️ 프로젝트 구조](#structure)
-    - [⚙️ 시스템 아키텍쳐](#modules)
-    - [🔄 전체 MSA 구조도](#MSA)
-    - [📦 세부 모듈 설명](#modules)
+- [⚙️ 시스템 아키텍쳐](#structure)
+    - [🏗️ 시스템 구성도](#timeline)
+    - [🔄 서비스 통신 구조](#sq)
+    - [🔨 서비스 구현체 구조](#impl)
+    - [📦 서비스 별 기능 명세](#modules)
 - [💻 실행방법](#play)
 - [✨ 구현 내용](#details)
 - [🤔 기술적 의사결정](#select)
 - [🔍 트러블슈팅](#trouble_shooting)
-- [⚡ 성능개선](#levelUp)
+- [⚡ 성능개선](#levelup)
 - [📅 프로젝트 일정](#schedules)
 - [🎉 결과](#result)
 
-## 📌 소개
+<h2 id="intro">📌 소개<a href="#top">🔝</a></h2>
+
 ***
 - 이커머스 플랫폼의 선착순 한정판 상품 구매 시 발생하는<br>대규모 트래픽과 동시성 이슈를 해결하기 위한 프로젝트입니다.
 
@@ -54,7 +56,8 @@
 - 분산 락을 통한 동시성 제어
 - 결제 시스템 연동 및 트랜잭션 관리
 
-## 🎯 기획 [🔝](#top)
+<h2 id="idea">🎯 기획 <a href="#top">🔝</a></h2>
+
 ***
 ### 요구사항 분석
 
@@ -169,9 +172,11 @@
 </table>
 <br>
 
-## ⚙️ 시스템 아키텍쳐[🔝](#top)
+<h2 id="structure">⚙️ 시스템 아키텍쳐<a href="#top">🔝</a></h2>
+
 ***
-### 🏗️ 시스템 구성도
+<h3 id="timeline">🏗️ 시스템 구성도</h2>
+
 - 선착순 구매 시스템의 핵심 프로세스를 시간순으로 표현
 - 각 단계별 주요 기능을 직관적인 아이콘으로 시각화
 <details>
@@ -180,7 +185,8 @@
 ![시스템 개요 - 타임라인 형식](https://github.com/Blaten7/image/blob/main/images/FcomeFserve/%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B0%9C%EC%9A%94%20-%20%ED%83%80%EC%9E%84%EB%9D%BC%EC%9D%B8%20%ED%98%95%EC%8B%9D.png?raw=true)
 </details>
 
-### 🔄 서비스 통신 구조
+<h3 id="sq">🔄 서비스 통신 구조</h2>
+
 - 서비스 간 상세 데이터 흐름
 - 성공/실패 시나리오 포함
 - 각 단계별 구체적인 상호작용 명세
@@ -190,7 +196,8 @@
 ![시퀀스 다이어그램](https://github.com/Blaten7/image/blob/main/images/FcomeFserve/%EC%8B%9C%ED%80%80%EC%8A%A4%20%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8.png?raw=true)
 </details>
 
-### 🔨 서비스 구현체 구조
+<h3 id="impl">🔨 서비스 구현체 구조</h2>
+
 - 각 MSA 서비스의 내부 패키지 구조와 Eureka Server 연동 구조
 <details>
     <summary>자세히보기</summary>
@@ -200,7 +207,8 @@
 <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/MSA%20%EA%B5%AC%EC%A1%B0%EB%8F%842.png" alt="MSA 구조도">
 </details>
 
-### 📦 서비스 별 기능 명세
+<h3 id="modules">📦 서비스 별 기능 명세</h2>
+
 <details>
   <summary>자세히보기</summary>
 
@@ -242,12 +250,14 @@
 - 사용자 프로필 관리
 </details>
 
-## 💻 실행방법[🔝](#top)
+<h2 id="play">💻 실행방법<a href="#top">🔝</a></h2>
+
 ***
 <h3>[ API 명세 ]</h3>
 <a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ">Postman API 명세서 보기</a>
 
-## ✨ 구현 내용[🔝](#top)
+<h2 id="details">✨ 구현 내용<a href="#top">🔝</a></h2>
+
 ***
 
 ### 1. MSA 기반 서비스 독립성과 확장성 향상
@@ -267,7 +277,8 @@
 - Docker Compose 를 사용하여 로컬 개발 환경 및 배포 환경에서 동일한 구성을 유지.
 - 모든 서비스와 외부 의존성을 컨테이너로 구성해 일관된 개발/운영 환경 제공.
 
-## 🤔 기술적 의사결정[🔝](#top)
+<h2 id="select">🤔 기술적 의사결정<a href="#top">🔝</a></h2>
+
 ***
 ### 💡 선착순 구매 서비스 독립 설계
 - **높은 트래픽 처리**: WebFlux 기반 리액티브 프로그래밍으로 대규모 동시 요청 처리
@@ -281,7 +292,7 @@
 
 상세 내용 : 링크
 
-## 🔍 트러블슈팅[🔝](#top)
+<h2 id="trouble_shooting">🔍 트러블슈팅<a href="#top">🔝</a></h2>
 ***
 ### WebClient 비동기 처리 이슈
 
@@ -306,7 +317,8 @@ public CompletableFuture<Boolean> sendRequestAsync(String url) {
 
 상세 내용 : 링크
 
-## ⚡ 성능개선[🔝](#top)
+<h2 id="levelup">⚡ 성능개선 <a href="#top">🔝</a></h2>
+
 ***
 ### 1. 로그인 검증 응답속도 개선
 - **기존 방식**: 각 서비스에서 개별적으로 User Service 호출 (평균 17ms)
@@ -337,7 +349,8 @@ JWT 검증 → 상품 검증 → 재고 확인 → 주문 처리
 게이트웨이 JWT 검증 → 상품/재고 동시 검증 → 주문 처리
 (120ms)
 ```
-## 📆 프로젝트 일정[🔝](#top)
+<h2 id="schedules">📆 프로젝트 일정<a href="#top">🔝</a></h2>
+
 ***
 <details>
     <summary>계획 및 실천</summary>
@@ -677,7 +690,8 @@ JWT 검증 → 상품 검증 → 재고 확인 → 주문 처리
       </table>
 </details>
 
-## 🎉 결과[🔝](#top)
+<h2 id="result">🎉 결과<a href="#top">🔝</a></h2>
+
 ***
 ## 📊 Results
 
