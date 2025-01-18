@@ -56,23 +56,6 @@
 - 분산 락을 통한 동시성 제어
 - 결제 시스템 연동 및 트랜잭션 관리
 
-<h2 id="idea">🎯 기획 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/2.-%F0%9F%8E%AF-%EA%B8%B0%ED%9A%8D" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
-
-***
-### 요구사항 분석
-
-#### 기능적 요구사항
-
-- 사용자는 실시간으로 상품 구매가 가능해야 한다.
-- 선착순 구매 성공 여부를 즉시 확인할 수 있어야 한다.
-- 관리자는 상품의 재고를 실시간으로 조회 및 수정할 수 있어야 한다.
-- 
-#### 비기능적 요구사항
-
-- 구매 요청은 200ms 이내에 응답해야 한다.
-- 시스템 가용성은 99.9% 이상을 유지해야 한다.
-- 데이터는 DB와 캐시를 활용하여 안전하게 관리해야 한다.
-
 <h2 id="skills">🛠️ 기술스택 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/3.-%F0%9F%9B%A0%EF%B8%8F-%EA%B8%B0%EC%88%A0%EC%8A%A4%ED%83%9D" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
 <table>
   <tr>
@@ -299,47 +282,4 @@ JWT 검증 → 상품 검증 → 재고 확인 → 주문 처리
 (55ms)
 ```
 <h2 id="schedules">📆 프로젝트 일정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/7.-%F0%9F%93%86-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%BC%EC%A0%95" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
-
-***
-#### 1주차
-- 모놀리스 프로젝트 MVP 구현
-- MSA 개념 학습
-- MSA 구조로 변경
-- ConfigServer, EurekaServer, API Gateway 구축
-- UserService 커버리지 테스트
-- 동시성 이슈가 발생할 가능성이 높은 API의 부하테스트 (k6)
-
-#### 2주차
-- 스키마 분할에 따른 리팩토링
-- WebMVC -> WebFlux(일부) 리팩토링
-- Resilience4j CircuitBreaker 활용
-- 도커 설정
-- OpenFeign -> WebClient 요청방식 리팩토링
-
-#### 3주차
-- 인증 / 인가 방식 변경 리팩토링, 성능개선
-- 동시성 이슈 해결을 위한 레디스 기반 분산락 도입
-- 레디스 펍/섭 방식과 병행, 성능 개선
-- JUnit5 활용 각 서비스 단위테스트 커버리지 100%
-- 동시성 이슈가 발생할 가능성이 높은 API의 부하테스트2 (k6)
-
-<h2 id="result">🎉 결과 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/8.-%F0%9F%8E%89-%EA%B2%B0%EA%B3%BC" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
-***
-
-### 🎯 목표 달성
-- **동시성 제어**: Redis를 활용한 대규모 트래픽(초당 1000건) 처리 달성
-- **성능 최적화**: API 응답속도 약 98% 개선 (2500ms → 55ms)
-- **안정성 확보**: 분산 환경에서의 데이터 정합성 보장
-
-### 🔍 테스트 결과
-```java
-// K6 부하 테스트 결과
-동시 접속자: 5000명
-테스트 시간: 5분
-성공률: 55.8&
-        → 결제중 이탈 20% X 결제 시도 중 이탈 20% 예외처리 반영
-        → 기대치 55 ~ 75%
-평균 응답시간: 20ms
-95퍼센타일 응답 시간: 56ms
-```
 
