@@ -4,22 +4,25 @@
 
 ## 📋 목차
 ***
-- [👋 소개](#intro)
+- [👋 소개](#intro)             
+- [🎯 기획](#idea)            
 - [🛠️ 기술스택](#skills)
 - [⚙️ 시스템 아키텍쳐](#structure)
-  - [🏗️ 시스템 구성도](#timeline)
-  - [🔄 서비스 통신 구조](#sq)
-  - [🔨 서비스 구현체 구조](#impl)
-  - [📦 서비스 별 기능 명세](#modules)
+    - [🏗️ 시스템 구성도](#timeline)
+    - [🔄 서비스 통신 구조](#sq)
+    - [🔨 서비스 구현체 구조](#impl)
+    - [📦 서비스 별 기능 명세](#modules)
 - [💻 실행방법](#play)
 - [✨ 구현 내용](#details)
 - [🤔 기술적 의사결정](#select)
 - [🔍 트러블슈팅](#trouble_shooting)
 - [⚡ 성능개선](#levelup)
 - [📅 프로젝트 일정](#schedules)
+- [🎉 결과](#result)
 
-<h2 id="intro">📌 소개 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/1.-%F0%9F%93%8C-%EC%86%8C%EA%B0%9C" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="intro">📌 소개 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/1.-%F0%9F%93%8C-%EC%86%8C%EA%B0%9C" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
 
+***
 - 이커머스 플랫폼의 선착순 한정판 상품 구매 시 발생하는<br>대규모 트래픽과 동시성 이슈를 해결하기 위한 프로젝트입니다.
 
 ### 👥 개발 기간
@@ -53,7 +56,24 @@
 - 분산 락을 통한 동시성 제어
 - 결제 시스템 연동 및 트랜잭션 관리
 
-<h2 id="skills">🛠️ 기술스택 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/3.-%F0%9F%9B%A0%EF%B8%8F-%EA%B8%B0%EC%88%A0%EC%8A%A4%ED%83%9D" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="idea">🎯 기획 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/2.-%F0%9F%8E%AF-%EA%B8%B0%ED%9A%8D" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
+
+***
+### 요구사항 분석
+
+#### 기능적 요구사항
+
+- 사용자는 실시간으로 상품 구매가 가능해야 한다.
+- 선착순 구매 성공 여부를 즉시 확인할 수 있어야 한다.
+- 관리자는 상품의 재고를 실시간으로 조회 및 수정할 수 있어야 한다.
+- 
+#### 비기능적 요구사항
+
+- 구매 요청은 200ms 이내에 응답해야 한다.
+- 시스템 가용성은 99.9% 이상을 유지해야 한다.
+- 데이터는 DB와 캐시를 활용하여 안전하게 관리해야 한다.
+
+<h2 id="skills">🛠️ 기술스택 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/3.-%F0%9F%9B%A0%EF%B8%8F-%EA%B8%B0%EC%88%A0%EC%8A%A4%ED%83%9D" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
 <table>
   <tr>
     <td>백엔드</td>
@@ -88,12 +108,24 @@
     </td>
   </tr>
   <tr>
-    <td>테스트</td>
+    <td>테스트 도구</td>
     <td>
         <img src="https://img.shields.io/badge/K6-5563C1?style=for-the-badge&logo=k6&logoColor=white" alt="K6">
-        <img src="https://img.shields.io/badge/JUnit5-25A162?style=for-the-badge&logo=junit5&logoColor=white" alt="JUnit">
         <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" alt="Postman">
-        <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" alt="Swagger">
+        <img src="https://img.shields.io/badge/JUnit5-25A162?style=for-the-badge&logo=junit5&logoColor=white" alt="JUnit">
+    </td>
+  </tr>
+  <tr>
+    <td>형상관리</td>
+    <td>
+        <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="">
+        <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white" alt="">
+    </td>
+  </tr>
+  <tr>
+    <td>IDE</td>
+    <td>
+      <img src="https://img.shields.io/badge/intelliJ IDEA-000000?style=for-the-badge&logo=intelliJ IDEA&logoColor=white" alt="">
     </td>
   </tr>
 </table>
@@ -177,65 +209,76 @@
 - 사용자 프로필 관리
 </details>
 
-<h2 id="play">💻 실행방법 <a href="" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="play">💻 실행방법 <a href="" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
 
 ***
 <h3>[ API 명세 ]</h3>
 <a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ">Postman API 명세서 보기</a>
 
-<h2 id="details">✨ 구현 내용 <a href="#top">🔝</a></h2>
+<h2 id="details">✨ 구현 내용 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%E2%9C%A8-%EA%B5%AC%ED%98%84-%EB%82%B4%EC%9A%A9" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
 ***
 
 ### 1. MSA 기반 서비스 독립성과 확장성 향상
-- Eureka 서비스 디스커버리를 사용하여 서비스 간 동적 등록 및 상태 모니터링.
-- Spring Cloud Gateway 를 통해 클라이언트 요청을 서비스로 라우팅하고, 인증 및 요청 검증 처리.
-- 일부 모듈은 Spring WebFlux 기반으로 비동기 처리 구조를 채택하여 높은 응답 속도와 확장성을 제공.
 
 ### 2. 동적 서비스 등록 및 라우팅
-- Eureka 로 각 서비스를 자동 등록 및 관리하며, 서비스 확장 및 축소가 가능한 환경 구성.
-- API Gateway 를 활용하여 요청을 효율적으로 라우팅하고, 인증 및 로깅을 중앙화.
 
 ### 3. 외부 모듈 통신 및 비동기 지원
-- Spring WebClient 를 사용해 비동기 HTTP 호출을 구현하며, 간결하고 확장 가능한 모듈 간 통신 제공.
-- Resilience4j Circuit Breaker 의 Retry 및 Timeout 설정을 통해 네트워크 장애 시에도 안정적으로 요청을 처리.
 
 ### 4. Redis를 이용한 캐싱 처리
-- Redis를 통해 실시간 데이터 캐싱을 구현하여 데이터 조회 성능 최적화.
-- 동시성 문제를 해결하기 위해 Redis 의 분산 락을 일부 로직에 적용.
 
 ### 5. 컨테이너 기반 개발 및 배포 환경
-- Docker Compose 를 사용하여 로컬 개발 환경 및 배포 환경에서 동일한 구성을 유지.
-- 모든 서비스와 외부 의존성을 컨테이너로 구성해 일관된 개발/운영 환경 제공.
 
-<h2 id="select">🤔 기술적 의사결정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="select">🤔 기술적 의사결정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
 
-- [1. Dockerfile과 docker-compose.yml 위치 선정 기준](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#1-Dockerfile과-docker-compose.yml-위치-선정-기준)
-- [2. RESTful API 응답 코드 설계](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#2-RESTful-API-응답-코드-설계)
-- [3. UserController 검증 로직 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#3-UserController-검증-로직-개선-작업)
-- [4. 검증 실패 메시지 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#4-검증-실패-메시지-개선-작업)
-- [5. 이메일 인증 기반 회원가입 로직 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#5-이메일-인증-기반-회원가입-로직-개선-기록)
-- [6. 사용자 관리 컨트롤러 개발 목표 및 진행 기록](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#6-사용자-관리-컨트롤러-개발-목표-및-진행-기록)
-- [7. ConfigServer 설정 관리 방식 결정](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#7-ConfigServer-설정-관리-방식-결정)
-- [8. DB 스키마 분할](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#8-DB-스키마-분할-결정)
-- [9. 주문 관리 서비스의 유저 검증 로직에 대한 고민](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#9-주문-관리-서비스의-유저-검증-로직에-대한-고민)
-- [10. 공통 클래스 관리 방식 고민: 개별 관리 vs 중앙 서비스](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#10-공통-클래스-관리-방식-고민-개별-관리-vs-중앙-서비스)
-- [11. 연관 관계 처리 방식 선택: 1안 vs 2안](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#11-연관-관계-처리-방식-선택-1안-vs-2안)
-- [12. 선착순 구매 서비스 설계 및 구성 방향](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#12-선착순-구매-서비스-설계-및-구성-방향)
-- [13. 선착순 구매 서비스(FF) 설계 방향 고민 기록](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#13-선착순-구매-서비스FF-설계-방향-고민-기록)
+***
+### 💡 선착순 구매 서비스 독립 설계
+- **높은 트래픽 처리**: WebFlux 기반 리액티브 프로그래밍으로 대규모 동시 요청 처리
+- **서비스 격리**: 외부 서비스 장애로부터 PurchaseService 보호
+- **성능 최적화**: 인증/인가 내재화로 외부 의존성 최소화
 
-<h2 id="trouble_shooting">🔍 트러블슈팅 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+### ⚡ 주요 기술 스택 결정
+- **WebFlux**: 논블로킹 동시성 처리
+- **Redis**: 재고 관리 및 사용자 요청 제어
+- **JWT**: 내부 인증 처리로 외부 서비스 의존성 제거
 
-- [1. 로그인 검증 로직 오류 및 해결](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#1-로그인-검증-로직-오류-및-해결)
-- [2. 동적 라우팅 문제 분석 및 해결 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#2-동적-라우팅-문제-분석-및-해결-방안)
-- [3. Redis 도커 연결 문제와 해결 방법](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#3-Redis-도커-연결-문제와-해결-방법)
-- [4. WebFlux에서 WebClient 사용 이슈 및 해결 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#4-WebFlux에서-WebClient-사용-이슈-및-해결-방안)
-- [5. 로그인 검증 응답속도 개선 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#5-로그인-검증-응답속도-개선-방안)
-- [6. PurchaseService의 결제 프로세스 API 성능 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#6-PurchaseService의-결제-프로세스-API-성능-개선)
-- [7. K6 테스트 코드 변경 완료 및 진행 방향](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#7-K6-테스트-코드-변경-완료-및-진행-방향)
+<h2 id="trouble_shooting">🔍 트러블슈팅 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
+***
+### WebClient 비동기 처리 이슈
 
-<h2 id="levelup">⚡ 성능개선 <a href="" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+#### 문제 상황
+- WebClient 사용 시 `.block()`으로 동기 방식 전환
+- 동일 스레드에서 실행되어 결과값 미인식 및 에러 발생
 
-### 주문 API 응답속도 개선
+#### 해결 방안
+```java
+public CompletableFuture<Boolean> sendRequestAsync(String url) {
+   return WebClient.create()
+       .get()
+       .uri(url)
+       .retrieve()
+       .bodyToMono(Boolean.class)
+       .subscribeOn(Schedulers.boundedElastic()) 
+       .toFuture();
+}
+```
+- WebClient 요청을 비동기 방식으로 전환
+- `Schedulers.boundedElastic()`을 사용해 별도 스레드에서 작업 실행 
+
+상세 내용 : 링크
+
+<h2 id="levelup">⚡ 성능개선 <a href="" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
+
+***
+### 1. 로그인 검증 응답속도 개선
+- **기존 방식**: 각 서비스에서 개별적으로 User Service 호출 (평균 17ms)
+- **개선 방식**: Gateway 레벨에서 통합 검증 처리 (평균 7ms)
+
+#### 개선 효과
+- 응답속도 평균 10ms 감소
+- 서비스 간 중복 호출 제거
+- 검증 로직 중앙화로 유지보수성 향상
+
+### 2. 주문 API 응답속도 개선
 - **초기 응답속도**: 평균 2500ms (최대 5348ms)
 - **개선 후 응답속도**: 평균 55ms (최대 342ms)
 - **개선율**: 95% 감소
@@ -255,10 +298,48 @@ JWT 검증 → 상품 검증 → 재고 확인 → 주문 처리
 게이트웨이 JWT 검증 → 상품/재고 동시 검증 → 주문 처리
 (55ms)
 ```
+<h2 id="schedules">📆 프로젝트 일정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/7.-%F0%9F%93%86-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%BC%EC%A0%95" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
 
-- [1. 회원 관리 서비스 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#1-회원-관리-서비스-개선)
-- [2. 로그인 검증 응답속도 개선 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#2-로그인-검증-응답속도-개선)
-- [3. 주문 API 응답속도 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#3-주문-API-응답속도-개선)
-- [4. 결제 프로세스 API 성능 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#4-결제-프로세스-API-성능-개선-1)
-<h2 id="schedules">📆 프로젝트 일정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/7.-%F0%9F%93%86-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%BC%EC%A0%95" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+***
+#### 1주차
+- 모놀리스 프로젝트 MVP 구현
+- MSA 개념 학습
+- MSA 구조로 변경
+- ConfigServer, EurekaServer, API Gateway 구축
+- UserService 커버리지 테스트
+- 동시성 이슈가 발생할 가능성이 높은 API의 부하테스트 (k6)
+
+#### 2주차
+- 스키마 분할에 따른 리팩토링
+- WebMVC -> WebFlux(일부) 리팩토링
+- Resilience4j CircuitBreaker 활용
+- 도커 설정
+- OpenFeign -> WebClient 요청방식 리팩토링
+
+#### 3주차
+- 인증 / 인가 방식 변경 리팩토링, 성능개선
+- 동시성 이슈 해결을 위한 레디스 기반 분산락 도입
+- 레디스 펍/섭 방식과 병행, 성능 개선
+- JUnit5 활용 각 서비스 단위테스트 커버리지 100%
+- 동시성 이슈가 발생할 가능성이 높은 API의 부하테스트2 (k6)
+
+<h2 id="result">🎉 결과 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/8.-%F0%9F%8E%89-%EA%B2%B0%EA%B3%BC" style="color: green">WIKI</a><a href="#top">🔝</a></h2>
+***
+
+### 🎯 목표 달성
+- **동시성 제어**: Redis를 활용한 대규모 트래픽(초당 1000건) 처리 달성
+- **성능 최적화**: API 응답속도 약 98% 개선 (2500ms → 55ms)
+- **안정성 확보**: 분산 환경에서의 데이터 정합성 보장
+
+### 🔍 테스트 결과
+```java
+// K6 부하 테스트 결과
+동시 접속자: 5000명
+테스트 시간: 5분
+성공률: 55.8&
+        → 결제중 이탈 20% X 결제 시도 중 이탈 20% 예외처리 반영
+        → 기대치 55 ~ 75%
+평균 응답시간: 20ms
+95퍼센타일 응답 시간: 56ms
+```
 
