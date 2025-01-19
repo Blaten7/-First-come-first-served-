@@ -6,25 +6,2516 @@
     <title>Wiki 대체</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<style>
+    a {
+        text-decoration: none;
+    }
+    button {
+        all: unset;
+    }
+    .nav {
+        margin-right: 3%;
+    }
+</style>
 <body>
 <header>
-    <h1>내 커스텀 목차</h1>
-    <nav>
-        <ul>
-            <li><a href="#section1">섹션 1</a></li>
-            <li><a href="#section2">섹션 2</a></li>
-        </ul>
-    </nav>
+    <h1 style="text-align: center"><a href="/">Github Wiki</a></h1>
+    <!-- <h1 style="text-align: center"><a href="https://Blaten7.github.io/-First-come-first-served-/">Github Wiki</a></h1> -->
+    <div style="width: 70%; margin-left: 15%; margin-right: 15%;">
+        <button id="intro" class="nav">📌 프로젝트 소개</button>
+        <button id="skill" class="nav">🛠️ 기술스택과 선택이유</button>
+            <button id="select" class="nav">🤔 기술적 의사결정</button>
+                <button id="trouble" class="nav">🔍 트러블슈팅</button>
+                    <button id="up" class="nav">⚡성능개선</button>
+                        <button id="schedule">📆 프로젝트 일정</button>
+    </div>
 </header>
 <main>
-    <section id="section1">
-        <h2>섹션 1</h2>
-        <p>이 섹션은 내가 원하는 스타일로 작성되었습니다.</p>
+    <section id="introSection" style="display: none;">
+        <h1>MSA 기반 선착순 구매 프로젝트</h1>
+        <h4>대규모 트래픽 가능성을 염두에 둔 e-Commerce 기반의 웹 서비스</h4>
+        <h4>사용자는 회원가입 이후 정보확인, 장바구니, 위시리스트, 구매와 같은 기능을 경험할 수 있고<br>
+            특정 시간에 한정된 수량의 상품을
+            선착순으로 결제하고 구매할 수 있는 서비스를 사용가능한 서비스입니다.
+        </h4>
+        <h4>프로젝트 기간: 24.12.18 ~ 25.01.09</h4>
+        <h4>개발인원 : 개인프로젝트 (1명)</h4>
+
+        <h1>관련 도메인</h1>
+        <h4>배달의 민족, 무신사, 29cm 등 e-Commerce</h4>
+
+        <h1>주차별 구현 목표</h1>
+        <ol><h4>1주차</h4>
+            <li>프로젝트 기획</li>
+            <li>DB 설계</li>
+            <li>API 설계</li>
+            <li>프로젝트 구조 설계</li>
+            <li>개발 환경 구축 ERD 설계 및 docker-compose 설치</li>
+            <li>유저 및 상품 관리를 위한 데이터 셋 구현</li>
+            <li>PostMan을 활용한 테스트 시나리오 작성</li>
+        </ol>
+        <ol><h4>2주차</h4>
+            <li>Docker를 활용한 로컬 개발 환경 구축</li>
+            <li>모노리스 서비스의 마이크로 서비스화</li>
+            <li>API Gateway 생성, 장애 상황 연출 후 회복 탄력성 갖추기</li>
+        </ol>
+        <ol><h4>3주차</h4>
+            <li>쇼핑몰 목업 사이트 구축을 위한 API 설계</li>
+            <li>자동화 테스트 툴 구축</li>
+            <li>Redis를 활용한 대규모 주문 처리 기술 이해</li>
+        </ol>
+        <ol><h4>4주차</h4>
+            <li>목업 사이트 내 실제 구매, 재고 관리 기능 등 구현</li>
+            <li>인수 조건에 따른 결제 프로세스 구현</li>
+            <li>Non Blocking 형태로 API Gateway 전환</li>
+        </ol>
     </section>
-    <section id="section2">
-        <h2>섹션 2</h2>
-        <p>이 섹션 역시 목차에 제어를 가할 수 있습니다.</p>
+
+    <section id="skillSection" style="display: none;">
+        <div>
+            <h2>백엔드 기술 스택</h2>
+
+            <h3>Java 17:</h3>
+            <ul>
+                <li>LTS(Long Term Support) 버전으로서 안정성이 보장됨</li>
+                <li>향상된 성능과 새로운 기능(Record, Pattern Matching 등)을 활용 가능</li>
+                <li>광범위한 커뮤니티와 풍부한 레퍼런스 존재</li>
+            </ul>
+
+            <h3>Spring Boot 3.4.0:</h3>
+            <ul>
+                <li>빠른 개발 생산성과 자동 설정 기능 제공</li>
+                <li>Spring의 복잡한 설정을 간소화</li>
+                <li>내장 서버(Tomcat)를 통한 독립적인 실행 환경</li>
+            </ul>
+
+            <h3>Spring Data JPA:</h3>
+            <ul>
+                <li>반복적인 CRUD 작업을 줄여주는 Repository 인터페이스 제공</li>
+                <li>객체 지향적인 데이터 접근 방식</li>
+                <li>데이터베이스 벤더에 독립적인 개발 가능</li>
+            </ul>
+
+            <h2>서버 인프라</h2>
+
+            <h3>Apache Tomcat:</h3>
+            <ul>
+                <li>가볍고 안정적인 웹 서버/컨테이너</li>
+                <li>Spring Boot와의 완벽한 통합</li>
+                <li>대규모 트래픽 처리에 검증된 성능</li>
+            </ul>
+
+            <h3>AWS RDS:</h3>
+            <ul>
+                <li>관리형 데이터베이스 서비스로 운영 부담 감소</li>
+                <li>자동 백업 및 고가용성 제공</li>
+                <li>손쉬운 스케일링 가능</li>
+            </ul>
+
+            <h2>데이터베이스</h2>
+
+            <h3>MySQL 8.0:</h3>
+            <ul>
+                <li>오픈소스로 비용 효율적</li>
+                <li>높은 안정성과 성능</li>
+                <li>JSON 지원 등 현대적인 기능 제공</li>
+            </ul>
+
+            <h3>Redis:</h3>
+            <ul>
+                <li>인메모리 캐싱을 통한 성능 향상</li>
+                <li>세션 관리 및 일시적 데이터 저장에 적합</li>
+                <li>분산 락 구현 가능</li>
+            </ul>
+
+            <h2>분산시스템/아키텍처</h2>
+
+            <h3>Eureka Server:</h3>
+            <ul>
+                <li>마이크로서비스 간의 서비스 디스커버리 제공</li>
+                <li>동적인 서비스 등록과 발견</li>
+                <li>시스템의 안정성과 확장성 향상</li>
+            </ul>
+
+            <h3>Spring Cloud Gateway:</h3>
+            <ul>
+                <li>마이크로서비스에 대한 통합된 엔트리포인트 제공</li>
+                <li>라우팅, 필터링, 로드밸런싱 기능</li>
+                <li>보안 및 모니터링 통합 용이</li>
+            </ul>
+
+            <h3>MSA:</h3>
+            <ul>
+                <li>서비스의 독립적인 개발과 배포 가능</li>
+                <li>개별 서비스의 독립적인 스케일링</li>
+            </ul>
+
+            <h3>Docker:</h3>
+            <ul>
+                <li>일관된 개발/운영 환경 제공</li>
+                <li>컨테이너화를 통한 효율적인 리소스 관리</li>
+                <li>마이크로서비스 배포 용이성</li>
+            </ul>
+
+            <h2>테스트 도구</h2>
+
+            <h3>K6:</h3>
+            <ul>
+                <li>성능 테스트 및 부하 테스트에 특화</li>
+                <li>코드 기반 테스트 시나리오 작성 가능</li>
+                <li>확장 가능한 테스트 환경 제공</li>
+            </ul>
+
+            <h3>Postman:</h3>
+            <ul>
+                <li>API 테스트 및 문서화 용이</li>
+                <li>팀 협업 기능 제공</li>
+                <li>환경 변수 관리 편리</li>
+            </ul>
+
+            <h3>JUnit5:</h3>
+            <ul>
+                <li>Java 생태계에서 가장 널리 사용되는 테스트 프레임워크</li>
+                <li>풍부한 검증 기능과 확장성</li>
+                <li>테스트 코드의 재사용성과 가독성 향상</li>
+            </ul>
+
+            <h2>형상관리</h2>
+
+            <h3>Git & GitHub:</h3>
+            <ul>
+                <li>분산 버전 관리로 협업 용이</li>
+                <li>CI/CD 파이프라인 통합 편리</li>
+                <li>코드 리뷰와 이슈 트래킹 기능</li>
+            </ul>
+
+            <h2>IDE</h2>
+
+            <h3>IntelliJ IDEA:</h3>
+            <ul>
+                <li>강력한 코드 분석과 리팩토링 도구</li>
+                <li>Spring Boot 프로젝트에 최적화된 지원</li>
+                <li>다양한 플러그인 생태계</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <section id="selectSection" style="display: none;">
+        <h1>1. Dockerfile과 docker-compose.yml 위치 선정 기준</h1>
+        <hr>
+        <h2>통합 관리 vs 개별 관리</h2>
+        <h3>① 루트 경로에 하나의 Dockerfile과 docker-compose.yml을 둘 경우</h3>
+        <ul>
+            <li><strong>목적:</strong> 전체 프로젝트를 하나의 컨테이너나 통합된 서비스로 관리.</li>
+            <li><strong>특징:</strong>
+                <ul>
+                    <li>단일 Dockerfile로 프로젝트 전체를 컨테이너화.</li>
+                    <li>docker-compose.yml에 모든 모듈의 실행 정보를 통합 관리.</li>
+                </ul>
+            </li>
+            <li><strong>적합한 상황:</strong>
+                <ul>
+                    <li>각 모듈이 완전히 독립된 서비스가 아니며 하나의 애플리케이션처럼 동작.</li>
+                    <li>프로젝트 규모가 작아 모듈별로 완전히 독립 배포가 필요하지 않은 경우.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>② 각 모듈별 Dockerfile을 둘 경우</h3>
+        <ul>
+            <li><strong>목적:</strong> 각 모듈(서비스)을 독립적으로 컨테이너화하고 배포.</li>
+            <li><strong>특징:</strong>
+                <ul>
+                    <li>모듈별 Dockerfile 생성으로 개별 빌드 및 실행 가능.</li>
+                    <li>docker-compose.yml은 루트 경로에 두고, 모듈별 Dockerfile을 참조.</li>
+                </ul>
+            </li>
+            <li><strong>적합한 상황:</strong>
+                <ul>
+                    <li>모듈 간 완전한 독립성과 분리된 배포가 필요한 경우.</li>
+                    <li>각 모듈의 기술 스택이 다르거나, 서로 다른 환경이 필요한 경우.</li>
+                    <li>확장성과 독립 배포가 중요한 MSA 환경.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>MSA 프로젝트에 적용 가능한 선택과 고려 사항</h2>
+        <h3>① 기술 스택이 동일한 경우</h3>
+        <ul>
+            <li><strong>현황:</strong> 모든 모듈이 동일한 기술 스택(Java, Spring Boot)으로 개발될 예정.</li>
+            <li><strong>고려 사항:</strong>
+                <ul>
+                    <li>기술 스택이 동일하더라도 서비스 독립성을 보장하기 위해 모듈별 Dockerfile이 권장됨.</li>
+                    <li>개별 빌드와 배포 가능성을 유지하는 것이 장기적으로 유리.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>② 특정 모듈만 실행하는 경우의 필요성</h3>
+        <ul>
+            <li><strong>현황:</strong> 현재 프로젝트 구조 상 특정 모듈만 실행할 필요성은 낮음.</li>
+            <li><strong>결론:</strong> docker-compose.yml은 각 모듈별로 작성하지 않고 루트 경로에 단일 파일로 관리.</li>
+        </ul>
+
+        <h2>최종 결론 및 진행 방향</h2>
+        <ul>
+            <li><strong>Dockerfile 작성:</strong> 각 모듈별 Dockerfile 작성으로 독립성을 유지.</li>
+            <li><strong>docker-compose.yml 작성:</strong> 루트 경로에 단일 파일을 작성하고, 각 모듈의 Dockerfile을 참조.</li>
+            <li><strong>목표:</strong> 서비스 간 독립성을 유지하면서도 전체 서비스 관리의 간결성을 확보.</li>
+        </ul>
+
+        <h1>2. RESTful API 응답 코드 설계</h1>
+        <hr>
+        <h2>성공 응답 (2xx) 사용 기준</h2>
+        <h3>선택 이유</h3>
+        <ul>
+            <li>클라이언트의 요청 처리 상태를 명확하게 전달</li>
+            <li>REST API 표준을 준수하는 일관된 응답 체계 구현</li>
+            <li>클라이언트 측의 효율적인 에러 핸들링 지원</li>
+        </ul>
+        <h3>구현 상세</h3>
+        <ul>
+            <li><strong>200 OK:</strong> 일반적인 성공적 요청 처리 완료 (예: 조회 성공, 처리 성공)</li>
+            <li><strong>201 Created:</strong> 새로운 리소스 생성 완료 (예: 회원가입, 새로운 리소스 등록)</li>
+            <li><strong>202 Accepted:</strong> 비동기 작업 접수 완료 (예: 대용량 파일 업로드, 배치 작업 요청)</li>
+            <li><strong>204 No Content:</strong> 성공적 처리 완료되었으나 응답 본문 없음 (예: 리소스 삭제 성공)</li>
+        </ul>
+
+        <h2>클라이언트 오류 응답 (4xx) 사용 기준</h2>
+        <h3>선택 이유</h3>
+        <ul>
+            <li>클라이언트 측 오류를 명확하게 구분하여 전달</li>
+            <li>디버깅 및 문제 해결의 효율성 증대</li>
+            <li>보안 관련 이슈의 명확한 전달</li>
+        </ul>
+        <h3>구현 상세</h3>
+        <ul>
+            <li><strong>400 Bad Request:</strong> 잘못된 요청 구문 (예: 잘못된 JSON 형식, 필수 필드 누락)</li>
+            <li><strong>401 Unauthorized:</strong> 인증 실패 (예: 로그인 실패, 만료된 JWT 토큰)</li>
+            <li><strong>403 Forbidden:</strong> 권한 부족 (예: 관리자 전용 API 접근 시도)</li>
+            <li><strong>404 Not Found:</strong> 요청 리소스 부재 (예: 존재하지 않는 URL 또는 데이터 요청)</li>
+            <li><strong>409 Conflict:</strong> 리소스 충돌 (예: 중복 데이터 생성 시도)</li>
+            <li><strong>422 Unprocessable Entity:</strong> 유효성 검사 실패 (예: 비즈니스 로직 유효성 검증 실패)</li>
+        </ul>
+
+        <h2>서버 오류 응답 (5xx) 사용 기준</h2>
+        <h3>선택 이유</h3>
+        <ul>
+            <li>서버 측 문제를 명확하게 구분하여 전달</li>
+            <li>시스템 모니터링 및 장애 대응의 효율성 향상</li>
+            <li>클라이언트에게 적절한 재시도 전략 제공</li>
+        </ul>
+        <h3>구현 상세</h3>
+        <ul>
+            <li><strong>500 Internal Server Error:</strong> 서버 내부 오류 발생 (예: 예기치 않은 서버 오류, 처리되지 않은 예외)</li>
+            <li><strong>502 Bad Gateway:</strong> 게이트웨이 오류 (예: 프록시 서버가 잘못된 응답을 수신)</li>
+            <li><strong>503 Service Unavailable:</strong> 일시적 서비스 불가 (예: 서버 과부하, 유지보수 중)</li>
+            <li><strong>504 Gateway Timeout:</strong> 게이트웨이 응답 시간 초과 (예: 외부 API 응답 지연)</li>
+        </ul>
+
+        <h2>적용 시 고려사항</h2>
+        <ul>
+            <li>동일한 상황에 대해 일관된 상태 코드 사용</li>
+            <li>상태 코드와 함께 구체적인 에러 메시지 제공</li>
+            <li>민감한 정보가 에러 메시지에 포함되지 않도록 주의</li>
+            <li>향후 추가될 수 있는 상태 코드 고려</li>
+        </ul>
+
+        <h1>3. UserController 검증 로직 개선 작업</h1>
+        <hr>
+        <h2>기존 검증 로직의 문제점</h2>
+        <h3>문제점</h3>
+        <ul>
+            <li>반복되는 중복 코드 다수 발생.</li>
+            <li>코드 가독성이 떨어지고, 재사용이 어려움.</li>
+            <li>모든 검증 로직이 컨트롤러에 위치하여 비효율적.</li>
+        </ul>
+        <h4>기존 코드</h4>
+        <pre>
+          <code>
+@Operation(summary = "회원가입 - 이메일인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
+@ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
+@PostMapping("/signup")
+public ResponseEntity<Map<String, String>> signup(@RequestBody Map<String, String> userRequest) {
+if (!userRequest.containsKey("userName") || Objects.equals(userRequest.get("userName"), "")) {
+  return ResponseEntity.badRequest().body(Map.of("msg", "이름을 입력해주세요"));
+}
+if (!userRequest.containsKey("userEmail") || Objects.equals(userRequest.get("userEmail"), "")) {
+  return ResponseEntity.badRequest() .body(Map.of("msg", "이메일을 입력해주세요"));
+}
+if (!userRequest.containsKey("")) {
+  return ResponseEntity.badRequest() .build();
+}
+return ResponseEntity
+        .status(202)
+        .body(Map.of("msg", String.format("%s 으로 인증메일이 전송되었습니다. 메일을 확인해주세요.",
+        userRequest.get("userEmail"))));
+}
+          </code>
+      </pre>
+        <h2>개선 방향: 검증 로직 변경</h2>
+        <h3>① Bean Validation 방식 적용</h3>
+        <h4>개요</h4>
+        <ul>
+            <li>Spring Boot의 <strong>Bean Validation</strong>을 활용하여 DTO에 검증 로직을 선언.</li>
+            <li>컨트롤러에서 <code>@Valid</code> 어노테이션을 사용해 자동으로 검증 수행.</li>
+        </ul>
+        <h4>장점</h4>
+        <ul>
+            <li>가독성 향상 및 검증 로직의 재사용 가능.</li>
+            <li>일관된 검증 방식 제공.</li>
+            <li>자동 예외 처리로 불필요한 코드를 줄임.</li>
+        </ul>
+        <h4>단점</h4>
+        <ul>
+            <li>비즈니스 로직이 포함된 <strong>복잡한 검증</strong>은 처리 불가.</li>
+        </ul>
+        <h3>② 커스텀 유효성 검사 방식 검토</h3>
+        <h4>개요</h4>
+        <ul>
+            <li><code>ConstraintValidator</code>를 사용하여 사용자 정의 어노테이션 생성 후 복잡한 검증 로직 캡슐화.</li>
+        </ul>
+        <h4>장점</h4>
+        <ul>
+            <li>복잡한 로직 처리 가능.</li>
+            <li>재사용성 높고, 검증 로직의 가독성을 보장.</li>
+        </ul>
+        <h4>단점</h4>
+        <ul>
+            <li>구현 복잡성이 증가.</li>
+            <li>추가적인 코드 작성 필요.</li>
+        </ul>
+        <h3>③ 최종 선택: Bean Validation</h3>
+        <h4>이유</h4>
+        <ul>
+            <li>프로젝트에서 비즈니스 로직이 복잡하지 않아 Bean Validation으로 충분히 처리 가능.</li>
+            <li>검증 로직을 간결하고 재사용 가능하게 작성할 수 있음.</li>
+        </ul>
+        <h2>구현 내용</h2>
+        <h3>① DTO 생성: <code>UserSignupRequestDto</code></h3>
+        <h4>목적</h4>
+        <ul>
+            <li>사용자 회원가입 요청 시 데이터를 전달받고 검증 수행.</li>
+            <li>검증 로직을 DTO 내부에 어노테이션으로 선언.</li>
+        </ul>
+        <h4><code>UserSignupRequestDto</code></h4>
+        <pre>
+          <code>
+@NotBlank(message = "이름을 입력해주세요.")
+private String userName;
+@NotBlank(message = "이메일을 입력해주세요.")
+@Email(message = "유효한 이메일 주소를 입력해주세요.")
+private String userEmail;
+@NotBlank(message = "비밀번호를 입력해주세요")
+@Pattern(
+regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*])(?=\\S+$).{8,}$",
+message = "비밀번호는 최소 8자 이상이어야 하며, 숫자와 특수 문자를 포함해야 합니다."
+)
+private String userPw;
+@NotBlank(message = "주소를 입력해주세요")
+private String userAddress;
+@NotBlank(message = "휴대폰번호를 입력해주세요.")
+@Pattern(
+regexp = "^01[01]-\d{4}-\d{4}$",
+message = "유효한 휴대폰 번호를 입력해주세요. (예: 010-1234-5678)"
+)
+private String userPH;
+private String profileImg;
+private String description;
+          </code>
+      </pre>
+        <h3><code>@Valid</code> 어노테이션 적용 예시</h3>
+        <pre>
+          <code>
+@Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.") 신규
+@ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
+@PostMapping("/signup")
+public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) {
+  return ResponseEntity
+  .status(202)
+  .body(Map.of(
+  "msg",
+  String.format("%s 으로 인증메일이 전송되었습니다. 메일을 확인해주세요.", userRequest.getUserEmail())));
+}
+          </code>
+      </pre>
+        <h2>기대 효과</h2>
+        <ul>
+            <li>중복 코드 제거 및 가독성 향상.</li>
+            <li>검증 로직의 재사용성을 높이고 유지보수성을 강화.</li>
+            <li>자동 예외 처리로 컨트롤러의 코드 간소화.</li>
+            <li>DTO와 컨트롤러 간의 역할 분리로 구조적 일관성 확보.</li>
+        </ul>
+
+        <h1>4. 검증 실패 메시지 개선 작업</h1>
+        <hr>
+        <h2>기존 코드 문제점</h2>
+        <h3>HashMap 사용 문제</h3>
+        <ul>
+            <li><code>HashMap</code>은 키-값 쌍의 입력 순서를 보장하지 않음.</li>
+            <li>사용자에게 검증 실패 메시지가 <strong>무작위 순서로 표시</strong>되어 가독성이 저하될 가능성 존재.</li>
+        </ul>
+        <h2>개선 내용</h2>
+        <h3>LinkedHashMap으로 변경</h3>
+        <ul>
+            <li>입력된 키-값 쌍의 순서를 보장.</li>
+            <li>사용자에게 <strong>검증 실패 메시지가 입력된 순서대로 출력</strong>되도록 개선.</li>
+        </ul>
+        <h2>변경 전 / 후 비교</h2>
+        <h3>변경 전</h3>
+        <pre>
+            <code>
+@ExceptionHandler(WebExchangeBindException.class)
+public ResponseEntity<Map<String, String>> handleValidationExceptions(WebExchangeBindException ex) {
+    Map<String, String> errors = new HashMap<>();
+    ex.getFieldErrors().forEach(error -> {
+        errors.put(error.getField(), error.getDefaultMessage());
+    });
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+}
+            </code>
+        </pre>
+        <h3>변경 후</h3>
+        <pre>
+            <code>
+@ExceptionHandler(WebExchangeBindException.class)
+public ResponseEntity<Map<String, String>> handleValidationExceptions(WebExchangeBindException ex) {
+    Map<String, String> errors = new LinkedHashMap<>(); // LinkedHashMap 사용
+    ex.getBindingResult().getFieldErrors().forEach(error -> {
+        errors.put(error.getField(), error.getDefaultMessage());
+    });
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+}
+            </code>
+        </pre>
+
+        <h1>5. 이메일 인증 기반 회원가입 로직 개선 기록</h1>
+        <hr>
+        <h2>기존 방법</h2>
+        <h3>로직</h3>
+        <ul>
+            <li>사용자 입력 정보를 <strong>스태틱 필드</strong>에 임시로 저장.</li>
+            <li>이메일 인증이 완료되면 데이터를 데이터베이스에 저장하여 회원가입 처리.</li>
+        </ul>
+        <h3>장점</h3>
+        <ul>
+            <li>간단한 구현: 데이터베이스와의 상호작용 최소화로 구현이 간단.</li>
+            <li>DB 부하 감소: 데이터베이스에 불필요한 접근이 줄어 시스템 부하 감소.</li>
+        </ul>
+        <h3>단점</h3>
+        <ul>
+            <li>데이터 손실 위험: 서버가 재시작되거나 예외 상황 발생 시, 저장된 데이터 손실 가능.</li>
+            <li>동시성 이슈: 여러 사용자가 동시 접근 시 스태틱 필드에 데이터가 덮어씌워질 가능성 존재.</li>
+        </ul>
+        <h2>변경 방법</h2>
+        <h3>로직</h3>
+        <ul>
+            <li>사용자 입력 정보를 <strong>데이터베이스에 임시 저장</strong>.</li>
+            <li>이메일 인증 완료 시, 상태값(<code>not_yet</code>)을 <code>confirm</code>으로 변경하여 회원가입 완료.</li>
+        </ul>
+        <h3>장점</h3>
+        <ul>
+            <li>영속성: 데이터가 데이터베이스에 저장되므로 손실 위험이 적음.</li>
+            <li>유지보수성: 상태값을 기반으로 회원가입 과정을 명확히 추적 가능.</li>
+            <li>확장성: 이메일 인증 외에 추가 검증 프로세스(예: 전화번호 인증) 도입 시에도 쉽게 확장 가능.</li>
+        </ul>
+        <h3>단점</h3>
+        <ul>
+            <li>DB 부하: 데이터베이스에 임시 데이터를 저장하므로 부하 증가 가능성.</li>
+        </ul>
+        <h2>결론 및 선택</h2>
+        <ul>
+            <li>단점(DB 부하)보다 장점(영속성, 유지보수성, 확장성)이 더 크다고 판단하여 <strong>데이터베이스를 활용한 임시 정보 저장 방식으로 변경</strong>.</li>
+            <li>변경 후 로직:</li>
+            <ul>
+                <li>사용자 입력 정보를 데이터베이스에 저장 (상태값: <code>not_yet</code>).</li>
+                <li>이메일 인증 완료 시, 상태값을 <code>confirm</code>으로 변경.</li>
+                <li>상태값이 <code>confirm</code>인 경우에만 회원가입 완료 처리.</li>
+            </ul>
+        </ul>
+        <h2>변경된 로직 예시</h2>
+        <h3>데이터베이스 컬럼 구조</h3>
+        <ul>
+            <li><code>ID</code>: 유저 아이디</li>
+            <li><code>email</code>: 이메일</li>
+            <li><code>name</code>: 이름</li>
+            <li><code>password</code>: 비밀번호</li>
+            <li><code>state</code>: 상태값</li>
+        </ul>
+        <h3>로직 예시</h3>
+        <h4>회원가입 요청 처리</h4>
+        <pre>
+        <code>
+@PostMapping("/signup")
+public ResponseEntity<String> signup(@RequestBody SignupRequestDto requestDto) {
+    userRepository.save(new User(requestDto.getEmail(), requestDto.getName(), requestDto.getPassword(), "not_yet"));
+    emailService.sendVerificationEmail(requestDto.getEmail());
+    return ResponseEntity.ok("인증메일이 전송되었습니다.");
+}
+        </code>
+    </pre>
+        <h4>이메일 인증 완료 처리</h4>
+        <pre>
+        <code>
+@GetMapping("/verify-email")
+public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+    User user = userRepository.findByToken(token);
+    if (user != null && user.getState().equals("not_yet")) {
+        user.setState("confirm");
+        userRepository.save(user);
+        return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
+    }
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패");
+}
+        </code>
+    </pre>
+
+        <h1>6. 사용자 관리 컨트롤러 개발 목표 및 진행 기록</h1>
+        <hr>
+        <h2>목표</h2>
+        <h3>주요 목표</h3>
+        <ul>
+            <li>사용자 관리 컨트롤러의 핵심 기능을 빠르게 구현(MVP 방식).</li>
+            <li>디테일한 부분은 건너뛰고 <strong>핵심 기능 구현</strong>에 집중.</li>
+        </ul>
+        <h3>구체적인 계획</h3>
+        <ul>
+            <li>로그인 기능 구현.</li>
+            <li>JWT 기반 인증 처리.</li>
+            <li>로그아웃 및 모든 기기에서 로그아웃 기능 구상.</li>
+        </ul>
+        <h2>문제 상황 및 고려 사항</h2>
+        <h3>① 초기 계획</h3>
+        <ul>
+            <li>간단한 로그인 기능 구현: JWT를 따로 저장하지 않고, 생성 후 암호 비교 정도로 간단히 처리 예정.</li>
+        </ul>
+        <h3>② 문제 발견</h3>
+        <ul>
+            <li>로그아웃 기능의 구현 어려움:</li>
+            <ul>
+                <li>"현재 기기에서 로그아웃"과 "모든 기기에서 로그아웃" 기능을 구현하려면 <strong>JWT를 저장 및 관리</strong>해야 함.</li>
+                <li>JWT를 저장하지 않으면 블랙리스트 및 화이트리스트 관리를 할 수 없어 위 기능 구현 불가.</li>
+            </ul>
+        </ul>
+        <h2>해결 방안: JWT 저장 방식 결정</h2>
+        <h3>① MySQL에 저장</h3>
+        <ul>
+            <li>장점:</li>
+            <ul>
+                <li>데이터 영속성 보장.</li>
+                <li>기존 데이터베이스 환경과 통합 가능.</li>
+            </ul>
+            <li>단점:</li>
+            <ul>
+                <li>데이터베이스 부하 증가.</li>
+                <li>JWT 만료 시 삭제를 위한 추가적인 관리 로직 필요.</li>
+            </ul>
+        </ul>
+        <h3>② Redis에 저장</h3>
+        <ul>
+            <li>장점:</li>
+            <ul>
+                <li><strong>TTL(Time To Live)</strong> 기능을 사용해 저장 시 만료 시간을 설정 가능.</li>
+                <li>만료된 JWT를 자동 삭제하여 <strong>효율적인 메모리 관리</strong> 가능.</li>
+                <li>빠른 읽기/쓰기 성능으로 <strong>서버 부하 감소</strong>.</li>
+            </ul>
+            <li>단점:</li>
+            <ul>
+                <li>Redis 구축 및 설정 필요.</li>
+                <li>메모리 기반이라 대규모 데이터 저장 시 적합하지 않을 수 있음.</li>
+            </ul>
+        </ul>
+        <h3>③ 최종 선택</h3>
+        <ul>
+            <li>Redis 채택:</li>
+            <ul>
+                <li>TTL 기능과 성능 측면에서 Redis가 적합하다고 판단.</li>
+                <li>JWT 만료 시 자동 삭제로 관리 로직 간소화.</li>
+            </ul>
+        </ul>
+        <h2>구현 계획</h2>
+        <ul>
+            <li>JWT 저장 및 관리:</li>
+            <ul>
+                <li>Redis를 사용해 JWT를 저장하고 TTL 설정.</li>
+                <li>만료된 토큰은 자동 삭제되도록 구성.</li>
+            </ul>
+            <li>로그아웃 기능:</li>
+            <ul>
+                <li>현재 기기에서 로그아웃: Redis에서 해당 JWT 삭제.</li>
+                <li>모든 기기에서 로그아웃: Redis에 저장된 사용자 관련 JWT 모두 삭제.</li>
+            </ul>
+            <li>추가 작업:</li>
+            <ul>
+                <li>Redis 환경 구축 및 의존성 추가.</li>
+                <li>사용자 관리 컨트롤러에 Redis 기반 JWT 관리 로직 구현.</li>
+            </ul>
+        </ul>
+        <h2>결론</h2>
+        <ul>
+            <li><strong>MVP 방식:</strong> 핵심 기능 구현에 집중하여 빠르게 결과물 확보.</li>
+            <li><strong>Redis 채택:</strong> TTL 기능과 성능을 고려하여 효율적으로 JWT를 관리.</li>
+            <li><strong>추가 목표:</strong> 빠른 로그인 및 로그아웃 기능 구현 후, 필요 시 기능 확장 예정.</li>
+        </ul>
+
+        <h1>7. ConfigServer 설정 관리 방식 결정</h1>
+        <hr>
+        <h2>ConfigServer 도입 계획</h2>
+        <ul>
+            <li>프로젝트 루트 디렉토리에 <strong>ConfigServer 모듈</strong>을 생성.</li>
+            <li>프로젝트 전체의 <strong>설정 파일 관리</strong>를 ConfigServer에 위임.</li>
+        </ul>
+        <h2>설정 관리 방식</h2>
+        <h3>① Git 기반 설정 관리</h3>
+        <ul>
+            <li><strong>특징:</strong>
+                <ul>
+                    <li>설정 파일을 GitHub 저장소에 업로드하여 <strong>Git에서 설정을 읽어 적용</strong>.</li>
+                </ul>
+            </li>
+            <li><strong>사용 이유:</strong>
+                <ul>
+                    <li><strong>MSA 환경</strong>에서 설정 변경 사항을 실시간으로 반영 가능.</li>
+                    <li>CI/CD와 연계하여 자동화 배포 가능.</li>
+                    <li>설정 변경 이력을 추적하고 롤백이 용이.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>② 로컬 파일 기반 설정 관리</h3>
+        <ul>
+            <li><strong>특징:</strong>
+                <ul>
+                    <li>설정 파일을 <strong>로컬에 저장</strong>하고 ConfigServer에서 읽어 적용.</li>
+                </ul>
+            </li>
+            <li><strong>사용 이유:</strong>
+                <ul>
+                    <li>프로젝트 초기 <strong>규모가 작음</strong>.</li>
+                    <li>설정 변경이 드물며 로컬 접근이 더 효율적.</li>
+                    <li>외부 의존성을 줄이고 빠른 설정 접근 가능.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>③ 결론</h3>
+        <ul>
+            <li><strong>초기:</strong>
+                <ul>
+                    <li>프로젝트 개발 초기에는 <strong>로컬 파일 기반</strong>으로 설정 관리.</li>
+                    <li>설정 변경이 드문 현재 상황에 적합.</li>
+                </ul>
+            </li>
+            <li><strong>향후:</strong>
+                <ul>
+                    <li>프로젝트 기능 구현 및 개발 완료 후, <strong>Git 기반 설정 관리로 전환</strong>.</li>
+                    <li>설정 변경 이력 관리와 롤백 필요성을 반영하여 점진적 전환.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>ConfigServer 설정 방식 요약</h2>
+        <ul>
+            <li><strong>현재:</strong> 로컬 파일 기반으로 설정 파일을 관리.</li>
+            <li><strong>향후:</strong> GitHub 저장소에서 설정 파일을 가져오는 방식으로 전환.</li>
+        </ul>
+
+        <h1>8. DB 스키마 분할 결정</h1>
+        <hr>
+        <h2>고민의 시작</h2>
+        <ul>
+            <li><strong>현황:</strong>
+                <ul>
+                    <li>유저 관리 서비스(회원가입, 로그인 등)만 구현된 상태.</li>
+                    <li>상품 관리 서비스를 새롭게 추가하기 전에 <strong>DB 스키마 분할 여부</strong> 결정 필요.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>초기 걱정</h3>
+        <ul>
+            <li><strong>연관관계:</strong> 서로 다른 스키마로 나누면 JPA에서 연관관계를 어떻게 유지할 것인가?</li>
+            <li><strong>데이터 무결성:</strong> 스키마 분할로 인해 데이터 무결성을 보장할 방법은?</li>
+            <li><strong>다중 테이블 조회:</strong> 여러 테이블의 데이터를 한 번에 가져오는 쿼리는 어떻게 작성할 것인가?</li>
+        </ul>
+        <h2>스키마 분할에 대한 재검토</h2>
+        <h3>발견한 사실</h3>
+        <ul>
+            <li><strong>JPA 설정을 통한 스키마 간 연관 관계 지원:</strong>
+                <ul>
+                    <li>DB에서 스키마 간 관계를 지원한다면, JPA에서도 약간의 설정 수정으로 <strong>스키마 간 연관관계 유지 가능</strong>.</li>
+                    <li>필요한 경우, 쿼리를 커스터마이징하여 다중 스키마 데이터를 조합 가능.</li>
+                </ul>
+            </li>
+            <li><strong>MSA와 DB 스키마 분할의 필요성:</strong>
+                <ul>
+                    <li><strong>MSA 프로젝트의 본질:</strong> 서비스 간 결합도를 최소화하고, 독립적인 확장성과 유지보수성을 보장.</li>
+                    <li><strong>스키마 분할 없이 단일 DB를 사용:</strong> 서비스 간 결합도가 높아지고, MSA의 장점이 훼손됨.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>최종 결정</h2>
+        <ul>
+            <li><strong>스키마 분할 채택.</strong></li>
+            <li><strong>이유:</strong>
+                <ul>
+                    <li>MSA에서 서비스 독립성을 보장하기 위함.</li>
+                    <li>단일 DB 사용은 서비스 간 결합도를 높여 유지보수성과 확장성을 저해.</li>
+                    <li>JPA 설정 및 커스터마이징으로 스키마 간 관계를 유지할 수 있다는 점에서 걱정 해소.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h1>9. 주문 관리 서비스의 유저 검증 로직에 대한 고민</h1>
+        <hr>
+        <h2>문제 상황</h2>
+        <h3>현상</h3>
+        <ul>
+            <li><strong>현재 로직:</strong>
+                <ol>
+                    <li>주문 서비스에서 상품 주문 시 유저 서비스를 통해 유저 검증.</li>
+                    <li>유저 서비스는 자체 스키마와 통신하여 처리 결과를 반환.</li>
+                    <li>결과를 주문 서비스로 전달하여 유저 검증을 완료.</li>
+                </ol>
+            </li>
+            <li><strong>의문:</strong>
+                <ul>
+                    <li>이 방식이 MSA의 목적에 부합하는지 확신이 서지 않음.</li>
+                    <li>다른 서비스(유저 서비스)의 스키마에 직접 접근하지 않는 것이 맞는지 혼란.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>해결 과정</h2>
+        <h3>① 멘토님 의견</h3>
+        <ul>
+            <li><strong>같은 방식 사용:</strong>
+                <ul>
+                    <li>멘토님과 동료들 모두 <strong>현재와 같은 방식</strong>이 MSA 구조에서 적합하다고 판단.</li>
+                    <li>다른 서비스 스키마에 직접 접근하는 대신, <strong>HTTP 요청</strong>을 통해 필요한 정보를 요청.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>② 추가 확인</h3>
+        <ul>
+            <li><strong>검색 및 상담 결과:</strong>
+                <ul>
+                    <li><strong>결론:</strong> MSA 아키텍처에서 다른 서비스의 스키마에 직접 접근하는 것은 결합도를 높임.</li>
+                    <li>현재처럼 서비스 간에 HTTP 통신을 통해 데이터를 주고받는 방식이 적합함.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>최종 결론</h2>
+        <ul>
+            <li><strong>현재 로직 유지:</strong>
+                <ul>
+                    <li>현재 로직이 MSA의 원칙에 부합.</li>
+                    <li>다른 서비스 스키마에 직접 접근하지 않고, 각 서비스의 책임을 명확히 분리.</li>
+                    <li>서비스 간의 결합도를 낮추는 구조.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>MSA의 본질</h3>
+        <ul>
+            <li><strong>독립적 서비스:</strong> 각 서비스는 <strong>독립적으로 자신의 데이터를 관리</strong>하고 제공해야 함.</li>
+            <li><strong>HTTP 통신:</strong> 필요한 정보는 다른 서비스의 <strong>API를 통해 요청</strong>. 서비스 간 데이터 공유는 API 호출로 제한.</li>
+        </ul>
+
+        <h1>10. 공통 클래스 관리 방식 고민: 개별 관리 vs 중앙 서비스</h1>
+        <hr>
+        <h2>고민의 핵심</h2>
+        <ul>
+            <li><strong>공통 로직:</strong> 예: 토큰에서 사용자 ID(이메일) 추출, 사용자 확인.</li>
+            <li><strong>고민:</strong>
+                <ul>
+                    <li>각 서비스별로 공통 클래스를 <strong>개별적으로 관리</strong>할지,</li>
+                    <li><strong>중앙 서비스</strong>를 만들어 공통 클래스를 API로 제공할지 결정해야 함.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>두 가지 접근 방식의 비교</h2>
+        <h3>① 각 서비스별 개별 관리</h3>
+        <ul>
+            <li><strong>특징:</strong> 공통 클래스를 각 서비스 내부에서 구현 및 관리.</li>
+            <li><strong>장점:</strong>
+                <ul>
+                    <li>별도 통신 없이 동작 → <strong>성능 우수</strong>.</li>
+                    <li>서비스 간 결합도 낮음 → 서비스 독립성 유지.</li>
+                    <li>네트워크 장애 영향 없음 → 안정성 높음.</li>
+                </ul>
+            </li>
+            <li><strong>단점:</strong>
+                <ul>
+                    <li><strong>코드 중복 발생:</strong> 모든 서비스에 동일한 로직 작성 필요.</li>
+                    <li><strong>유지보수 부담:</strong> 공통 로직 변경 시, 각 서비스를 개별적으로 수정.</li>
+                    <li>로직 일관성 보장 어려움 → 코드 품질 저하 가능성.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>② 공통 클래스 서버 방식</h3>
+        <ul>
+            <li><strong>특징:</strong> 공통 로직을 서비스화하여 API로 제공.</li>
+            <li><strong>장점:</strong>
+                <ul>
+                    <li>로직 변경 시, <strong>중앙 서비스만 수정</strong> → 유지보수 용이.</li>
+                    <li>모든 서비스에서 로직과 데이터 처리 방식의 <strong>일관성 보장</strong>.</li>
+                    <li>민감 데이터(예: 암호화 키) 관리 강화.</li>
+                </ul>
+            </li>
+            <li><strong>단점:</strong>
+                <ul>
+                    <li>네트워크 통신 필수 → <strong>성능 저하</strong> 가능성.</li>
+                    <li>대규모 요청 시, <strong>병목 현상</strong> 발생 가능.</li>
+                    <li>공통 서비스 장애 시, 모든 서비스에서 해당 기능 사용 불가 → 의존성 증가.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>요약 및 현재 상황</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>구분</th>
+                <th>각 서비스 관리</th>
+                <th>공통 클래스 서버</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><strong>성능</strong></td>
+                <td>뛰어남</td>
+                <td>네트워크 통신으로 성능 저하 가능</td>
+            </tr>
+            <tr>
+                <td><strong>독립성</strong></td>
+                <td>높음</td>
+                <td>낮음</td>
+            </tr>
+            <tr>
+                <td><strong>유지보수성</strong></td>
+                <td>낮음</td>
+                <td>높음</td>
+            </tr>
+            <tr>
+                <td><strong>일관성 보장</strong></td>
+                <td>어려움</td>
+                <td>용이</td>
+            </tr>
+            <tr>
+                <td><strong>안정성</strong></td>
+                <td>네트워크 영향 없음</td>
+                <td>공통 서비스 장애 시 전체 서비스에 영향</td>
+            </tr>
+            </tbody>
+        </table>
+        <h2>결론 및 계획</h2>
+        <h3>현 시점(2주차) 결론</h3>
+        <ul>
+            <li><strong>각 서비스에 공통 클래스를 저장하는 방식 채택.</strong></li>
+            <li><strong>이유:</strong>
+                <ul>
+                    <li>현재 서비스 요청 규모가 작아 <strong>성능 우수성</strong>이 더 중요.</li>
+                    <li>유지보수 부담이 있지만, 현재는 코드 변경이 빈번하지 않음.</li>
+                    <li>서비스 독립성 유지가 유리.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>3주차 이후 대규모 요청을 고려한 계획</h3>
+        <ul>
+            <li><strong>공통 클래스 서버 준비:</strong>
+                <ul>
+                    <li>대규모 요청 처리 기술 도입 이후, 공통 로직을 API로 제공하는 <strong>공통 클래스 서버</strong>로 전환.</li>
+                    <li>서버 과부하 방지를 위해 <strong>캐싱(Redis)</strong> 및 <strong>로드 밸런싱</strong> 도입 검토.</li>
+                </ul>
+            </li>
+            <li><strong>점진적 전환:</strong>
+                <ul>
+                    <li>현재 방식으로 유지하며, 공통 클래스 서버 구축 후 성능 테스트를 거쳐 점진적 전환.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>결론</h3>
+        <ul>
+            <li><strong>현재:</strong> 각 서비스별로 공통 클래스를 관리.</li>
+            <li><strong>미래:</strong> 대규모 요청을 대비해 공통 클래스 서버 방식으로 전환 검토.</li>
+        </ul>
+
+        <h1>11. 연관 관계 처리 방식 선택: 1안 vs 2안</h1>
+        <hr>
+        <h2>문제 상황</h2>
+        <h3>연관 관계 컬럼 처리</h3>
+        <ul>
+            <li><strong>1안:</strong>
+                <ul>
+                    <li>각 연관 관계 컬럼(예: 사용자 ID, 상품 ID 등)을 <strong>일반 값</strong>으로 저장.</li>
+                    <li>필요 시, 주기적으로 데이터의 정확성을 검증하는 절차 추가.</li>
+                </ul>
+            </li>
+            <li><strong>2안:</strong>
+                <ul>
+                    <li>엔티티에서 데이터가 필요할 때마다 다른 서비스로 HTTP 요청을 보내 데이터의 유효성을 검증 후 저장하거나 사용.</li>
+                    <li>간단한 조회에도 서비스 간 통신이 여러 번 발생.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>장단점 비교</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>구분</th>
+                <th>1안: 일반 값 저장</th>
+                <th>2안: HTTP 요청 검증</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><strong>성능</strong></td>
+                <td>뛰어남 (별도 통신 없음)</td>
+                <td>느림 (통신 횟수 증가)</td>
+            </tr>
+            <tr>
+                <td><strong>서비스 독립성</strong></td>
+                <td>낮음 (데이터 무결성 관리 필요)</td>
+                <td>높음 (검증 로직을 서비스별로 분리)</td>
+            </tr>
+            <tr>
+                <td><strong>구현 복잡성</strong></td>
+                <td>낮음 (직접 값 저장, 추가 로직 단순)</td>
+                <td>높음 (HTTP 요청 및 예외 처리 필요)</td>
+            </tr>
+            <tr>
+                <td><strong>확장성</strong></td>
+                <td>낮음 (데이터 일관성 문제 가능성 있음)</td>
+                <td>높음 (서비스 간 결합도 낮음)</td>
+            </tr>
+            <tr>
+                <td><strong>즉시성</strong></td>
+                <td>빠름 (데이터 저장 및 조회 속도 빠름)</td>
+                <td>느림 (외부 통신 응답 시간 영향)</td>
+            </tr>
+            </tbody>
+        </table>
+        <h2>선택: 1안</h2>
+        <h3>선택 이유</h3>
+        <ul>
+            <li><strong>속도 우선:</strong>
+                <ul>
+                    <li>현재는 빠른 구현과 작업 속도 향상이 가장 중요.</li>
+                    <li>1안은 별도의 통신 없이 데이터를 저장하므로 성능 우위.</li>
+                </ul>
+            </li>
+            <li><strong>미래의 확장성 고려:</strong>
+                <ul>
+                    <li>DB 분할 및 서비스 독립성 강화 계획이 있기 때문에, <strong>현재 방식</strong>이 장기적으로 결합도를 낮추는 방향으로 개선 가능.</li>
+                </ul>
+            </li>
+            <li><strong>복잡성 최소화:</strong>
+                <ul>
+                    <li>현재 프로젝트 규모에서는 통신 기반의 데이터 검증 방식(2안)이 과도한 복잡성을 초래.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>결론</h3>
+        <ul>
+            <li><strong>선택:</strong> 1안: 각 연관 관계 컬럼을 일반 값으로 저장하고, 주기적으로 정확성 검증.</li>
+            <li><strong>추후 계획:</strong> 서비스 분리 및 DB 독립이 필요해질 경우, 데이터 검증 로직을 통신 기반으로 전환.</li>
+        </ul>
+
+        <h1>12. 선착순 구매 서비스 설계 및 구성 방향</h1>
+        <hr>
+        <h2>독립적인 설계 방식 채택 이유</h2>
+        <h3>목표</h3>
+        <ul>
+            <li><strong>높은 트래픽 처리 능력 확보</strong>
+                <ul>
+                    <li>WebFlux 기반 리액티브 프로그래밍을 활용하여 실시간 트래픽을 효율적으로 처리.</li>
+                    <li>비동기적 처리로 대규모 동시 요청에 대한 성능 보장.</li>
+                </ul>
+            </li>
+            <li><strong>서비스 독립성 확보</strong>
+                <ul>
+                    <li>다른 서비스의 장애로부터 선착순 구매 서비스(PurchaseService)를 보호.</li>
+                    <li>실시간성과 안정성 유지.</li>
+                </ul>
+            </li>
+            <li><strong>트래픽 병목 감소</strong>
+                <ul>
+                    <li>인증, 인가, 로그인 여부 확인 등 필요한 모든 로직을 내부에서 처리하여 외부 호출 의존성 제거.</li>
+                    <li>서비스 간 통신 오류와 네트워크 지연 문제를 방지.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>설계 구성</h2>
+        <h3>1) PurchaseService 모듈</h3>
+        <ul>
+            <li><strong>기능:</strong> 선착순 구매 관련 API 및 로직을 독립적으로 처리.</li>
+            <li><strong>구조:</strong>
+                <ul>
+                    <li><strong>컨트롤러:</strong> 선착순 구매 요청 처리.</li>
+                    <li><strong>서비스:</strong> 선착순 로직 구현, 어뷰징 사용자 필터링.</li>
+                    <li><strong>레포지토리:</strong> 데이터 저장 및 조회.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>2) 인증 및 인가 처리</h3>
+        <ul>
+            <li><strong>내부 인증 및 인가 구현:</strong>
+                <ul>
+                    <li>외부 인증 서비스 호출 대신 JWT 토큰 검증 로직을 내장.</li>
+                    <li>로그인 여부 확인 로직도 서비스 내부에서 처리.</li>
+                </ul>
+            </li>
+            <li><strong>장점:</strong>
+                <ul>
+                    <li>외부 호출로 인한 병목 방지.</li>
+                    <li>네트워크 지연에 대한 영향 최소화.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>3) 데이터베이스 설계</h3>
+        <ul>
+            <li><strong>단일 DB, 스키마 분할 사용:</strong>
+                <ul>
+                    <li><strong>장점:</strong> 데이터베이스 장애 시 전체 서비스 셧다운 방지.</li>
+                    <li><strong>가정:</strong> 동일 DB 사용으로 인한 리스크는 무시.</li>
+                </ul>
+            </li>
+            <li><strong>선착순 구매 테이블:</strong>
+                <ul>
+                    <li>컬럼: purchase_id, user_id, product_id, timestamp.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>4) 비정상 사용자 접근 관리</h3>
+        <ul>
+            <li><strong>오픈 시간 이전 구매 요청 차단:</strong>
+                <ul>
+                    <li>오픈 시간 검증 로직 추가.</li>
+                    <li>Redis에 TTL 설정으로 잘못된 요청을 빠르게 필터링.</li>
+                </ul>
+            </li>
+            <li><strong>어뷰징 방지:</strong>
+                <ul>
+                    <li>한 사용자당 초당 요청 수 제한 (Rate Limiting).</li>
+                    <li>Redis를 활용한 IP 및 사용자 ID 기반 요청 제한.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>단점과 타협</h2>
+        <ul>
+            <li><strong>단점:</strong>
+                <ul>
+                    <li>서비스 내부 로직이 복잡해지고 유지보수 비용 증가.</li>
+                    <li>중복된 인증/인가 로직으로 인해 다른 서비스와의 일관성 저하 가능.</li>
+                </ul>
+            </li>
+            <li><strong>타협:</strong>
+                <ul>
+                    <li>독립성과 안정성이 중요하므로 일관성 저하와 유지보수 비용은 감수.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>추가 고려 사항</h2>
+        <ul>
+            <li><strong>부하 테스트:</strong> K6 또는 Gatling을 사용하여 대규모 트래픽 시뮬레이션 테스트.</li>
+            <li><strong>캐싱 전략:</strong> Redis 캐시를 활용해 인기 상품의 재고 상태를 실시간으로 반영.</li>
+            <li><strong>장애 복구 계획:</strong> 구매 요청 처리 실패 시 재시도 로직 추가.</li>
+        </ul>
+
+        <h1>13. 선착순 구매 서비스(FF) 설계 방향 고민 기록</h1>
+        <hr>
+        <h2>기존 설계 방향</h2>
+        <ul>
+            <li><strong>목표:</strong> 오로지 성능 극대화를 위해 MSA 구조를 배제.</li>
+            <li><strong>방법:</strong>
+                <ul>
+                    <li>FF 모듈에서 모든 스키마에 직접 접근.</li>
+                    <li>다른 모듈과의 요청 주고받기 없이 독립적으로 처리.</li>
+                </ul>
+            </li>
+            <li><strong>예상 장점:</strong>
+                <ul>
+                    <li>서비스 간 통신으로 인한 병목 현상 제거.</li>
+                    <li>단일화된 비즈니스 로직으로 성능 최적화.</li>
+                </ul>
+            </li>
+            <li><strong>예상 단점:</strong>
+                <ul>
+                    <li>MSA 설계 원칙 훼손.</li>
+                    <li>서비스 간 강한 결합으로 확장성과 유지보수성 저하.</li>
+                    <li>팀 협업 및 코드 일관성 저해 가능성.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>새로운 설계 방향</h2>
+        <ul>
+            <li><strong>목표:</strong> MSA 원칙 존중과 성능 간의 균형.</li>
+            <li><strong>방법:</strong>
+                <ul>
+                    <li>FF는 기존 MSA 구조에 따라 독립적 모듈로 유지.</li>
+                    <li>필요한 경우 다른 서비스(User, Product 등)와의 통신은 최소화 및 비동기화.</li>
+                    <li>Redis, Kafka 등 캐싱/비동기 처리 기술 적극 활용.</li>
+                </ul>
+            </li>
+            <li><strong>장점:</strong>
+                <ul>
+                    <li>MSA 설계 원칙을 준수하여 확장성, 유지보수성 확보.</li>
+                    <li>통신 병목을 줄이면서 성능도 최적화 가능.</li>
+                </ul>
+            </li>
+            <li><strong>단점:</strong>
+                <ul>
+                    <li>구현 복잡도 증가.</li>
+                    <li>성능 극대화를 목표로 한 단일화 방식 대비 낮은 퍼포먼스 가능성.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>결정 및 진행 방향</h2>
+        <ul>
+            <li><strong>MSA 존중 방향 채택:</strong>
+                <ul>
+                    <li>확실한 성능 증명이 없는 상황에서 모놀리틱 접근은 위험 부담이 크다고 판단.</li>
+                    <li>MSA 아키텍처 설계 원칙을 최대한 준수하면서, 성능 최적화 기법을 도입하는 방향으로 진행.</li>
+                </ul>
+            </li>
+            <li><strong>진행 중 작업:</strong>
+                <ul>
+                    <li>FF 모듈 독립성 유지.</li>
+                    <li>User, Product 서비스와의 통신은 비동기 방식으로 처리.</li>
+                    <li>필요한 정보는 Redis 캐싱을 통해 로컬에서 재사용.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>추가 작업 목록</h2>
+        <ul>
+            <li><strong>성능 최적화 검토:</strong>
+                <ul>
+                    <li>캐싱 활용 및 FF 모듈 내 처리 로직 최소화.</li>
+                    <li>요청 수와 처리 속도에 따른 트래픽 분석.</li>
+                </ul>
+            </li>
+            <li><strong>테스트 기반 설계:</strong>
+                <ul>
+                    <li>대규모 트래픽 환경을 시뮬레이션하여 성능 테스트 진행.</li>
+                    <li>통신 지연 및 병목 현상을 최소화하는 비동기 방식 테스트.</li>
+                </ul>
+            </li>
+            <li><strong>리스크 대비책:</strong>
+                <ul>
+                    <li>MSA 설계 원칙을 훼손하지 않는 범위 내에서 성능 극대화 방안 지속 모색.</li>
+                    <li>필요 시, MSA와 모놀리틱 간의 절충안으로 추가 설계 검토.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>결론</h2>
+        <ul>
+            <li>지금은 MSA 아키텍처를 존중하는 방향으로 설계를 진행하되,</li>
+            <li>성능 최적화를 위해 캐싱, 비동기 요청, 병렬 처리 등을 적극 활용하며 설계를 개선해나갈 예정.</li>
+        </ul>
+    </section>
+
+    <section id="troubleSection" style="display: none;">
+        <h1>1. 로그인 검증 로직 오류 및 해결</h1>
+        <hr>
+        <h2>문제 상황</h2>
+        <h3>현상</h3>
+        <ul>
+            <li>로그인 검증 로직:
+                <ul>
+                    <li>상품 주문 등 로그인 필수 서비스 이용 시, 토큰 값을 UserService에 보내 검증 후 <strong>boolean</strong> 값 반환.</li>
+                    <li>모든 로직이 올바르게 작성된 것처럼 보였으나, 항상 <strong>false</strong> 반환.</li>
+                </ul>
+            </li>
+            <li>문제:
+                <ul>
+                    <li>모든 로그를 확인했음에도 오류 원인을 찾지 못함.</li>
+                    <li><strong>false</strong> 반환이 지속적으로 발생.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>원인</h2>
+        <h3>조건문 오류</h3>
+        <ul>
+            <li>로그인 검증 로직에서 조건문이 잘못 작성됨:
+                <pre>
+if (로그인이 되었다면?) {
+    // "로그인이 필요한 서비스입니다" 메시지 반환
+}
+        </pre>
+            </li>
+            <li>문제:
+                <ul>
+                    <li><strong>"로그인 되었다면" 조건</strong>에서 로그인 여부를 부정해야 하는데, <strong>부정 연산자(!)</strong>가 누락.</li>
+                    <li>결과적으로, 로그인 상태에서도 로그인 필요 메시지가 반환.</li>
+                </ul>
+            </li>
+            <li>유저 서비스 로그아웃 로직과 혼동:
+                <ul>
+                    <li>UserService에서 검증 로직은 주로 <strong>로그아웃 시 사용</strong>되었으므로, 로그인 검증 로직에 대한 부정 조건이 빠져 있었음.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>해결 과정</h2>
+        <ol>
+            <li><strong>조건문 수정:</strong> 로그인 검증 조건에 <strong>부정 연산자(!)</strong> 추가:
+                <pre>
+if (!로그인이 되었다면?) {
+    // "로그인이 필요한 서비스입니다" 메시지 반환
+}
+        </pre>
+            </li>
+            <li><strong>결과 확인:</strong> 조건문 수정 후, 로그인 여부를 올바르게 판단하여 정상 처리.</li>
+        </ol>
+        <h2>교훈</h2>
+        <ol>
+            <li><strong>조건문 작성 시 항상 재확인:</strong>
+                <ul>
+                    <li>로그인, 검증, 부정 조건 등은 헷갈리기 쉬우므로 철저히 검토 필요.</li>
+                    <li>특히, 유사한 로직(UserService의 로그아웃 검증 등)이 영향을 줄 수 있음.</li>
+                </ul>
+            </li>
+            <li><strong>디버깅의 중요성:</strong> 로그 확인과 디버깅 과정을 통해, 로직 오류를 점진적으로 좁혀가는 과정이 중요.</li>
+        </ol>
+        <h2>결론</h2>
+        <ul>
+            <li><strong>문제 해결:</strong> 조건문 수정으로 로그인 검증 로직 정상 작동.</li>
+            <li><strong>추후 방지:</strong> 코드 리뷰 및 테스트 코드 작성으로 조건문 오류 재발 방지.</li>
+        </ul>
+
+        <h1>2. 동적 라우팅 문제 분석 및 해결 방안</h1>
+        <hr>
+        <h2>문제 상황</h2>
+        <ul>
+            <li>현상:
+                <ul>
+                    <li>게이트웨이의 라우팅이 유레카 서버에 등록된 서비스 이름을 기준으로 동적 라우팅되도록 설정.</li>
+                    <li>도커 환경에서 빌드 시 동적 서비스 이름을 읽어오지 못하는 문제 발생.</li>
+                </ul>
+            </li>
+            <li>임시 해결 방법:
+                <ul>
+                    <li>게이트웨이의 <code>application.yml</code> 파일을 수정하여 <strong>정적 라우팅 방식</strong>으로 설정 → 문제 해결.</li>
+                    <li>하지만 동적 라우팅의 장점을 잃게 됨.</li>
+                </ul>
+            </li>
+        </ul>
+        <h2>발생 가능한 원인</h2>
+        <ol>
+            <li><strong>도커 네트워크 문제:</strong>
+                <ul>
+                    <li>도커 컨테이너 간 네트워크 연결이 제대로 설정되지 않음.</li>
+                    <li>도커에서 기본적으로 사용하는 <strong>Bridge 네트워크</strong>가 유레카의 서비스 디스커버리를 방해할 가능성.</li>
+                </ul>
+            </li>
+            <li><strong>유레카 서버와의 통신 문제:</strong>
+                <ul>
+                    <li>게이트웨이가 유레카 서버와 통신하여 등록된 서비스 정보를 가져오는 과정에서 실패.</li>
+                    <li>도커 내부의 호스트 이름(예: <code>localhost</code>)이 맞지 않거나 IP 주소가 잘못된 경우.</li>
+                </ul>
+            </li>
+            <li><strong>도커 환경 변수 누락:</strong>
+                <ul>
+                    <li>도커에서 환경 변수(예: <code>EUREKA_CLIENT_SERVICEURL_DEFAULTZONE</code>)가 제대로 전달되지 않아 유레카 서버를 인식하지 못함.</li>
+                </ul>
+            </li>
+            <li><strong>게이트웨이 설정 문제:</strong>
+                <ul>
+                    <li>게이트웨이가 유레카 서버에서 서비스를 가져오는 로직이 제대로 동작하지 않음.</li>
+                    <li><code>spring.cloud.gateway.discovery.locator.enabled</code> 설정이 비활성화되었거나, 유레카 서버와의 연결이 끊김.</li>
+                </ul>
+            </li>
+        </ol>
+        <h2>해결 방안</h2>
+        <h3>1) 도커 네트워크 구성 확인</h3>
+        <ul>
+            <li><strong>Custom Network 사용:</strong>
+                <pre>docker network create gateway-network</pre>
+            </li>
+            <li>모든 서비스와 유레카 서버, 게이트웨이를 동일한 네트워크에 연결:
+                <pre>
+networks:
+  default:
+    name: gateway-network
+        </pre>
+            </li>
+            <li>각 컨테이너의 <code>application.yml</code>에 유레카 서버의 IP 또는 DNS를 명시적으로 설정:
+                <pre>
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+        </pre>
+            </li>
+        </ul>
+        <h3>2) 게이트웨이 설정 확인</h3>
+        <ul>
+            <li>게이트웨이에서 동적 라우팅 활성화 설정 확인:
+                <pre>
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+        </pre>
+            </li>
+            <li>유레카 서버에 등록된 서비스 이름이 올바르게 사용되고 있는지 확인:
+                <ul>
+                    <li>유레카 서버에 등록된 서비스 이름은 <strong>대문자로 변환</strong>되므로 게이트웨이가 이를 인식할 수 있도록 확인 필요.</li>
+                    <li>예: <code>userservice</code> → <code>USERSERVICE</code></li>
+                </ul>
+            </li>
+        </ul>
+        <h3>3) 유레카와 게이트웨이 통신 문제 해결</h3>
+        <ul>
+            <li>도커 환경에서 <code>localhost</code>를 사용하지 말고 컨테이너 이름으로 통신:
+                <pre>
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+        </pre>
+            </li>
+            <li>게이트웨이가 유레카 서버에서 서비스 정보를 가져오지 못하는 경우, 컨테이너 실행 순서를 보장:
+                <pre>
+docker-compose.yml:
+services:
+  eureka-server:
+    image: eurekaserver
+  gateway:
+    image: gateway
+    depends_on:
+      - eureka-server
+  userservice:
+    image: userservice
+    depends_on:
+      - eureka-server
+        </pre>
+            </li>
+        </ul>
+        <h3>4) 디버깅 및 로그 확인</h3>
+        <ul>
+            <li>게이트웨이의 디버깅 로그를 활성화:
+                <pre>
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+        </pre>
+            </li>
+            <li>확인할 내용:
+                <ul>
+                    <li>유레카 서버에 정상적으로 등록된 서비스 목록.</li>
+                    <li>게이트웨이가 유레카에서 가져온 서비스 이름과 라우팅 정보를 올바르게 읽는지.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>5) 정적 설정으로 임시 해결</h3>
+        <ul>
+            <li>문제가 장기적으로 해결되지 않을 경우, 아래와 같이 정적 라우팅 설정 유지:
+                <pre>
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://userservice:8080
+          predicates:
+            - Path=/users/**
+        </pre>
+            </li>
+        </ul>
+        <h2>결론</h2>
+        <ul>
+            <li>동적 라우팅 문제는 <strong>도커 네트워크, 환경 변수, 실행 순서, 서비스 이름 변환</strong> 등 여러 요인에서 발생 가능.</li>
+            <li>위 해결 방안을 단계별로 적용하며 원인을 파악.</li>
+            <li>필요 시 정적 라우팅 방식을 임시로 유지하고, 동적 라우팅은 개발 환경에서 먼저 디버깅 및 검증 진행.</li>
+        </ul>
+
+        <h1>3. UserController 검증 로직 개선 작업</h1>
+        <hr>
+        <h2>기존 검증 로직의 문제점</h2>
+        <h3>문제점</h3>
+        <ul>
+            <li>반복되는 중복 코드 다수 발생.</li>
+            <li>코드 가독성이 떨어지고, 재사용이 어려움.</li>
+            <li>모든 검증 로직이 컨트롤러에 위치하여 비효율적.</li>
+        </ul>
+        <h3>기존 코드</h3>
+        <pre>
+@Operation(summary = "회원가입 - 이메일인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
+@ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
+@PostMapping("/signup")
+public ResponseEntity&lt;Map&lt;String, String&gt;&gt; signup(@RequestBody Map&lt;String, String&gt; userRequest) {
+  if (!userRequest.containsKey("userName") || Objects.equals(userRequest.get("userName"), "")) {
+    return ResponseEntity.badRequest().body(Map.of("msg", "이름을 입력해주세요"));
+  }
+  if (!userRequest.containsKey("userEmail") || Objects.equals(userRequest.get("userEmail"), "")) {
+    return ResponseEntity.badRequest() .body(Map.of("msg", "이메일을 입력해주세요"));
+  }
+  if (!userRequest.containsKey("")) {
+    return ResponseEntity.badRequest() .build();
+  }
+  return ResponseEntity
+          .status(202)
+          .body(Map.of("msg", String.format("%s 으로 인증메일이 전송되었습니다. 메일을 확인해주세요.",
+          userRequest.get("userEmail"))));
+}
+</pre>
+        <h2>개선 방향: 검증 로직 변경</h2>
+        <h3>① Bean Validation 방식 적용</h3>
+        <h4>개요</h4>
+        <ul>
+            <li>Spring Boot의 <strong>Bean Validation</strong>을 활용하여 DTO에 검증 로직을 선언.</li>
+            <li>컨트롤러에서 <code>@Valid</code> 어노테이션을 사용해 자동으로 검증 수행.</li>
+        </ul>
+        <h4>장점</h4>
+        <ul>
+            <li>가독성 향상 및 검증 로직의 재사용 가능.</li>
+            <li>일관된 검증 방식 제공.</li>
+            <li>자동 예외 처리로 불필요한 코드를 줄임.</li>
+        </ul>
+        <h4>단점</h4>
+        <ul>
+            <li>비즈니스 로직이 포함된 <strong>복잡한 검증</strong>은 처리 불가.</li>
+        </ul>
+        <h3>② 커스텀 유효성 검사 방식 검토</h3>
+        <h4>개요</h4>
+        <ul>
+            <li><code>ConstraintValidator</code>를 사용하여 사용자 정의 어노테이션 생성 후 복잡한 검증 로직 캡슐화.</li>
+        </ul>
+        <h4>장점</h4>
+        <ul>
+            <li>복잡한 로직 처리 가능.</li>
+            <li>재사용성 높고, 검증 로직의 가독성을 보장.</li>
+        </ul>
+        <h4>단점</h4>
+        <ul>
+            <li>구현 복잡성이 증가.</li>
+            <li>추가적인 코드 작성 필요.</li>
+        </ul>
+        <h3>③ 최종 선택: Bean Validation</h3>
+        <h4>이유</h4>
+        <ul>
+            <li>프로젝트에서 비즈니스 로직이 복잡하지 않아 Bean Validation으로 충분히 처리 가능.</li>
+            <li>검증 로직을 간결하고 재사용 가능하게 작성할 수 있음.</li>
+        </ul>
+        <h2>구현 내용</h2>
+        <h3>① DTO 생성: <code>UserSignupRequestDto</code></h3>
+        <h4>목적</h4>
+        <ul>
+            <li>사용자 회원가입 요청 시 데이터를 전달받고 검증 수행.</li>
+            <li>검증 로직을 DTO 내부에 어노테이션으로 선언.</li>
+        </ul>
+        <h4>DTO 코드</h4>
+        <pre>
+public class UserSignupRequestDto {
+    @NotBlank(message = "이름을 입력해주세요.")
+    private String userName;
+    @NotBlank(message = "이메일을 입력해주세요.")
+    @Email(message = "유효한 이메일 주소를 입력해주세요.")
+    private String userEmail;
+    @NotBlank(message = "비밀번호를 입력해주세요")
+    @Pattern(
+        regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*])(?=\\S+$).{8,}$",
+        message = "비밀번호는 최소 8자 이상이어야 하며, 숫자와 특수 문자를 포함해야 합니다."
+    )
+    private String userPw;
+    @NotBlank(message = "주소를 입력해주세요")
+    private String userAddress;
+    @NotBlank(message = "휴대폰번호를 입력해주세요.")
+    @Pattern(
+        regexp = "^01[01]-\\d{4}-\\d{4}$",
+        message = "유효한 휴대폰 번호를 입력해주세요. (예: 010-1234-5678)"
+    )
+    private String userPH;
+    private String profileImg;
+    private String description;
+}
+</pre>
+        <h4><code>@Valid</code> 어노테이션 적용 예시</h4>
+        <pre>
+@Operation(summary = "회원가입 - 이메일 인증", description = "사용자가 이메일을 통해 회원가입을 진행합니다.")
+@ApiResponse(responseCode = "202", description = "인증메일 전송 성공")
+@PostMapping("/signup")
+public ResponseEntity<Map<String, String>> signup(@Valid @RequestBody UserSignupRequestDto userRequest) {
+    return ResponseEntity
+        .status(202)
+        .body(Map.of(
+            "msg",
+            String.format("%s 으로 인증메일이 전송되었습니다. 메일을 확인해주세요.", userRequest.getUserEmail())
+        ));
+}
+</pre>
+        <h2>기대 효과</h2>
+        <ul>
+            <li>중복 코드 제거 및 가독성 향상.</li>
+            <li>검증 로직의 재사용성을 높이고 유지보수성을 강화.</li>
+            <li>자동 예외 처리로 컨트롤러의 코드 간소화.</li>
+            <li>DTO와 컨트롤러 간의 역할 분리로 구조적 일관성 확보.</li>
+        </ul>
+
+        <h1>4. 검증 실패 메시지 개선 작업</h1>
+        <hr>
+        <h2>기존 코드 문제점</h2>
+        <ul>
+            <li><strong>HashMap 사용 문제:</strong></li>
+            <ul>
+                <li><code>HashMap</code>은 키-값 쌍의 입력 순서를 보장하지 않음.</li>
+                <li>사용자에게 검증 실패 메시지가 <strong>무작위 순서로 표시</strong>되어 가독성이 저하될 가능성 존재.</li>
+            </ul>
+        </ul>
+        <h2>개선 내용</h2>
+        <ul>
+            <li><strong>LinkedHashMap으로 변경:</strong></li>
+            <ul>
+                <li>입력된 키-값 쌍의 순서를 보장.</li>
+                <li>사용자에게 <strong>검증 실패 메시지가 입력된 순서대로 출력</strong>되도록 개선.</li>
+            </ul>
+        </ul>
+        <h2>변경 전 / 후 비교</h2>
+        <h3>변경 전</h3>
+        <pre>
+@ExceptionHandler(WebExchangeBindException.class)
+public ResponseEntity<Map<String, String>> handleValidationExceptions(WebExchangeBindException ex) {
+    Map<String, String> errors = new HashMap<>();
+    ex.getFieldErrors().forEach(error -> {
+        errors.put(error.getField(), error.getDefaultMessage());
+    });
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+}
+</pre>
+        <h3>변경 후</h3>
+        <pre>
+@ExceptionHandler(WebExchangeBindException.class)
+public ResponseEntity<Map<String, String>> handleValidationExceptions(WebExchangeBindException ex) {
+    Map<String, String> errors = new LinkedHashMap<>(); // LinkedHashMap 사용
+    ex.getBindingResult().getFieldErrors().forEach(error -> {
+        errors.put(error.getField(), error.getDefaultMessage());
+    });
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+}
+</pre>
+
+        <h1>5. 이메일 인증 기반 회원가입 로직 개선 기록</h1>
+        <hr>
+        <h2>기존 방법</h2>
+        <h3>로직</h3>
+        <ul>
+            <li>사용자 입력 정보를 <strong>스태틱 필드</strong>에 임시로 저장.</li>
+            <li>이메일 인증이 완료되면 데이터를 데이터베이스에 저장하여 회원가입 처리.</li>
+        </ul>
+        <h3>장점</h3>
+        <ul>
+            <li><strong>간단한 구현:</strong> 데이터베이스와의 상호작용 최소화로 구현이 간단.</li>
+            <li><strong>DB 부하 감소:</strong> 데이터베이스에 불필요한 접근이 줄어 시스템 부하 감소.</li>
+        </ul>
+        <h3>단점</h3>
+        <ul>
+            <li><strong>데이터 손실 위험:</strong> 서버가 재시작되거나 예외 상황 발생 시, 저장된 데이터 손실 가능.</li>
+            <li><strong>동시성 이슈:</strong> 여러 사용자가 동시 접근 시 스태틱 필드에 데이터가 덮어씌워질 가능성 존재.</li>
+        </ul>
+        <h2>변경 방법</h2>
+        <h3>로직</h3>
+        <ul>
+            <li>사용자 입력 정보를 <strong>데이터베이스에 임시 저장</strong>.</li>
+            <li>이메일 인증 완료 시, 상태값(<code>not_yet</code>)을 <code>confirm</code>으로 변경하여 회원가입 완료.</li>
+        </ul>
+        <h3>장점</h3>
+        <ul>
+            <li><strong>영속성:</strong> 데이터가 데이터베이스에 저장되므로 손실 위험이 적음.</li>
+            <li><strong>유지보수성:</strong> 상태값을 기반으로 회원가입 과정을 명확히 추적 가능.</li>
+            <li><strong>확장성:</strong> 이메일 인증 외에 추가 검증 프로세스(예: 전화번호 인증) 도입 시에도 쉽게 확장 가능.</li>
+        </ul>
+        <h3>단점</h3>
+        <ul>
+            <li><strong>DB 부하:</strong> 데이터베이스에 임시 데이터를 저장하므로 부하 증가 가능성.</li>
+        </ul>
+        <h2>결론 및 선택</h2>
+        <ul>
+            <li><strong>결론:</strong> 단점(DB 부하)보다 장점(영속성, 유지보수성, 확장성)이 더 크다고 판단하여 <strong>데이터베이스를 활용한 임시 정보 저장 방식으로 변경</strong>.</li>
+            <li><strong>변경 후 로직:</strong></li>
+            <ul>
+                <li>사용자 입력 정보를 데이터베이스에 저장. 상태값: <code>not_yet</code>.</li>
+                <li>이메일 인증 완료 시, 상태값을 <code>confirm</code>으로 변경.</li>
+                <li>상태값이 <code>confirm</code>인 경우에만 회원가입 완료 처리.</li>
+            </ul>
+        </ul>
+        <h2>변경된 로직 예시</h2>
+        <h3>데이터베이스 컬럼 구조</h3>
+        <ul>
+            <li><strong>컬럼명:</strong> ID, email, name, password, state</li>
+        </ul>
+        <h3>로직 예시</h3>
+        <h4>회원가입 요청 처리</h4>
+        <pre>
+@PostMapping("/signup")
+public ResponseEntity<String> signup(@RequestBody SignupRequestDto requestDto) {
+    userRepository.save(new User(requestDto.getEmail(), requestDto.getName(), requestDto.getPassword(), "not_yet"));
+    emailService.sendVerificationEmail(requestDto.getEmail());
+    return ResponseEntity.ok("인증메일이 전송되었습니다.");
+}
+</pre>
+        <h4>이메일 인증 완료 처리</h4>
+        <pre>
+@GetMapping("/verify-email")
+public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+    User user = userRepository.findByToken(token);
+    if (user != null && user.getState().equals("not_yet")) {
+        user.setState("confirm");
+        userRepository.save(user);
+        return ResponseEntity.ok("이메일 인증이 완료되었습니다!");
+    }
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패");
+}
+</pre>
+
+        <h1>6. 사용자 관리 컨트롤러 개발 목표 및 진행 기록</h1>
+        <hr>
+        <h2>목표</h2>
+        <ul>
+            <li><strong>주요 목표:</strong> 사용자 관리 컨트롤러의 핵심 기능을 빠르게 구현(MVP 방식).</li>
+            <li><strong>구체적인 계획:</strong></li>
+            <ul>
+                <li>로그인 기능 구현.</li>
+                <li>JWT 기반 인증 처리.</li>
+                <li>로그아웃 및 모든 기기에서 로그아웃 기능 구상.</li>
+            </ul>
+        </ul>
+        <h2>문제 상황 및 고려 사항</h2>
+        <h3>① 초기 계획</h3>
+        <ul>
+            <li><strong>간단한 로그인 기능 구현:</strong> JWT를 따로 저장하지 않고, 생성 후 암호 비교 정도로 간단히 처리 예정.</li>
+        </ul>
+        <h3>② 문제 발견</h3>
+        <ul>
+            <li><strong>로그아웃 기능의 구현 어려움:</strong></li>
+            <ul>
+                <li>"현재 기기에서 로그아웃"과 "모든 기기에서 로그아웃" 기능을 구현하려면 <strong>JWT를 저장 및 관리</strong>해야 함.</li>
+                <li>JWT를 저장하지 않으면 블랙리스트 및 화이트리스트 관리를 할 수 없어 위 기능 구현 불가.</li>
+            </ul>
+        </ul>
+        <h2>해결 방안: JWT 저장 방식 결정</h2>
+        <h3>① MySQL에 저장</h3>
+        <ul>
+            <li><strong>장점:</strong></li>
+            <ul>
+                <li>데이터 영속성 보장.</li>
+                <li>기존 데이터베이스 환경과 통합 가능.</li>
+            </ul>
+            <li><strong>단점:</strong></li>
+            <ul>
+                <li>데이터베이스 부하 증가.</li>
+                <li>JWT 만료 시 삭제를 위한 추가적인 관리 로직 필요.</li>
+            </ul>
+        </ul>
+        <h3>② Redis에 저장</h3>
+        <ul>
+            <li><strong>장점:</strong></li>
+            <ul>
+                <li><strong>TTL(Time To Live)</strong> 기능을 사용해 저장 시 만료 시간을 설정 가능.</li>
+                <li>만료된 JWT를 자동 삭제하여 <strong>효율적인 메모리 관리</strong> 가능.</li>
+                <li>빠른 읽기/쓰기 성능으로 <strong>서버 부하 감소</strong>.</li>
+            </ul>
+            <li><strong>단점:</strong></li>
+            <ul>
+                <li>Redis 구축 및 설정 필요.</li>
+                <li>메모리 기반이라 대규모 데이터 저장 시 적합하지 않을 수 있음.</li>
+            </ul>
+        </ul>
+        <h3>③ 최종 선택</h3>
+        <ul>
+            <li><strong>Redis 채택:</strong> TTL 기능과 성능 측면에서 Redis가 적합하다고 판단.</li>
+            <li>JWT 만료 시 자동 삭제로 관리 로직 간소화.</li>
+        </ul>
+        <h2>구현 계획</h2>
+        <ol>
+            <li><strong>JWT 저장 및 관리:</strong></li>
+            <ul>
+                <li>Redis를 사용해 JWT를 저장하고 TTL 설정.</li>
+                <li>만료된 토큰은 자동 삭제되도록 구성.</li>
+            </ul>
+            <li><strong>로그아웃 기능:</strong></li>
+            <ul>
+                <li>현재 기기에서 로그아웃: Redis에서 해당 JWT 삭제.</li>
+                <li>모든 기기에서 로그아웃: Redis에 저장된 사용자 관련 JWT 모두 삭제.</li>
+            </ul>
+            <li><strong>추가 작업:</strong></li>
+            <ul>
+                <li>Redis 환경 구축 및 의존성 추가.</li>
+                <li>사용자 관리 컨트롤러에 Redis 기반 JWT 관리 로직 구현.</li>
+            </ul>
+        </ol>
+        <h2>결론</h2>
+        <ul>
+            <li><strong>MVP 방식:</strong> 핵심 기능 구현에 집중하여 빠르게 결과물 확보.</li>
+            <li><strong>Redis 채택:</strong> TTL 기능과 성능을 고려하여 효율적으로 JWT를 관리.</li>
+            <li><strong>추가 목표:</strong> 빠른 로그인 및 로그아웃 기능 구현 후, 필요 시 기능 확장 예정.</li>
+        </ul>
+
+        <h1>7. ConfigServer 설정 관리 방식 결정</h1>
+        <hr>
+        <h2>ConfigServer 도입 계획</h2>
+        <ul>
+            <li>프로젝트 루트 디렉토리에 <strong>ConfigServer 모듈</strong>을 생성.</li>
+            <li>프로젝트 전체의 <strong>설정 파일 관리</strong>를 ConfigServer에 위임.</li>
+        </ul>
+        <h2>설정 관리 방식</h2>
+        <h3>① Git 기반 설정 관리</h3>
+        <ul>
+            <li><strong>특징:</strong></li>
+            <ul>
+                <li>설정 파일을 GitHub 저장소에 업로드하여 <strong>Git에서 설정을 읽어 적용</strong>.</li>
+            </ul>
+            <li><strong>사용 이유:</strong></li>
+            <ul>
+                <li><strong>MSA 환경</strong>에서 설정 변경 사항을 실시간으로 반영 가능.</li>
+                <li>CI/CD와 연계하여 자동화 배포 가능.</li>
+                <li>설정 변경 이력을 추적하고 롤백이 용이.</li>
+            </ul>
+        </ul>
+        <h3>② 로컬 파일 기반 설정 관리</h3>
+        <ul>
+            <li><strong>특징:</strong></li>
+            <ul>
+                <li>설정 파일을 <strong>로컬에 저장</strong>하고 ConfigServer에서 읽어 적용.</li>
+            </ul>
+            <li><strong>사용 이유:</strong></li>
+            <ul>
+                <li>프로젝트 초기 <strong>규모가 작음</strong>.</li>
+                <li>설정 변경이 드물며 로컬 접근이 더 효율적.</li>
+                <li>외부 의존성을 줄이고 빠른 설정 접근 가능.</li>
+            </ul>
+        </ul>
+        <h3>③ 결론</h3>
+        <ul>
+            <li><strong>초기:</strong> 프로젝트 개발 초기에는 <strong>로컬 파일 기반</strong>으로 설정 관리.</li>
+            <li><strong>향후:</strong> 프로젝트 기능 구현 및 개발 완료 후, <strong>Git 기반 설정 관리로 전환</strong>.</li>
+            <li>설정 변경 이력 관리와 롤백 필요성을 반영하여 점진적 전환.</li>
+        </ul>
+        <h2>ConfigServer 설정 방식 요약</h2>
+        <ul>
+            <li><strong>현재:</strong> 로컬 파일 기반으로 설정 파일을 관리.</li>
+            <li><strong>향후:</strong> GitHub 저장소에서 설정 파일을 가져오는 방식으로 전환.</li>
+        </ul>
+    </section>
+
+    <section id="upSection" style="display: none;">
+        <h1>1. 회원 관리 서비스 개선</h1>
+        <h2>① RedisTokenRepository</h2>
+        <ul>
+            <li><strong>Redis 사용 최적화 방안:</strong>
+                <ul>
+                    <li><code>keys</code> 명령어 대신 <code>haskey</code> 또는 <code>GET</code> 명령어 활용.</li>
+                    <li>TTL(Time To Live) 설정을 통해 메모리 효율성을 개선.</li>
+                    <li>다중 명령어 실행 시 <strong>Pipeline</strong> 활용.</li>
+                </ul>
+            </li>
+            <li><strong>코드 개선 예시:</strong>
+                <pre>
+        // 기존 방식: keys 명령어 사용
+        Set&lt;String&gt; keys = redisTemplate.keys("token:*" + token);
+        return keys != null &amp;&amp; !keys.isEmpty();
+
+        // 개선 방식: hasKey로 변경
+        return Boolean.TRUE.equals(redisTemplate.hasKey("token:*" + token));
+        </pre>
+            </li>
+            <li><strong>예상 효과:</strong> 대규모 요청 처리 시 성능 20~30% 향상.</li>
+            <li><strong>실제:</strong> 처리 속도 약 22.5% 개선.</li>
+        </ul>
+
+        <h2>② UserService</h2>
+        <ul>
+            <li><strong>데이터 접근 및 연산 최적화:</strong>
+                <ul>
+                    <li>캐싱 적용: 자주 조회되는 데이터는 Redis 캐시에 저장.</li>
+                    <li>비동기 처리: <code>CompletableFuture</code>로 주요 비즈니스 로직 처리 속도 향상.</li>
+                    <li>쿼리 최적화: Projection 사용으로 필요한 데이터만 조회.</li>
+                </ul>
+            </li>
+            <li><strong>코드 개선 예시:</strong>
+                <pre>
+        // 기존 방식
+        public User getUserDetails(Long userId) {
+            return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        }
+
+        // 개선 방식: 캐싱 추가
+        public User getUserDetails(Long userId) {
+            return redisTemplate.opsForValue().get("user:" + userId, () ->
+                userRepository.findById(userId).orElseThrow(UserNotFoundException::new)
+            );
+        }
+        </pre>
+            </li>
+            <li><strong>예상 효과:</strong>
+                <ul>
+                    <li>응답 시간 약 30% 단축.</li>
+                    <li>부하 약 20~25% 감소.</li>
+                </ul>
+            </li>
+            <li><strong>실제:</strong>
+                <ul>
+                    <li>응답 시간 약 42% 개선.</li>
+                    <li>DB 부하는 따로 테스트하지 못함.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>③ JwtUtil</h2>
+        <ul>
+            <li><strong>JWT 생성 및 검증 최적화:</strong>
+                <ul>
+                    <li>JWT 라이브러리 최신화 및 불필요한 연산 제거.</li>
+                    <li>검증 결과 캐싱 적용으로 반복적인 검증 속도 향상.</li>
+                </ul>
+            </li>
+            <li><strong>코드 개선 예시:</strong>
+                <pre>
+        // 기존 방식: 매번 검증 수행
+        public Claims parseToken(String token) {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        }
+
+        // 개선 방식: 검증 결과 캐싱
+        public Claims parseToken(String token) {
+            return cache.get(token, () ->
+                Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
+            );
+        }
+        </pre>
+            </li>
+            <li><strong>예상 효과:</strong> JWT 검증 속도 15~20% 개선.</li>
+            <li><strong>실제:</strong> 검증 속도 17% 개선.</li>
+        </ul>
+
+        <h2>④ EmailService</h2>
+        <ul>
+            <li><strong>이메일 발송 로직 개선:</strong>
+                <ul>
+                    <li>비동기 처리: <code>CompletableFuture</code> 또는 스레드풀 사용.</li>
+                    <li>큐 시스템(e.g., RabbitMQ) 연동으로 이메일 발송 처리 병렬화.</li>
+                </ul>
+            </li>
+            <li><strong>코드 개선 예시:</strong>
+                <pre>
+        // 기존 방식: 동기 처리
+        public void sendEmail(String recipient, String message) {
+            emailSender.send(recipient, message);
+        }
+
+        // 개선 방식: 비동기 처리
+        public void sendEmailAsync(String recipient, String message) {
+            CompletableFuture.runAsync(() -> emailSender.send(recipient, message));
+        }
+        </pre>
+            </li>
+            <li><strong>예상 효과:</strong> 이메일 발송 작업 병렬 처리로 작업 속도 50% 이상 향상.</li>
+            <li><strong>실제:</strong> 이메일 주소 테스트가 어려워 성과 확인하지 못함.</li>
+        </ul>
+
+        <h1>2. 로그인 검증 응답속도 개선</h1>
+        <h2>기존 방식</h2>
+        <ul>
+            <li><strong>구조:</strong> 각 서비스의 API에 진입한 후, 유저서비스에 <strong>추가 요청</strong>을 보내 로그인 검증.</li>
+            <li><strong>문제점:</strong>
+                <ul>
+                    <li>중복 호출로 인해 <strong>응답속도 저하</strong>.</li>
+                    <li>서비스마다 인증 로직 구현으로 <strong>유지보수 복잡성 증가</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>개선된 방식</h2>
+        <ul>
+            <li><strong>구조 변경:</strong> 인증/인가 처리 로직 및 Security를 <strong>UserService → Gateway</strong>로 이동.
+                <ul>
+                    <li>게이트웨이에서 <strong>JWT 서명 확인</strong>을 통해 로그인 상태를 검증.</li>
+                    <li>검증 완료 후에만 각 서비스 API로 요청 전달.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>성과</h2>
+        <ul>
+            <li><strong>응답속도 개선:</strong>
+                <ul>
+                    <li><strong>이전:</strong></li>
+                    <ul>
+                        <li>최소: 9ms</li>
+                        <li>최대: 24ms</li>
+                        <li>평균: 17ms</li>
+                    </ul>
+                    <li><strong>개선 후:</strong></li>
+                    <ul>
+                        <li>최소: 5ms</li>
+                        <li>최대: 9ms</li>
+                        <li>평균: 7ms</li>
+                    </ul>
+                    <li><strong>평균 응답속도 약 10ms 감소</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h1>3. 주문 API 응답속도 개선</h1>
+        <h2>최초 로직</h2>
+        <ol>
+            <li><strong>JWT 검증:</strong> API 진입 시 매번 JWT 토큰 검증 수행.</li>
+            <li><strong>상품 검증:</strong> 상품 존재 여부 확인.</li>
+            <li><strong>재고 확인:</strong> 상품 수량이 충분한지 검증.</li>
+            <li><strong>주문 처리:</strong> 주문 로직 수행.</li>
+        </ol>
+
+        <h2>초기 응답속도</h2>
+        <ul>
+            <li><strong>최소:</strong> 1711ms</li>
+            <li><strong>최대:</strong> 5348ms</li>
+            <li><strong>평균:</strong> 2500ms</li>
+        </ul>
+
+        <h2>개선된 로직</h2>
+        <ol>
+            <li><strong>게이트웨이에서 JWT 검증:</strong>
+                <ul>
+                    <li>API 진입 전에 <strong>게이트웨이</strong>에서 JWT 검증을 일괄 처리.</li>
+                    <li>각 API는 추가 JWT 검증 작업 불필요.</li>
+                </ul>
+            </li>
+            <li><strong>상품 정보 일괄 조회:</strong>
+                <ul>
+                    <li>API 진입 후 필요한 <strong>모든 상품 정보를 한번에 불러옴</strong>.</li>
+                    <li>각각의 값을 비즈니스 로직에서 처리하여 중복 요청 감소.</li>
+                </ul>
+            </li>
+            <li><strong>최적화된 주문 로직:</strong>
+                <ul>
+                    <li>상품 검증과 수량 검증을 <strong>동시에 처리</strong>하여 단계별 로직 단축.</li>
+                    <li>필요한 경우 비동기적 데이터 처리 추가.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2>응답속도</h2>
+        <ul>
+            <li><strong>최소:</strong> 37ms</li>
+            <li><strong>최대:</strong> 342ms</li>
+            <li><strong>평균:</strong> 55ms</li>
+        </ul>
+
+        <h2>개선 효과</h2>
+        <ol>
+            <li><strong>JWT 검증을 게이트웨이로 이전:</strong>
+                <ul>
+                    <li><strong>JWT 검증 로직의 중복 제거</strong>로 API 처리 속도 향상.</li>
+                    <li>각 서비스의 부담을 줄이고 요청 병목 최소화.</li>
+                </ul>
+            </li>
+            <li><strong>상품 정보 일괄 조회:</strong>
+                <ul>
+                    <li>상품 검증과 수량 검증 요청을 개별적으로 처리하던 기존 로직에서 발생하던 <strong>불필요한 통신 제거</strong>.</li>
+                    <li>데이터베이스 및 네트워크 요청 수 감소.</li>
+                </ul>
+            </li>
+            <li><strong>주문 로직 간소화:</strong>
+                <ul>
+                    <li>연속된 조건 검증 작업을 병렬적으로 처리하여 성능 개선.</li>
+                    <li>단순화된 로직으로 코드 유지보수성 향상.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h1>4. 결제 프로세스 API 성능 개선</h1>
+        <h2>최초 테스트 (동시성 제어 없음)</h2>
+        <ul>
+            <li><strong>VU 50:</strong> 정상</li>
+            <li><strong>VU 1000:</strong> 비정상 (오류 발생 및 시스템 부하)</li>
+        </ul>
+
+        <h2>개선 1: 레디스 기반 분산락 적용</h2>
+        <ul>
+            <li><strong>VU 1000:</strong> 정상</li>
+            <li><strong>VU 5000:</strong> 비정상 (재고 처리 오류 및 동시 요청 과부하)</li>
+        </ul>
+
+        <h2>개선 2: 레디슨 Pub/Sub 추가 적용</h2>
+        <h3>테스트 시나리오 및 결과</h3>
+        <ul>
+            <li><strong>5초간 VU 4000:</strong> 정상 처리</li>
+            <li><strong>30초간 VU 4000:</strong> 재고 오차 3개 발생</li>
+            <li><strong>30초간 5초마다 1000씩 증가:</strong> 재고 오차 1500개 발생 (특정 상황에서 재고 증가 이상 현상 확인)</li>
+            <li><strong>1분간 VU 4000:</strong> 재고 오차 1개</li>
+        </ul>
+
+        <h2>테스트 문제점</h2>
+        <ol>
+            <li><strong>같은 사용자 아이디 사용:</strong>
+                <ul>
+                    <li>하나의 사용자 아이디로 테스트를 수행하여 <strong>429 에러 비율</strong> 증가.</li>
+                    <li>테스트 환경에서 결과 신뢰도가 저하됨.</li>
+                </ul>
+            </li>
+            <li><strong>테스트 성공률 저하:</strong>
+                <ul>
+                    <li>결제 성공(200), 결제 시도 중 이탈(204), 중복 요청 실패(429) 결과의 비율 왜곡.</li>
+                    <li>실제 예상 성공률 50~70%에 비해 테스트 성공률 5% 미만 기록.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2>개선 계획</h2>
+        <ol>
+            <li><strong>테스트 로직 점검 및 수정:</strong>
+                <ul>
+                    <li><strong>사용자 토큰 분리:</strong> 각기 다른 사용자 아이디 또는 다양한 토큰 사용.</li>
+                    <li><strong>429 에러 비율 조정:</strong> 중복 요청 최소화 및 요청 간격 조정.</li>
+                    <li><strong>동시성 제어 확인:</strong> 동시성 제어 로직 정상 작동 검증.</li>
+                </ul>
+            </li>
+            <li><strong>테스트 시나리오 추가:</strong>
+                <ul>
+                    <li><strong>동적 시뮬레이션:</strong> 다양한 사용자 요청 패턴을 조합.</li>
+                    <li><strong>장시간 부하 테스트:</strong> 1분 이상의 장기 부하로 재고 처리 및 이상 현상 확인.</li>
+                </ul>
+            </li>
+            <li><strong>API 로직 최적화:</strong>
+                <ul>
+                    <li>재고 증가와 같은 이상 현상 원인 분석 및 보완.</li>
+                    <li>Pub/Sub 이벤트 발행 처리 속도 추가 최적화.</li>
+                </ul>
+            </li>
+        </ol>
+
+    </section>
+
+    <section id="scheduleSection" style="display: none;">
+        <h1>요약</h1>
+
+        <h2>1주차</h2>
+        <ul>
+            <li>모놀리스 프로젝트 MVP 구현</li>
+            <li>MSA 개념 학습</li>
+            <li>MSA 구조로 변경</li>
+            <li>ConfigServer, EurekaServer, API Gateway 구축</li>
+            <li>UserService 커버리지 테스트</li>
+            <li>동시성 이슈가 발생할 가능성이 높은 API의 부하테스트 (<strong>k6</strong>)</li>
+        </ul>
+
+        <h2>2주차</h2>
+        <ul>
+            <li>스키마 분할에 따른 리팩토링</li>
+            <li>WebMVC → WebFlux(일부) 리팩토링</li>
+            <li>Resilience4j CircuitBreaker 활용</li>
+            <li>도커 설정</li>
+            <li>OpenFeign → WebClient 요청방식 리팩토링</li>
+        </ul>
+
+        <h2>3주차</h2>
+        <ul>
+            <li>인증 / 인가 방식 변경 리팩토링, 성능 개선</li>
+            <li>동시성 이슈 해결을 위한 <strong>레디스 기반 분산락</strong> 도입</li>
+            <li>레디스 펍/섭 방식과 병행, 성능 개선</li>
+            <li>JUnit5 활용 각 서비스 단위 테스트 커버리지 100%</li>
+            <li>동시성 이슈가 발생할 가능성이 높은 API의 부하테스트2 (<strong>k6</strong>)</li>
+        </ul>
+
+        <table border="1">
+            <tr>
+                <th>/</th>
+                <td>목표</td>
+                <td>실천</td>
+            </tr>
+            <tr>
+                <th colspan="3">-  -  -  -  -  1주차  -  -  -  -  -</th>
+            </tr>
+            <tr>
+                <th>24.12.18 [수]</th>
+                <td>[ 프로젝트 시작일 ]<br>
+                    ERD 작성<br>
+                    API 명세서 작성<br>
+                    유저 관리 서비스 전반 기능 구현
+                </td>
+                <td>
+                    ERD 초안 작성<br>
+                    API 명세서 작성<br>
+                    DDD구조 프로젝트 생성<br>
+                    Docker 환경설정<br>
+                    회원가입 기능 구현률 50%
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.19 [목]</th>
+                <td>
+                    유저 관리 서비스 기능 구현
+                </td>
+                <td>
+                    회원가입 기능구현 완료<br>
+                    이메일 인증 기능구현 완료<br>
+                    로그인 기능구현 완료<br>
+                    현재 기기에서 로그아웃 기능구현 완료<br>
+                    모든 기기에서 로그아웃 기능구현 완료<br>
+                    비밀번호 변경 기능구현 완료<br>
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.20 [금]</th>
+                <td>
+                    기능 구현 작업 중단<br>
+                    유레카 서버 구축<br>
+                    API 게이트웨이 구축<br>
+                    멀티 모듈 프로젝트에 맞는 도커환경 구축<br>
+                    그래들 의존성 중앙 관리식 일부 자동화 구축<br>
+                </td>
+                <td>
+                    유레카와 게이트웨이 활용을 위해서<br>
+                    먼저 프로젝트의 구조를 리팩토링<br>
+                    최초 프로젝트 내 모듈 4개에서<br>
+                    ConfigServer, EurekaServer, Gateway, Service...<br>
+                    로 구성을 하고, 각 서비스마다 서브모듈을 4개씩 구성<br><br>
+                    ConfigServer 구축 완료<br>
+                    EurekaServer 구축 완료<br>
+                    API Gateway 구축 완료<br>
+                    유저 관리 서비스 유레카에 등록 후 요청 처리 테스트 완료<br>
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.21 [토]</th>
+                <td>
+                    각 서비스 별 스키마 분할<br>
+                    API 명세서 보완하여 재작성<br>
+                    명세서 기반 상품관리 서비스 구현<br>
+                    -----------------Optional-----------------<br>
+                    주문관리 서비스 구현<br>
+                    Resilence4j 활용<br>
+                    장애상황 연출 및 회복탄력성 갖추기
+                </td>
+                <td>
+                    서비스 별 스키마 분할 완료<br>
+                    상품관리 서비스 구현 완료<br>
+                    주문관리 서비스 구현 중...<br>
+                    현재 각 서비스별 하위모듈이 개별적으로 동작하지 않는데도<br>
+                    이 구조를 유지할 이유가 없다는걸 깨달았음. <br>
+                    따라서 루트의 모듈 구성은 그대로 두되. <br>
+                    각 서비스별 하위모듈 삭제하고 하나의 구조로 리팩토링 완료
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.22 [일]</th>
+                <td>
+                    주문관리 서비스 구현<br>
+                    모든 서비스의 예외처리 추가<br>
+                    -----------------Optional-----------------<br>
+                    테스트 코드 및 시나리오 작성<br>
+                    테스트 수행 및 성능 개선<br>
+                </td>
+                <td>
+                    주문관리 서비스 구현완료
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.23 [월]</th>
+                <td>
+                    위시리스트 API 구현완료<br>
+                    모든 서비스 예외처리 추가
+                </td>
+                <td>
+                    위시리스트 API 구현<br>
+                    모든 서비스 예외처리 추가
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.24 [화]</th>
+                <td>
+                    테스트 시나리오 및 코드 작성<br>
+                    테스트 후 예외처리 추가 및 성능개선
+                </td>
+                <td>
+                    서비스 커버리지 테스트 66% 달성<br>
+                    k6 테스트 수행, 30%의 오류율 발생 확인
+                </td>
+            </tr>
+            <tr>
+                <th colspan="3">-  -  -  -  -  2주차  -  -  -  -  -</th>
+            </tr>
+            <tr>
+                <th>24.12.25 [수]</th>
+                <td>
+                    Resilience4j 활용, 회복탄력성 갖추기<br>
+                </td>
+                <td>
+                    실패
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.26 [목]</th>
+                <td>
+                    동시성 제어 및 성능개선
+                </td>
+                <td>
+                    Spring Security 추가 작업중<br>
+                    기존 방법으로 처리가 되지 않는 에러 발생 <br>
+                    WebMvc -> WebFlux 로 로직 구성 변경.<br>
+                    유저서비스 변경 완료. 27일 나머지 서비스 변경 예정
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.27 [금]</th>
+                <td>
+                    상품관리, 주문관리 서비스 WebFlux 구조 변경<br>
+                    레디스 기반 분산락 구현으로 동시성 제어 Up<br>
+                </td>
+                <td>
+                    WebFlux 관련 피드백 수용<br>
+                    다시 WebMVC로 롤백..
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.28 [토]</th>
+                <td>
+                    회복 탄력성 공부
+                </td>
+                <td>
+                    .
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.29 [일]</th>
+                <td>
+                    회복 탄력성 공부
+                </td>
+                <td>
+                    Resilience4j 활용<br>
+                    Circuit Breaker, Retry, TimeLimiter 적용<br>
+                    Docker 환경 세팅 및 빌드 그리고 API 테스트 완료<br>
+                    프로메테우스 설정 완료
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.30 [월]</th>
+                <td>
+                    3주차 목표 설정<br>
+                    동시성 제어에 관한 공부<br>
+                    가능하다면 일부 적용까지
+                </td>
+                <td>
+                    코드 변경사항 발생시, 해당 모듈 재빌드,<br>
+                    도커에도 이미지 재빌드를 하는 과정이 번거로워서<br>
+                    코드 변경을 감지하여 자동으로 도커에 재빌드 된 jar파일이 빌드되도록<br>
+                    구성하고자 Devtools와 도커의 Volume 설정을 사용.<br>
+                    하지만, 뜻대로 되지 않았고. 나 혼자, 협업없이, 다른 컴퓨터에서 실행하지 않고<br>
+                    진행하는 프로젝트 이기 때문에 도커를 사용할 의미가 사실 없음.<br>
+                    다만, 도커를 사용할 수 있다는 것은 확인이 되었으니, 오늘부로 도커 아웃.
+                </td>
+            </tr>
+            <tr>
+                <th>24.12.31 [화]</th>
+                <td>
+                    남은 재고 파악 API 설계 및 구현<br>
+                    Redis 캐싱에 대한 이해<br>
+                    결제 진입 및 결제 API 설계 및 구현
+                </td>
+                <td>
+                    공부
+                </td>
+            </tr>
+            <tr>
+                <th colspan="3">-  -  -  -  -  3주차  -  -  -  -  -</th>
+            </tr>
+            <tr>
+                <th>25.01.01 [수]</th>
+                <td>
+                    공부
+                </td>
+                <td>
+                    공부
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.02 [목]</th>
+                <td>
+                    .
+                </td>
+                <td>
+                    인증 / 인가 위치 변경<br>
+                    UserService -> Gateway<br>
+                    전체 서비스에서 로그인 검증을 하지 않게 되어<br>
+                    전체적으로 응답속도 10ms이상 향상
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.03 [금]</th>
+                <td>
+                    선착순 구매 서비스 API MVP 개발로 기능구현 완료<br>
+                    각 모듈간 요청에 적절한 카프카 로직 추가<br>
+                    모듈별 응답속도 개선<br>
+                </td>
+                <td>
+                    주문 관련 API 성능개선<br>
+                    평균 응답속도 2500ms -> 120ms<br>
+                    약 93 ~ 95% 개선<br>
+                    결제 프로레스 API 구현 완료<br>
+                    위의 API K6 커스텀 매트릭&핸들러 테스트코드 작성<br>
+                    VU 50 이하시에만 정상작동, 50초과시 에러율 급증
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.04 [토]</th>
+                <td>
+                    결제 프로세스 API의 동시성 제어 로직 추가<br>
+                    K6기준 VU 10000에서 안정적인 동작을 목표
+                </td>
+                <td>
+                    레디스 기반 분산 락을 컨트롤러단에서만 구현<br>
+                    결과 : VU 1000명에서 안정적인 동작 확인<br>
+                    데이터 정합성과 동시성을 더 확실히 제어해야할 필요
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.05 [일]</th>
+                <td>
+                    .
+                </td>
+                <td>
+                    .
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.06 [월]</th>
+                <td>
+                    <details>
+                        <summary>Redis 최적화 방안</summary>
+                        레디스 QPS, 응답시간 및 메세지 전달 성공률 측정<br>
+                        병목 구간 파악 및 해결<br>
+                        성능 최적화 이후 다시 테스트 진행
+                    </details>
+                    이후 카프카 도입 검토
+                </td>
+                <td>
+                    현재 프로젝트 진행 방향에 대해 멘토님과 상의한 결과<br>
+                    아쉬운 점이 있는 것 같아, 수립한 계획 전면 취소<br>
+                    단기 목표로는<br>
+                    내일 7일까지, 각 서비스별 테스트코드 작성 및 테스트 커버리지 90%이상 달성<br>
+                    장기 목표로는 레디스 캐싱에 대한 깊은 이해를 바탕으로 동시성 제어 성능 개선<br>
+                    차후 시간적 여유가 있다는 전제하에 카프카 등 선택사항 구현
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.07 [화]</th>
+                <td>
+                    오늘부터 각 서비스별 테스트코드 작성<br>
+                    및 테스트 커버리지 100% 달성
+                </td>
+                <td>
+                    <details>
+                        <summary>UserService Test Coverage 100% 이미지</summary>
+                        <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/UserService/UserService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                    </details>
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.08 [수]</th>
+                <td>
+                    .
+                </td>
+                <td>
+                    <details>
+                        <summary>ProductService Test Coverage 100% 이미지</summary>
+                        <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/ProductService/ProductService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                    </details>
+                    <details>
+                        <summary>EurekaServer Test Coverage 100% 이미지</summary>
+                        <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/EurekaServer/EurekaServer%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                    </details>
+                    <details>
+                        <summary>Gateway Test Coverage 100% 이미지</summary>
+                        <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/Gateway/Gateway%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                    </details>
+                </td>
+            </tr>
+            <tr>
+                <th>25.01.09 [목]</th>
+                <td>
+                    .
+                </td>
+                <td>
+                    <details>
+                        <summary>OrderService Test Coverage 100% 이미지</summary>
+                        <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/OrderService/OrderService%20-%20test%20coverage%20100%25.png" alt="테스트 커버리지 100%">
+                    </details>
+                    <details>
+                        <summary>PurchaseService Test Coverage 90% 이미지</summary>
+                        <img src="https://raw.githubusercontent.com/Blaten7/image/main/images/FcomeFserve/PurchaseService/PurchaseService%20-%20test%20coverage%2090%25.png" alt="테스트 커버리지 90%">
+                    </details><br>
+                    전체 모듈 테스트코드 작성 1차 완료
+                </td>
+            </tr>
+            <tr>
+                <th colspan="3">-  -  -  -  -  프로젝트 종료  -  -  -  -  -</th>
+            </tr>
+        </table>
     </section>
 </main>
+<script>
+    const introBtn = document.getElementById('intro');
+    const intro = document.getElementById('introSection');
+    const skillBtn = document.getElementById('skill');
+    const skill = document.getElementById('skillSection');
+    const selectBtn = document.getElementById('select');
+    const select = document.getElementById('selectSection');
+    const troubleBtn = document.getElementById('trouble');
+    const trouble = document.getElementById('troubleSection');
+    const upBtn = document.getElementById('up');
+    const up = document.getElementById('upSection');
+    const scheduleBtn = document.getElementById('schedule');
+    const schedule = document.getElementById('scheduleSection');
+
+    introBtn.addEventListener('click', () => {
+        intro.style.display = 'block';
+        skill.style.display = 'none';
+        select.style.display = 'none';
+        trouble.style.display = 'none';
+        up.style.display = 'none';
+        schedule.style.display = 'none';
+    });
+
+    skillBtn.addEventListener('click', () => {
+        intro.style.display = 'none';
+        skill.style.display = 'block';
+        select.style.display = 'none';
+        trouble.style.display = 'none';
+        up.style.display = 'none';
+        schedule.style.display = 'none';
+    });
+
+    selectBtn.addEventListener('click', () => {
+        intro.style.display = 'none';
+        skill.style.display = 'none';
+        select.style.display = 'block';
+        trouble.style.display = 'none';
+        up.style.display = 'none';
+        schedule.style.display = 'none';
+    });
+
+    troubleBtn.addEventListener('click', () => {
+        intro.style.display = 'none';
+        skill.style.display = 'none';
+        select.style.display = 'none';
+        trouble.style.display = 'block';
+        up.style.display = 'none';
+        schedule.style.display = 'none';
+    });
+
+    upBtn.addEventListener('click', () => {
+        intro.style.display = 'none';
+        skill.style.display = 'none';
+        select.style.display = 'none';
+        trouble.style.display = 'none';
+        up.style.display = 'block';
+        schedule.style.display = 'none';
+    });
+
+    scheduleBtn.addEventListener('click', () => {
+        intro.style.display = 'none';
+        skill.style.display = 'none';
+        select.style.display = 'none';
+        trouble.style.display = 'none';
+        up.style.display = 'none';
+        schedule.style.display = 'block';
+    });
+</script>
 </body>
 </html>
