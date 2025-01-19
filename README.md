@@ -16,6 +16,7 @@
 - [⚡ 성능개선](#levelup)
 - [📅 프로젝트 일정](#schedules)
 
+<a href="https://Blaten7.github.io/-First-come-first-served-/">Github Pages</a>
 <h2 id="intro">📌 소개 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/1.-%F0%9F%93%8C-%EC%86%8C%EA%B0%9C" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
 - 이커머스 플랫폼의 선착순 한정판 상품 구매 시 발생하는<br>대규모 트래픽과 동시성 이슈를 해결하기 위한 프로젝트입니다.
