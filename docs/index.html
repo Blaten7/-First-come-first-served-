@@ -25,11 +25,9 @@
         color: white;
         /* background-color: white; */
     }
-
     .nav:last-child {
         margin-right: 0; /* 마지막 버튼에 마진 제거 */
     }
-
     section {
         padding: 2% 5%;
     }
@@ -94,7 +92,6 @@
         height: fit-content; /* 내용물에 따라 높이 조절 */
         width: 100%; /* 부모 컨테이너 너비에 맞춤 */
     }
-
     h1 {
         scroll-margin-top: 250px; /* 여유 공간 크기 */
     }
@@ -108,8 +105,7 @@
 <header>
     <h1 style="text-align: center; display: flex; justify-content: center; align-items: center;">
         <a href="/" style="text-decoration: none; color: inherit; display: flex; align-items: center; color: black;">
-            <img src="https://github.githubassets.com/favicons/favicon.png" alt="Github Icon"
-                 style="height: 1.2em; margin-right: 10px;">
+            <img src="https://github.githubassets.com/favicons/favicon.png" alt="Github Icon" style="height: 1.2em; margin-right: 10px;">
             Github Wiki
         </a>
     </h1>
@@ -969,8 +965,7 @@ public ResponseEntity<String> verifyEmail(@RequestParam String token) {
             <h3>MSA의 본질</h3>
             <ul>
                 <li><strong>독립적 서비스:</strong> 각 서비스는 <strong>독립적으로 자신의 데이터를 관리</strong>하고 제공해야 함.</li>
-                <li><strong>HTTP 통신:</strong> 필요한 정보는 다른 서비스의 <strong>API를 통해 요청</strong>. 서비스 간 데이터 공유는 API 호출로 제한.
-                </li>
+                <li><strong>HTTP 통신:</strong> 필요한 정보는 다른 서비스의 <strong>API를 통해 요청</strong>. 서비스 간 데이터 공유는 API 호출로 제한.</li>
             </ul>
 
             <h1 id="s10">10. 공통 클래스 관리 방식 고민: 개별 관리 vs 중앙 서비스</h1>
@@ -1467,16 +1462,14 @@ if (!로그인이 되었다면?) {
                 </li>
                 <li><strong>도커 환경 변수 누락:</strong>
                     <ul>
-                        <li>도커에서 환경 변수(예: <code>EUREKA_CLIENT_SERVICEURL_DEFAULTZONE</code>)가 제대로 전달되지 않아 유레카 서버를 인식하지
-                            못함.
+                        <li>도커에서 환경 변수(예: <code>EUREKA_CLIENT_SERVICEURL_DEFAULTZONE</code>)가 제대로 전달되지 않아 유레카 서버를 인식하지 못함.
                         </li>
                     </ul>
                 </li>
                 <li><strong>게이트웨이 설정 문제:</strong>
                     <ul>
                         <li>게이트웨이가 유레카 서버에서 서비스를 가져오는 로직이 제대로 동작하지 않음.</li>
-                        <li><code>spring.cloud.gateway.discovery.locator.enabled</code> 설정이 비활성화되었거나, 유레카 서버와의 연결이 끊김.
-                        </li>
+                        <li><code>spring.cloud.gateway.discovery.locator.enabled</code> 설정이 비활성화되었거나, 유레카 서버와의 연결이 끊김.</li>
                     </ul>
                 </li>
             </ol>
