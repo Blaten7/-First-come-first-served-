@@ -255,5 +255,5 @@ JWT 검증 → 상품 검증 → 재고 확인 → 주문 처리
 - [3. 주문 API 응답속도 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#3-주문-API-응답속도-개선)
 - [4. 결제 프로세스 API 성능 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#4-결제-프로세스-API-성능-개선-1)
 
-  <h2 id="schedules">📆 프로젝트 일정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/7.-%F0%9F%93%86-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%BC%EC%A0%95" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="schedules">📆 프로젝트 일정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/7.-%F0%9F%93%86-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%BC%EC%A0%95" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
