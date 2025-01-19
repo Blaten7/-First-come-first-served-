@@ -174,7 +174,7 @@
 - 사용자 프로필 관리
 </details>
 
-<h2 id="play">💻 실행방법 <a href="" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="play">💻 실행방법 <a href="#top">🔝</a></h2>
 <h3>[ API 명세 ]</h3>
 <a href="https://documenter.getpostman.com/view/38985084/2sAYJ3F2XJ">Postman API 명세서 보기</a>
 
@@ -201,7 +201,7 @@
 - Docker Compose 를 사용하여 로컬 개발 환경 및 배포 환경에서 동일한 구성을 유지.
 - 모든 서비스와 외부 의존성을 컨테이너로 구성해 일관된 개발/운영 환경 제공.
 
-<h2 id="select">🤔 기술적 의사결정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="select">🤔 기술적 의사결정 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
 - [1. Dockerfile과 docker-compose.yml 위치 선정 기준](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#1-Dockerfile과-docker-compose.yml-위치-선정-기준)
 - [2. RESTful API 응답 코드 설계](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#2-RESTful-API-응답-코드-설계)
@@ -217,7 +217,7 @@
 - [12. 선착순 구매 서비스 설계 및 구성 방향](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#12-선착순-구매-서비스-설계-및-구성-방향)
 - [13. 선착순 구매 서비스(FF) 설계 방향 고민 기록](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#13-선착순-구매-서비스FF-설계-방향-고민-기록)
 
-<h2 id="trouble_shooting">🔍 트러블슈팅 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="trouble_shooting">🔍 트러블슈팅 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
 - [1. 로그인 검증 로직 오류 및 해결](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#1-로그인-검증-로직-오류-및-해결)
 - [2. 동적 라우팅 문제 분석 및 해결 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#2-동적-라우팅-문제-분석-및-해결-방안)
@@ -227,7 +227,7 @@
 - [6. PurchaseService의 결제 프로세스 API 성능 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#6-PurchaseService의-결제-프로세스-API-성능-개선)
 - [7. K6 테스트 코드 변경 완료 및 진행 방향](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#7-K6-테스트-코드-변경-완료-및-진행-방향)
 
-<h2 id="levelup">⚡ 성능개선 <a href="" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
+<h2 id="levelup">⚡ 성능개선 <a href="https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
 ### 주문 API 응답속도 개선
 - **초기 응답속도**: 평균 2500ms (최대 5348ms)
