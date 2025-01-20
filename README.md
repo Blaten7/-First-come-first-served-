@@ -203,29 +203,29 @@
 
 <h2 id="select">🤔 기술적 의사결정 <a href="https://blaten7.github.io/-First-come-first-served-/#selectTitle" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
-- [1. Dockerfile과 docker-compose.yml 위치 선정 기준](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#1-Dockerfile과-docker-compose.yml-위치-선정-기준)
-- [2. RESTful API 응답 코드 설계](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#2-RESTful-API-응답-코드-설계)
-- [3. UserController 검증 로직 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#3-UserController-검증-로직-개선-작업)
-- [4. 검증 실패 메시지 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#4-검증-실패-메시지-개선-작업)
-- [5. 이메일 인증 기반 회원가입 로직 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#5-이메일-인증-기반-회원가입-로직-개선-기록)
-- [6. 사용자 관리 컨트롤러 개발 목표 및 진행 기록](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#6-사용자-관리-컨트롤러-개발-목표-및-진행-기록)
-- [7. ConfigServer 설정 관리 방식 결정](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#7-ConfigServer-설정-관리-방식-결정)
-- [8. DB 스키마 분할](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#8-DB-스키마-분할-결정)
-- [9. 주문 관리 서비스의 유저 검증 로직에 대한 고민](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#9-주문-관리-서비스의-유저-검증-로직에-대한-고민)
-- [10. 공통 클래스 관리 방식 고민: 개별 관리 vs 중앙 서비스](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#10-공통-클래스-관리-방식-고민-개별-관리-vs-중앙-서비스)
-- [11. 연관 관계 처리 방식 선택: 1안 vs 2안](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#11-연관-관계-처리-방식-선택-1안-vs-2안)
-- [12. 선착순 구매 서비스 설계 및 구성 방향](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#12-선착순-구매-서비스-설계-및-구성-방향)
-- [13. 선착순 구매 서비스(FF) 설계 방향 고민 기록](https://github.com/Blaten7/-First-come-first-served-/wiki/4.-%F0%9F%A4%94-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95#13-선착순-구매-서비스FF-설계-방향-고민-기록)
+- [1. Dockerfile과 docker-compose.yml 위치 선정 기준](https://blaten7.github.io/-First-come-first-served-/#s1)
+- [2. RESTful API 응답 코드 설계](https://blaten7.github.io/-First-come-first-served-/#s2)
+- [3. UserController 검증 로직 개선](https://blaten7.github.io/-First-come-first-served-/#s3)
+- [4. 검증 실패 메시지 개선](https://blaten7.github.io/-First-come-first-served-/#s4)
+- [5. 이메일 인증 기반 회원가입 로직 개선](https://blaten7.github.io/-First-come-first-served-/#s5)
+- [6. 사용자 관리 컨트롤러 개발 목표 및 진행 기록](https://blaten7.github.io/-First-come-first-served-/#s6)
+- [7. ConfigServer 설정 관리 방식 결정](https://blaten7.github.io/-First-come-first-served-/#s7)
+- [8. DB 스키마 분할](https://blaten7.github.io/-First-come-first-served-/#s8)
+- [9. 주문 관리 서비스의 유저 검증 로직에 대한 고민](https://blaten7.github.io/-First-come-first-served-/#s9)
+- [10. 공통 클래스 관리 방식 고민: 개별 관리 vs 중앙 서비스](https://blaten7.github.io/-First-come-first-served-/#s10)
+- [11. 연관 관계 처리 방식 선택: 1안 vs 2안](https://blaten7.github.io/-First-come-first-served-/#s11)
+- [12. 선착순 구매 서비스 설계 및 구성 방향](https://blaten7.github.io/-First-come-first-served-/#s12)
+- [13. 선착순 구매 서비스(FF) 설계 방향 고민 기록](https://blaten7.github.io/-First-come-first-served-/#s13)
 
 <h2 id="trouble_shooting">🔍 트러블슈팅 <a href="https://blaten7.github.io/-First-come-first-served-/#troubleTitle" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
-- [1. 로그인 검증 로직 오류 및 해결](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#1-로그인-검증-로직-오류-및-해결)
-- [2. 동적 라우팅 문제 분석 및 해결 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#2-동적-라우팅-문제-분석-및-해결-방안)
-- [3. Redis 도커 연결 문제와 해결 방법](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#3-Redis-도커-연결-문제와-해결-방법)
-- [4. WebFlux에서 WebClient 사용 이슈 및 해결 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#4-WebFlux에서-WebClient-사용-이슈-및-해결-방안)
-- [5. 로그인 검증 응답속도 개선 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#5-로그인-검증-응답속도-개선-방안)
-- [6. PurchaseService의 결제 프로세스 API 성능 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#6-PurchaseService의-결제-프로세스-API-성능-개선)
-- [7. K6 테스트 코드 변경 완료 및 진행 방향](https://github.com/Blaten7/-First-come-first-served-/wiki/5.-%F0%9F%94%8D-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85#7-K6-테스트-코드-변경-완료-및-진행-방향)
+- [1. 로그인 검증 로직 오류 및 해결](https://blaten7.github.io/-First-come-first-served-/#t1)
+- [2. 동적 라우팅 문제 분석 및 해결 방안](https://blaten7.github.io/-First-come-first-served-/#t2)
+- [3. Redis 도커 연결 문제와 해결 방법](https://blaten7.github.io/-First-come-first-served-/#t3)
+- [4. WebFlux에서 WebClient 사용 이슈 및 해결 방안](https://blaten7.github.io/-First-come-first-served-/#t4)
+- [5. 로그인 검증 응답속도 개선 방안](https://blaten7.github.io/-First-come-first-served-/#t5)
+- [6. PurchaseService의 결제 프로세스 API 성능 개선](https://blaten7.github.io/-First-come-first-served-/#t6)
+- [7. K6 테스트 코드 변경 완료 및 진행 방향](https://blaten7.github.io/-First-come-first-served-/#t7)
 
 <h2 id="levelup">⚡ 성능개선 <a href="https://blaten7.github.io/-First-come-first-served-/#upTitle" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
@@ -250,10 +250,10 @@ JWT 검증 → 상품 검증 → 재고 확인 → 주문 처리
 (55ms)
 ```
 
-- [1. 회원 관리 서비스 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#1-회원-관리-서비스-개선)
-- [2. 로그인 검증 응답속도 개선 방안](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#2-로그인-검증-응답속도-개선)
-- [3. 주문 API 응답속도 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#3-주문-API-응답속도-개선)
-- [4. 결제 프로세스 API 성능 개선](https://github.com/Blaten7/-First-come-first-served-/wiki/6.-%E2%9A%A1%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0#4-결제-프로세스-API-성능-개선-1)
+- [1. 회원 관리 서비스 개선](https://blaten7.github.io/-First-come-first-served-/#u1)
+- [2. 로그인 검증 응답속도 개선 방안](https://blaten7.github.io/-First-come-first-served-/#u2)
+- [3. 주문 API 응답속도 개선](https://blaten7.github.io/-First-come-first-served-/#u3)
+- [4. 결제 프로세스 API 성능 개선](https://blaten7.github.io/-First-come-first-served-/#u4)
 
 <h2 id="schedules">📆 프로젝트 일정 <a href="https://blaten7.github.io/-First-come-first-served-/#scTitle" style="color: green">Wiki</a><a href="#top">🔝</a></h2>
 
